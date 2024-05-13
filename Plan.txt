@@ -1,0 +1,18 @@
+Final Boss
+- zombie Beatty sensei
+
+weapons
+- melee
+  - spiked bat
+  - katana
+  - longsword
+  - smallsword
+  - dagger
+  - staff
+  - Morningstar
+-ranged
+  - bow
+  - crossbow
+  - chakram
+  - ninja star
+  - blowgun?
