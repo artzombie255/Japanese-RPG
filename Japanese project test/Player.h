@@ -16,7 +16,7 @@ public:
 
 	void moveCheck();
 	void move();
-	void collision(std::vector<sf::RectangleShape>*, int);
+	void collision(std::vector<sf::RectangleShape*>&, int);
 	bool isLost();
 	int getScreenX();
 	int getScreenY();

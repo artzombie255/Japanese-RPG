@@ -33,8 +33,10 @@ int main()
     Level level;
     int xScreen = 1, yScreen = 1;
     DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
-    std::vector<sf::RectangleShape>* Npcs;
+    std::vector<sf::RectangleShape*> Npcs;
     
+    for (int i = 0; i < 6; i++)
+        Npcs.push_back(new Npc(i));
 
     font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
     hdr = L"日本語プロジェクト";
@@ -88,6 +90,12 @@ int main()
         player.printEscMenu(window);
         window.display();
         window.clear();
+    }
+
+    //clean up
+    for (int i = Npcs.size() - 1; i >= 0; i--)
+    {
+        delete Npcs.at(i);
     }
 
     return 0;

@@ -6,6 +6,11 @@ Npc::Npc()
 }
 
 
+Npc::Npc(int)
+{
+}
+
+
 Npc::~Npc()
 {
 }
