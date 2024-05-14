@@ -1,6 +1,6 @@
 #pragma once
 
-class Npc
+class Npc : public sf::RectangleShape
 {
 public:
 	Npc();

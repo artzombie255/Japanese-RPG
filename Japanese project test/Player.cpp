@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -88,12 +88,12 @@ void Player::move()
 }
 
 
-void Player::collision(std::vector<sf::RectangleShape> rect, int type)
+void Player::collision(std::vector<sf::RectangleShape> *rect, int type)
 {
 	sf::FloatRect nextPos;
-	for (int i = 0; i < rect.size(); i++)
+	for (int i = 0; i < rect->size(); i++)
 	{
-		sf::FloatRect bounds = rect.at(i).getGlobalBounds();
+		sf::FloatRect bounds = rect->at(i).getGlobalBounds();
 		sf::FloatRect playerBounds = getGlobalBounds();
 
 		nextPos = playerBounds;
@@ -136,11 +136,57 @@ void Player::escMenu(sf::RenderWindow &window)
 {
 	sf::Vector2i position = sf::Mouse::getPosition(window);
 	escDelay++;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && escMenuOpen == false && escDelay > 2)
-	{
 
+	//where cursor is on menu
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && escMenuOpen == false && escDelay > 2 || escMenuOpen == true)
+	{
 		escMenuOpen = true;
 		escDelay = 0;
+
+		if (position.x > 150 && position.x < 450)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				if (position.y > 110 + (i * 50) && position.y < 160 + (i * 50))
+					currentMenuSelection = i;
+			}
+		}
+		else 
+			currentMenuSelection = -1;
+
+		//esc menu selection
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
+		{
+			switch (currentMenuSelection)
+			{
+			case 0:
+				//resume
+				escMenuOpen = false;
+				break;
+			case 1:
+				//inv
+				break;
+			case 2:
+				//
+				break;
+			case 3:
+				//
+				break;
+			case 4:
+				//
+				break;
+			case 5:
+				//credits
+				break;
+			case 6:
+				//save
+				break;
+			case 7:
+				//close
+				window.close();
+				break;
+			}
+		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && escMenuOpen == true && escDelay > 2)
 	{
@@ -153,11 +199,17 @@ void Player::escMenu(sf::RenderWindow &window)
 void Player::printEscMenu(sf::RenderWindow& window)
 {
 	sf::RectangleShape outline, background, selection;
+	sf::Text text;
+	sf::String message[8] = { L"つづく",  L"",  L"",  L"",  L"",  L"",  L"",  L"終わり", };
+	sf::Font font;
 
-	outline.setSize(sf::Vector2f(300, 400));
+	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
+	text.setFont(font);
+
+	outline.setSize(sf::Vector2f(300, 420));
 	outline.setPosition(150, 100);
 
-	background.setSize(sf::Vector2f(280, 380));
+	background.setSize(sf::Vector2f(280, 400));
 	background.setPosition(160, 110);
 	background.setFillColor(sf::Color::Black);
 
@@ -169,8 +221,20 @@ void Player::printEscMenu(sf::RenderWindow& window)
 		window.draw(outline);
 		window.draw(background);
 
-		selection.setPosition(160, 110);
+		if (currentMenuSelection >= 0)
+			selection.setPosition(160, 110 + (currentMenuSelection * 50));
+		else 
+			selection.setPosition(-100, -100);
+		if (currentMenuSelection == 7)
+			selection.setFillColor(sf::Color::Red);
 		window.draw(selection);
+
+		for (int i = 0; i < 8; i++)
+		{
+			text.setString(message[i]);
+			text.setPosition(250, 115 + (i * 50));
+			window.draw(text);
+		}
 	}
 
 }

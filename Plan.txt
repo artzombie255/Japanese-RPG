@@ -16,3 +16,46 @@ weapons
   - chakram
   - ninja star
   - blowgun?
+
+Things that need to be done
+
+- fights
+  - menu for weapons
+  - fight logic
+  - animations and graphics
+- npc interactions
+  - trigger interactions
+  - go through text
+- text
+- sprites created
+  - background
+  - buildings
+  - people
+  - weapons
+- collectables
+  - location on map
+- shops
+  - shop logic
+  - shop menus
+- animations
+- rooms
+  - room design
+  - room sprites and animations
+
+goals:
+
+- end of summer
+  - framework done for the game
+
+- end of fall
+
+- end of winter break
+  - rooms done
+
+- start of final projects
+  - majority sprites done
+  - audio done
+
+- end of final projects
+  - text
+  - all sprites done

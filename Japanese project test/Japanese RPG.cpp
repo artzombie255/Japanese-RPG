@@ -2,12 +2,25 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
+#include <vector>
 #include "Player.h"
 #include "Level.h"
 #include "DoubleSubscriptedArray.h"
+#include "Npc.h"
+#include "Encounter.h"
 
 
 const int WINDOWX = 600, WINDOWY = 600, NUMOFCHUNKS = 24, SIZEOFCHUNK = 25;
+
+enum class NPCS
+{
+    AUBREY,
+    ASHTON,
+    AERYK,
+    LILLY,
+    KIMORA,
+    SHIN
+};
 
 
 int main()
@@ -20,6 +33,7 @@ int main()
     Level level;
     int xScreen = 1, yScreen = 1;
     DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
+    std::vector<sf::RectangleShape>* Npcs;
     
 
     font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -44,7 +58,7 @@ int main()
 
             player.moveCheck();
 
-            player.escMenu();
+            player.escMenu(window);
         }
 
         //checks player collisions
@@ -63,6 +77,8 @@ int main()
         }
         if (player.getEscMenuOpen() == false)
             player.move();
+
+        player.collision(Npcs, 1);
 
         //prints the next window
         window.clear();

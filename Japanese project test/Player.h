@@ -16,7 +16,7 @@ public:
 
 	void moveCheck();
 	void move();
-	void collision(std::vector<sf::RectangleShape>, int);
+	void collision(std::vector<sf::RectangleShape>*, int);
 	bool isLost();
 	int getScreenX();
 	int getScreenY();
@@ -36,7 +36,7 @@ public:
 	void addMoney(int);
 
 private:
-	int xMove = 0, yMove = 0, xScreen = 1, yScreen = 1, str, dex, hp, natArmor, maxHp, escDelay = 0;
+	int xMove = 0, yMove = 0, xScreen = 1, yScreen = 1, str, dex, hp, natArmor, maxHp, escDelay = 0, currentMenuSelection = 0;
 	//left == true, right == false
 	bool lost, burn = false, escMenuOpen = false;
 	int lvl, exp, money,
