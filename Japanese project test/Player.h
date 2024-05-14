@@ -20,6 +20,9 @@ public:
 	bool isLost();
 	int getScreenX();
 	int getScreenY();
+	void escMenu(sf::RenderWindow&);
+	void printEscMenu(sf::RenderWindow&);
+	bool getEscMenuOpen();
 
 	int attack();
 	void loseHealth(int);
@@ -33,9 +36,9 @@ public:
 	void addMoney(int);
 
 private:
-	int xMove = 0, yMove = 0, xScreen = 1, yScreen = 1;
+	int xMove = 0, yMove = 0, xScreen = 1, yScreen = 1, str, dex, hp, natArmor, maxHp, escDelay = 0;
 	//left == true, right == false
-	bool lost, burn = false;
+	bool lost, burn = false, escMenuOpen = false;
 	int lvl, exp, money,
 		equippedMelee = 1, equippedRanged = 0, equippedMagic = 0, weapon, activeBurn = 0,
 		//possession
@@ -43,7 +46,7 @@ private:
 		rangedOwned[NUMOFRANGED] = { 0, 0, 0, 0, 0 },
 		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };
 	//levels
-	const int
+	const int levels[10] = { 0, 5, 15, 30, 50, 75, 105, 140, 180, 225 },
 		//effect
 		melee[NUMOFMELEE] = { 0, 4, 6, 9 }, 
 		ranged[NUMOFRANGED] = { 0, 10, 12, 8 },

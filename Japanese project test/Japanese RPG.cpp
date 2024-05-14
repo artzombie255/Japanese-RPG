@@ -7,7 +7,7 @@
 #include "DoubleSubscriptedArray.h"
 
 
-const int WINDOWX = 600, WINDOWY = 600;
+const int WINDOWX = 600, WINDOWY = 600, NUMOFCHUNKS = 24, SIZEOFCHUNK = 25;
 
 
 int main()
@@ -19,7 +19,7 @@ int main()
     Player player;
     Level level;
     int xScreen = 1, yScreen = 1;
-    DoubleSubscriptedArray arr(24, 24);
+    DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
     
 
     font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -43,6 +43,8 @@ int main()
                 window.close();
 
             player.moveCheck();
+
+            player.escMenu();
         }
 
         //checks player collisions
@@ -59,13 +61,17 @@ int main()
             yScreen = player.getScreenY();
             level.loadLevel(arr, "./Levels/" + std::to_string(xScreen) + "level" + std::to_string(yScreen) + ".txt");
         }
-        player.move();
+        if (player.getEscMenuOpen() == false)
+            player.move();
 
         //prints the next window
         window.clear();
+
         window.draw(player);
         level.print(window, arr);
+        player.printEscMenu(window);
         window.display();
+        window.clear();
     }
 
     return 0;

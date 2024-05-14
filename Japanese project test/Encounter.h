@@ -13,9 +13,14 @@ public:
 	Encounter(Player&, Level&);
 	~Encounter();
 
+	//get data
+	bool getInEncounter();
+	int getEncounterType();
+
 
 private:
 	bool inEncounter = false;
+	int encounterType;
 
 };
 

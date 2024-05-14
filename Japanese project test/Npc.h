@@ -4,7 +4,7 @@ class Npc
 {
 public:
 	Npc();
-	Npc();
+	//Npc();
 	~Npc();
 
 
