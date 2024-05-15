@@ -14,3 +14,8 @@ Npc::Npc(int)
 Npc::~Npc()
 {
 }
+
+
+void Npc::talk()
+{
+}

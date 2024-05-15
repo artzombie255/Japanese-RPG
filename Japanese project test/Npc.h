@@ -11,7 +11,7 @@ public:
 	Npc(int);
 	~Npc();
 
-
+	void talk();
 private:
 };
 

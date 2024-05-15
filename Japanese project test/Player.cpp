@@ -88,12 +88,12 @@ void Player::move()
 }
 
 
-void Player::collision(std::vector<sf::RectangleShape*> &rect, int type)
+void Player::collision(std::vector<sf::RectangleShape*> &rect, INTERACTIONTYPE type)
 {
 	sf::FloatRect nextPos;
 	for (int i = 0; i < rect.size(); i++)
 	{
-		sf::FloatRect bounds = rect.at(i).getGlobalBounds();
+		sf::FloatRect bounds = rect.at(i)->getGlobalBounds();
 		sf::FloatRect playerBounds = getGlobalBounds();
 
 		nextPos = playerBounds;
@@ -108,7 +108,7 @@ void Player::collision(std::vector<sf::RectangleShape*> &rect, int type)
 
 		if (bounds.intersects(nextPos))
 		{
-			
+			if (type == NPC);
 		}
 	}
 }

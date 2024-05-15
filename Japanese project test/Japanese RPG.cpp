@@ -80,7 +80,7 @@ int main()
         if (player.getEscMenuOpen() == false)
             player.move();
 
-        player.collision(Npcs, 1);
+        player.collision(Npcs, INTERACTIONTYPE::NPC);
 
         //prints the next window
         window.clear();

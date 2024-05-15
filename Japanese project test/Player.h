@@ -8,6 +8,14 @@
 extern const int WINDOWX, WINDOWY;
 const int NUMOFMELEE = 8, NUMOFRANGED = 5, NUMOFITEMS = 4;
 
+extern const enum INTERACTIONTYPE
+{
+	NPC,
+	WALL,
+	ENEMY
+};
+
+
 class Player : public sf::RectangleShape
 {
 public:
@@ -16,7 +24,7 @@ public:
 
 	void moveCheck();
 	void move();
-	void collision(std::vector<sf::RectangleShape*>&, int);
+	void collision(std::vector<sf::RectangleShape*>&, INTERACTIONTYPE);
 	bool isLost();
 	int getScreenX();
 	int getScreenY();
