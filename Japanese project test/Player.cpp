@@ -88,7 +88,7 @@ void Player::move()
 }
 
 
-void Player::collision(std::vector<sf::RectangleShape*> &rect, INTERACTIONTYPE type)
+void Player::collision(std::vector<Intaractable*> &rect, INTERACTIONTYPE type)
 {
 	sf::FloatRect nextPos;
 	for (int i = 0; i < rect.size(); i++)
@@ -108,7 +108,8 @@ void Player::collision(std::vector<sf::RectangleShape*> &rect, INTERACTIONTYPE t
 
 		if (bounds.intersects(nextPos))
 		{
-			if (type == NPC);
+			if (type == NPC)
+				rect.at(i)->setInteraction(true);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include "Intaractable.h"
 #include <vector>
 
 
@@ -24,7 +25,7 @@ public:
 
 	void moveCheck();
 	void move();
-	void collision(std::vector<sf::RectangleShape*>&, INTERACTIONTYPE);
+	void collision(std::vector<Intaractable*>&, INTERACTIONTYPE);
 	bool isLost();
 	int getScreenX();
 	int getScreenY();

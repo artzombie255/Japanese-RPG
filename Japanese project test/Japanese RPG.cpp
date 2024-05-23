@@ -8,6 +8,7 @@
 #include "DoubleSubscriptedArray.h"
 #include "Npc.h"
 #include "Encounter.h"
+#include "Intaractable.h"
 
 
 const int WINDOWX = 600, WINDOWY = 600, NUMOFCHUNKS = 24, SIZEOFCHUNK = 25;
@@ -33,7 +34,8 @@ int main()
     Level level;
     int xScreen = 1, yScreen = 1;
     DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
-    std::vector<sf::RectangleShape*> Npcs;
+    std::vector<Intaractable*> Npcs;
+    bool inMenu = false;
     
     for (int i = 0; i < 6; i++)
         Npcs.push_back(new Npc(i));
@@ -48,6 +50,7 @@ int main()
 
     level.loadLevel(arr, "./Levels/1level1.txt");
 
+
     //main loop
     while (window.isOpen())
     {
@@ -61,7 +64,22 @@ int main()
             player.moveCheck();
 
             player.escMenu(window);
+
+            for (int i = 0; Npcs.size() > i; i++)
+            {
+                Npcs.at(i)->continueTalking();
+            }
         }
+
+        inMenu = false;
+        //sets if in menu
+        for (int i = 0; Npcs.size() > i; i++)
+        {
+            if (Npcs.at(i)->getInteraction() == true)
+                inMenu = true;
+        }
+        if (player.getEscMenuOpen() == true)
+            inMenu = true;
 
         //checks player collisions
 
@@ -77,7 +95,7 @@ int main()
             yScreen = player.getScreenY();
             level.loadLevel(arr, "./Levels/" + std::to_string(xScreen) + "level" + std::to_string(yScreen) + ".txt");
         }
-        if (player.getEscMenuOpen() == false)
+        if (inMenu == false)
             player.move();
 
         player.collision(Npcs, INTERACTIONTYPE::NPC);
@@ -87,6 +105,17 @@ int main()
 
         window.draw(player);
         level.print(window, arr);
+        //print npcs
+        for (int i = Npcs.size() - 1; i >= 0; i--)
+        {
+            window.draw(*Npcs.at(i));
+        }
+        //interactions with npcs
+        for (int i = 0; Npcs.size() > i; i++)
+        {
+            if (Npcs.at(i)->getInteraction() == true)
+                Npcs.at(i)->talk(window, i);
+        }
         player.printEscMenu(window);
         window.display();
         window.clear();
