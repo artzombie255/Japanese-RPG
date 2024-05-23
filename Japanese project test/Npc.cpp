@@ -34,6 +34,7 @@ Npc::~Npc()
 }
 
 
+//manage interactions and incrementing current line
 void Npc::continueTalking(sf::RenderWindow& window)
 {
 	sf::Vector2i position = sf::Mouse::getPosition(window);
@@ -48,6 +49,7 @@ void Npc::continueTalking(sf::RenderWindow& window)
 }
 
 
+//display text
 void Npc::talk(sf::RenderWindow &window, int person)
 {
 	//do magic

@@ -138,11 +138,17 @@ void Player::escMenu(sf::RenderWindow &window)
 	sf::Vector2i position = sf::Mouse::getPosition(window);
 	escDelay++;
 
+	//close the esc menu if the escape button is clicked and it is on
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && escMenuOpen == true && escDelay > 15)
+	{
+		escMenuOpen = false;
+		escDelay = 0;
+	}
+
 	//where cursor is on menu
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && escMenuOpen == false && escDelay > 2 || escMenuOpen == true)
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && escMenuOpen == false && escDelay > 1) || escMenuOpen == true)
 	{
 		escMenuOpen = true;
-		escDelay = 0;
 
 		if (position.x > 150 && position.x < 450)
 		{
@@ -163,6 +169,7 @@ void Player::escMenu(sf::RenderWindow &window)
 			case 0:
 				//resume
 				escMenuOpen = false;
+				escDelay = 0;
 				break;
 			case 1:
 				//inv
@@ -188,11 +195,6 @@ void Player::escMenu(sf::RenderWindow &window)
 				break;
 			}
 		}
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && escMenuOpen == true && escDelay > 2)
-	{
-		escMenuOpen = false;
-		escDelay = 0;
 	}
 }
 

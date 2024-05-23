@@ -18,7 +18,6 @@ Level::~Level()
 
 void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName)
 {
-	//int temp;
 	std::ifstream file;
 	file.open(fileName);
 
@@ -30,14 +29,10 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName)
 			{
 				arr(j, i) = '0';
 				file >> arr(j, i);
-				//arr(i, j) = temp;
 				std::cout << arr(j, i);
-				//system("pause");
 			}
-			//std::cout << std::endl;
 		}
 		file.close();
-		//std::cout << "1 loaded";
 	}
 }
 
@@ -52,7 +47,6 @@ void Level::print(sf::RenderWindow& window, DoubleSubscriptedArray& arr)
 				rect.setPosition(j * 25,i * 25);
 			window.draw(rect);
 		}
-		//std::cout << std::endl;
 	}
 	rect.setPosition(-50, -50);
 }

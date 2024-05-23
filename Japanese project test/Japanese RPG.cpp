@@ -37,17 +37,20 @@ int main()
     std::vector<Intaractable*> Npcs;
     bool inMenu = false;
     
+    //create npcs
     for (int i = 0; i < 6; i++)
         Npcs.push_back(new Npc(i));
 
+    //set up doing tect and window name
     font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
     hdr = L"日本語プロジェクト";
     text.setFont(font);
- 
+    //make window
     sf::RenderWindow window(sf::VideoMode(WINDOWX, WINDOWY), hdr);
 
     window.setFramerateLimit(60);
 
+    //load the first level
     level.loadLevel(arr, "./Levels/1level1.txt");
 
 
@@ -61,10 +64,12 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
+            //checks the player movement
             player.moveCheck();
-
+            //opens the esc menu
             player.escMenu(window);
 
+            //click to keep talking
             for (int i = 0; Npcs.size() > i; i++)
             {
                 if (player.getEscMenuOpen() == false)
@@ -82,7 +87,6 @@ int main()
         if (player.getEscMenuOpen() == true)
             inMenu = true;
 
-        //checks player collisions
 
         //if enemy: encounter
 
@@ -96,9 +100,12 @@ int main()
             yScreen = player.getScreenY();
             level.loadLevel(arr, "./Levels/" + std::to_string(xScreen) + "level" + std::to_string(yScreen) + ".txt");
         }
+
+        //move the player
         if (inMenu == false)
             player.move();
 
+        //check collisions
         player.collision(Npcs, INTERACTIONTYPE::NPC);
 
         //prints the next window
