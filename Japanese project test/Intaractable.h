@@ -10,7 +10,7 @@ public:
 	Intaractable();
 	~Intaractable();
 
-	virtual void continueTalking();
+	virtual void continueTalking(sf::RenderWindow&);
 	void setInteraction(bool);
 	bool getInteraction();
 	virtual void talk(sf::RenderWindow&, int);

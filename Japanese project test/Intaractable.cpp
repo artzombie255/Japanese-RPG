@@ -9,7 +9,7 @@ Intaractable::~Intaractable()
 }
 
 
-void Intaractable::continueTalking()
+void Intaractable::continueTalking(sf::RenderWindow&)
 {
 }
 

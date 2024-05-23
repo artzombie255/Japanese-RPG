@@ -12,7 +12,7 @@ public:
 	Npc(int);
 	~Npc();
 
-	void continueTalking();
+	void continueTalking(sf::RenderWindow&);
 	void talk(sf::RenderWindow&, int person);
 
 private:

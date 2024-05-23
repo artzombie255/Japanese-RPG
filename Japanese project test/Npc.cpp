@@ -24,6 +24,8 @@ Npc::Npc(int)
 			voiceLines[i][j] = std::to_string(j);
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
 	text.setFont(font);
+
+
 }
 
 
@@ -32,10 +34,13 @@ Npc::~Npc()
 }
 
 
-void Npc::continueTalking()
+void Npc::continueTalking(sf::RenderWindow& window)
 {
+	sf::Vector2i position = sf::Mouse::getPosition(window);
+
 	inputDelay++;
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && interaction == true && inputDelay > 5)
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && interaction == true 
+		&& inputDelay > 5 && position.y > 300)
 	{
 		currentLine++;
 		inputDelay = 0;

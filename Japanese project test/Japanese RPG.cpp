@@ -67,7 +67,8 @@ int main()
 
             for (int i = 0; Npcs.size() > i; i++)
             {
-                Npcs.at(i)->continueTalking();
+                if (player.getEscMenuOpen() == false)
+                    Npcs.at(i)->continueTalking(window);
             }
         }
 
