@@ -15,10 +15,11 @@ public:
 	bool getInteraction();
 	virtual void talk(sf::RenderWindow&, int);
 	virtual void nextLine();
+	void increaseLength(int person);
 
 protected:
 	bool interaction = false;
-	int currentLine = 0;
+	int currentLine = 0, currentLength[6] = {};;
 
 };
 

@@ -36,3 +36,9 @@ void Intaractable::nextLine()
 {
 	currentLine++;
 }
+
+
+void Intaractable::increaseLength(int person)
+{
+	currentLength[person]++;
+}

@@ -109,7 +109,10 @@ void Player::collision(std::vector<Intaractable*> &rect, INTERACTIONTYPE type)
 		if (bounds.intersects(nextPos))
 		{
 			if (type == NPC)
+			{
 				rect.at(i)->setInteraction(true);
+				rect.at(i)->increaseLength(i);
+			}
 		}
 	}
 }

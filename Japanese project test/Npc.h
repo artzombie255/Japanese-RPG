@@ -18,6 +18,7 @@ public:
 private:
 	//AUBREY, ASHTON, AERYK, LILLY, KIMORA, SHIN
 	std::string voiceLines[6][10];
+	int voiceLinesLength[6][1];
 	sf::Font font;
 	sf::Text text;
 	int currentLine = 0, inputDelay = 0;
