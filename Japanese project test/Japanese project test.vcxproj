@@ -141,6 +141,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Shop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DoubleSubscriptedArray.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Shop.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
