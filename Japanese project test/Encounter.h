@@ -34,7 +34,7 @@ public:
 
 private:
 	bool inEncounter = false;
-	int encounterType;
+	int encounterType, currentMenuSelection = 0;
 	MENUTYPE currentScreen;
 
 };
