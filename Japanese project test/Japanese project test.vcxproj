@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="DoubleSubscriptedArray.cpp" />
     <ClCompile Include="Encounter.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Intaractable.cpp" />
     <ClCompile Include="Japanese RPG.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="DoubleSubscriptedArray.h" />
     <ClInclude Include="Encounter.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Intaractable.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Npc.h" />

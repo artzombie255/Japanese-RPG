@@ -19,7 +19,7 @@ public:
 
 protected:
 	bool interaction = false;
-	int currentLine = 0, currentLength[6] = {};;
+	int currentLine = 0, currentLength[6] = {};
 
 };
 

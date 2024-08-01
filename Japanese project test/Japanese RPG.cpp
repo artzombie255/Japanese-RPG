@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "DoubleSubscriptedArray.h"
 #include "Npc.h"
+#include "Enemy.h"
 #include "Encounter.h"
 #include "Intaractable.h"
 
@@ -32,14 +33,19 @@ int main()
     sf::Text text;
     Player player;
     Level level;
+    Encounter encounter;
     int xScreen = 1, yScreen = 1;
     DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
     std::vector<Intaractable*> Npcs;
+    std::vector<Intaractable*> Enemies;
     bool inMenu = false;
     
-    //create npcs
+    //create entities
     for (int i = 0; i < 6; i++)
         Npcs.push_back(new Npc(i));
+
+    for (int i = 0; i < 6; i++)
+        Enemies.push_back(new Enemy(1));
 
     //set up doing tect and window name
     font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -75,6 +81,10 @@ int main()
                 if (player.getEscMenuOpen() == false)
                     Npcs.at(i)->continueTalking(window);
             }
+
+            //encounter
+            if (encounter.getInEncounter() == true)
+                encounter.playEncounter(window);
         }
 
         inMenu = false;
@@ -88,9 +98,15 @@ int main()
             inMenu = true;
 
 
-        //if enemy: encounter
+        for (int i = Enemies.size() - 1; i >= 0; i--)
+        {
+            if (Enemies.at(i)->getInteraction() == true)
+            {
+                encounter.setEncounter();
+                Enemies.at(i)->setInteraction(false);
+            }
+        }
 
-        //if npc: talk
 
         //checks the screen the player is on
         if (xScreen != player.getScreenX() || yScreen != player.getScreenY())
@@ -102,11 +118,12 @@ int main()
         }
 
         //move the player
-        if (inMenu == false)
+        if (inMenu == false && encounter.getInEncounter() == false)
             player.move();
 
         //check collisions
         player.collision(Npcs, INTERACTIONTYPE::NPC);
+        player.collision(Enemies, INTERACTIONTYPE::ENEMY);
 
         //prints the next window
         window.clear();
@@ -118,21 +135,36 @@ int main()
         {
             window.draw(*Npcs.at(i));
         }
-        //interactions with npcs
+
+        for (int i = Enemies.size() - 1; i >= 0; i--)
+        {
+            window.draw(*Enemies.at(i));
+        }
+
+
+        //interactions with entites
         for (int i = 0; Npcs.size() > i; i++)
         {
             if (Npcs.at(i)->getInteraction() == true)
                 Npcs.at(i)->talk(window, i);
         }
+        
+        if (encounter.getInEncounter() == true)
+            encounter.displayEncounter(window);
+
         player.printEscMenu(window);
         window.display();
-        window.clear();
     }
 
     //clean up
     for (int i = Npcs.size() - 1; i >= 0; i--)
     {
         delete Npcs.at(i);
+    }
+
+    for (int i = Enemies.size() - 1; i >= 0; i--)
+    {
+        delete Enemies.at(i);
     }
 
     return 0;

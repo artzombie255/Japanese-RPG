@@ -113,6 +113,10 @@ void Player::collision(std::vector<Intaractable*> &rect, INTERACTIONTYPE type)
 				rect.at(i)->setInteraction(true);
 				rect.at(i)->increaseLength(i);
 			}
+			else if (type == ENEMY)
+			{
+				rect.at(i)->setInteraction(true);
+			}
 		}
 	}
 }

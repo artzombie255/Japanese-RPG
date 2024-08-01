@@ -6,6 +6,13 @@
 #include "Level.h"
 
 
+enum class MENUTYPE
+{
+	ACTIONS,
+	WEAPONS
+};
+
+
 class Encounter
 {
 public:
@@ -13,14 +20,22 @@ public:
 	Encounter(Player&, Level&);
 	~Encounter();
 
+	void displayEncounter(sf::RenderWindow&);
+	void playEncounter(sf::RenderWindow&);
+	void setEncounter();
+
+	//screens
+	void ActionsMenu(sf::RenderWindow&);
+	void WeaponsMenu(sf::RenderWindow&);
+
 	//get data
 	bool getInEncounter();
 	int getEncounterType();
 
-
 private:
 	bool inEncounter = false;
 	int encounterType;
+	MENUTYPE currentScreen;
 
 };
 
