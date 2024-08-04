@@ -27,6 +27,8 @@ public:
 	//screens
 	void ActionsMenu(sf::RenderWindow&);
 	void WeaponsMenu(sf::RenderWindow&);
+	void PrintActionsMenu(sf::RenderWindow&);
+	void PrintWeaponsMenu(sf::RenderWindow&);
 
 	//get data
 	bool getInEncounter();
@@ -35,7 +37,7 @@ public:
 private:
 	bool inEncounter = false;
 	int encounterType, currentMenuSelection = 0;
-	MENUTYPE currentScreen;
+	MENUTYPE currentScreen = MENUTYPE::ACTIONS;
 
 };
 

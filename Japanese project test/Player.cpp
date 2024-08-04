@@ -210,7 +210,7 @@ void Player::printEscMenu(sf::RenderWindow& window)
 {
 	sf::RectangleShape outline, background, selection;
 	sf::Text text;
-	sf::String message[8] = { L"つづく",  L"",  L"",  L"",  L"",  L"",  L"",  L"終わり", };
+	sf::String message[8] = { L"つづく",  L"ありがとう",  L"",  L"",  L"",  L"",  L"",  L"終わり", };
 	sf::Font font;
 
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -242,7 +242,8 @@ void Player::printEscMenu(sf::RenderWindow& window)
 		for (int i = 0; i < 8; i++)
 		{
 			text.setString(message[i]);
-			text.setPosition(250, 115 + (i * 50));
+			text.setOrigin(text.getLocalBounds().width /2, text.getGlobalBounds().height / 2);
+			text.setPosition(300, 130 + (i * 50));
 			window.draw(text);
 		}
 	}

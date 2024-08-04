@@ -1,4 +1,4 @@
-#include "Encounter.h"
+﻿#include "Encounter.h"
 
 
 Encounter::Encounter()
@@ -85,9 +85,10 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 	switch (currentScreen)
 	{
 	case MENUTYPE::ACTIONS:
-		ActionsMenu(window);
+		PrintActionsMenu(window);
+		break;
 	case MENUTYPE::WEAPONS:
-		WeaponsMenu(window);
+		PrintWeaponsMenu(window);
 	}
 }
 
@@ -117,42 +118,12 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 	else
 		currentMenuSelection = -1;
 
-	//esc menu selection
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
-	{
-		switch (currentMenuSelection)
-		{
-		case 0:
-			break;
-		case 1:
-			//inv
-			break;
-		case 2:
-			//
-			break;
-		case 3:
-			//
-			break;
-		case 4:
-			//
-			break;
-		case 5:
-			//credits
-			break;
-		case 6:
-			//save
-			break;
-		case 7:
-			//close
-			window.close();
-			break;
-		}
-	}
 
 	switch (currentScreen)
 	{
 	case MENUTYPE::ACTIONS:
 		ActionsMenu(window);
+		break;
 	case MENUTYPE::WEAPONS:
 		WeaponsMenu(window);
 	}
@@ -167,12 +138,100 @@ void Encounter::setEncounter()
 
 void Encounter::ActionsMenu(sf::RenderWindow& window)
 {
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
+	{
+		switch (currentMenuSelection)
+		{
+		case 0:
+			//Attack
+			currentScreen = MENUTYPE::WEAPONS;
+			break;
+		case 1:
+			//Items
+			break;
+		case 2:
+			//Switch characters order
+			break;
+		case 3:
+			//Switch weapons?
+			break;
+		case 4:
+			//
+			break;
+		case 5:
+			//Run
+			break;
+		}
+	}
 }
 
 
 void Encounter::WeaponsMenu(sf::RenderWindow &window)
 {
 
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
+	{
+		switch (currentMenuSelection)
+		{
+		case 0:
+			//basic attack
+			break;
+		case 1:
+			//unique/magic
+			break;
+		case 2:
+			//special
+			break;
+		case 3:
+			//dodge
+			break;
+		case 4:
+			//ready attack
+			break;
+		case 5:
+			//back
+			break;
+		}
+	}
+}
+
+
+void Encounter::PrintActionsMenu(sf::RenderWindow& window)
+{
+	sf::Text text;
+	sf::String message[6] = { L"つづくつづく",  L"つづく",  L"つづく",  L"",  L"",  L"" };
+	sf::Font font;
+
+	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
+	text.setFont(font);
+
+	for (int i = 0; i < 3; i++)
+	{
+		text.setString(message[i]);
+		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
+		text.setPosition(108 + (i * 186), 454);
+		window.draw(text);
+	}
+}
+
+
+void Encounter::PrintWeaponsMenu(sf::RenderWindow& window)
+{
+	sf::Text text;
+	sf::String message[6] = { L"つづくつづく",  L"つづく",  L"つづく",  L"",  L"",  L"" };
+	sf::Font font;
+
+	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
+	text.setFont(font);
+
+	for (int i = 0; i < 3; i++)
+	{
+		text.setString(message[i]);
+		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
+		text.setPosition(108 + (i * 186), 454);
+		window.draw(text);
+	}
 }
 
 
