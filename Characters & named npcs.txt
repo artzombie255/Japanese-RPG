@@ -1,24 +1,24 @@
 Me?: ranged? or npc
-Aubrey: sword, magic (magic girl esque)
-Ashton: sword martial
+Aubrey: sword, magic (magic girl esque); 
+Ashton: sword martial; parry;
 Aeryk: melee protector; guard; 
+Rowan: support magic; heal; ; scholar/librarian
 
-Rowan: 
 Lilly:
 
 Kimora:
 
 
 
-ranged magic
-ranged martial
-ranged rogue
-melee magic
-melee martial
-melee rogue
-protector magic
-protector martial
-support magic
+ranged magic; flash
+ranged martial; volley; 
+ranged rogue; sneak attack
+melee magic; 
+melee martial; parry; 
+melee rogue; sneak attack; poison weapon
+protector magic; shield spell;
+protector martial; guard;
+support magic; heal; 
 
 8-9 characters
 4 in a party

@@ -161,6 +161,7 @@ void Encounter::ActionsMenu(sf::RenderWindow& window)
 			break;
 		case 5:
 			//Run
+			inEncounter = false;
 			break;
 		}
 	}
@@ -178,7 +179,7 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 			//basic attack
 			break;
 		case 1:
-			//unique/magic
+			//unique
 			break;
 		case 2:
 			//special
@@ -190,7 +191,7 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 			//ready attack
 			break;
 		case 5:
-			//back
+			currentScreen = MENUTYPE::ACTIONS;
 			break;
 		}
 	}
@@ -200,7 +201,7 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 void Encounter::PrintActionsMenu(sf::RenderWindow& window)
 {
 	sf::Text text;
-	sf::String message[6] = { L"つづくつづく",  L"つづく",  L"つづく",  L"",  L"",  L"" };
+	sf::String message[6] = { L"Attack",  L"Items",  L"Switch characters order",  L"Switch weapons?",  L"Run",  L"Run" };
 	sf::Font font;
 
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -210,7 +211,15 @@ void Encounter::PrintActionsMenu(sf::RenderWindow& window)
 	{
 		text.setString(message[i]);
 		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
-		text.setPosition(108 + (i * 186), 454);
+		text.setPosition(113 + (i * 186), 454);
+		window.draw(text);
+	}
+
+	for (int i = 3; i < 6; i++)
+	{
+		text.setString(message[i]);
+		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
+		text.setPosition(113 + ((i - 3) * 186), 534);
 		window.draw(text);
 	}
 }
@@ -219,7 +228,7 @@ void Encounter::PrintActionsMenu(sf::RenderWindow& window)
 void Encounter::PrintWeaponsMenu(sf::RenderWindow& window)
 {
 	sf::Text text;
-	sf::String message[6] = { L"つづくつづく",  L"つづく",  L"つづく",  L"",  L"",  L"" };
+	sf::String message[6] = { L"basic attack",  L"unique",  L"special",  L"dodge",  L"ready attack",  L"back" };
 	sf::Font font;
 
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -229,7 +238,15 @@ void Encounter::PrintWeaponsMenu(sf::RenderWindow& window)
 	{
 		text.setString(message[i]);
 		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
-		text.setPosition(108 + (i * 186), 454);
+		text.setPosition(113 + (i * 186), 454);
+		window.draw(text);
+	}
+
+	for (int i = 3; i < 6; i++)
+	{
+		text.setString(message[i]);
+		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
+		text.setPosition(113 + ((i - 3) * 186), 534);
 		window.draw(text);
 	}
 }
@@ -244,4 +261,306 @@ bool Encounter::getInEncounter()
 int Encounter::getEncounterType()
 {
 	return encounterType;
+}
+
+
+int Encounter::attack()
+{
+	int attack = 0, slash;
+
+	switch (weaponType[equippedWeapon])
+	{
+	case WEAPONTYPE::PIERCE:
+		if ((rand() % 20 + dex) > 11)
+		{
+			attack = rand() % weapons[equippedWeapon] + dex + 2;
+		}
+		break;
+	case WEAPONTYPE::SLASH:
+		slash = rand() % 20 + dex;
+		if (slash > 11)
+		{
+			slash -= 11;
+			attack = rand() % weapons[equippedWeapon] + (str / 2) + slash;
+		}
+		break;
+	case WEAPONTYPE::BLUDGEON:
+		if ((rand() % 20 + str) > 9)
+		{
+			attack = rand() % weapons[equippedWeapon] + str;
+		}
+		break;
+	case WEAPONTYPE::RANGED:
+		if ((rand() % 20 + dex) > 14)
+		{
+			attack = rand() % weapons[equippedWeapon] + dex + 2;
+		}
+		break;
+	}
+
+	return attack;
+}
+
+
+void Encounter::loseHealth(int damage)
+{
+
+	//display health loss
+
+	if (damage > natArmor)
+	{
+		damage -= natArmor;
+		hp -= damage;
+	}
+	return;
+}
+
+
+void Encounter::addExp(int tempExp)
+{
+	exp += tempExp;
+	while (levels[lvl + 1] <= exp)
+	{
+		levelUp();
+	}
+	return;
+}
+
+
+void Encounter::levelUp()
+{
+	int improvementPoints = 3, menu = 0;
+	bool dexUp = true, strUp = true, wisUp = true, hpUp = true;
+
+	lvl += 1;
+	do
+	{
+		//display menu
+		/*
+		std::cout << "New level: " << lvl << std::endl << "What do you want to improve?\n";
+		if (dex < 10 && dexUp == true)
+			std::cout << "1. Dexterity (" << dex << ")\n";
+		if (str < 10 && strUp == true)
+			std::cout << "2. Strength (" << str << ")\n";
+		if (maxHp < 60 && hpUp == true)
+			std::cout << "4. Health (" << maxHp << ")\n";
+		if (natArmor < 10 && improvementPoints > 1)
+			std::cout << "5. Armor (" << natArmor << ") (Takes 2 improvement points)\n";
+		*/
+
+		//menu for choices
+		switch (menu)
+		{
+		case 1:
+			if (dex < 10 && dexUp == true)
+			{
+				dex++;
+				improvementPoints--;
+				dexUp = false;
+			}
+			break;
+		case 2:
+			if (str < 10 && strUp == true)
+			{
+				str++;
+				improvementPoints--;
+				strUp = false;
+			}
+			break;
+		case 4:
+			if (maxHp < 60 && hpUp == true)
+			{
+				maxHp += 5;
+				improvementPoints--;
+				hpUp = false;
+			}
+			break;
+		case 5:
+			if (natArmor < 10 && improvementPoints > 1)
+			{
+				natArmor++;
+				improvementPoints -= 2;
+			}
+			break;
+		}
+	} while (improvementPoints != 0);
+	hp = maxHp;
+
+	return;
+}
+
+
+void Encounter::displayStats()
+{
+	//display stats
+	return;
+}
+
+
+void Encounter::openInv()
+{
+	int menu = 0;
+
+	do
+	{
+		//show inventory
+
+		//std::cout << "Inventory options:\n\n1. Equip weapons\n2. Use items\n3. Display stats\n4. Exit\n";
+
+		switch (menu)
+		{
+		case 1:
+			equipWeapons();
+			break;
+		case 2:
+			useItems();
+			break;
+		case 3:
+			displayStats();
+			break;
+		}
+	} while (menu != 4);
+}
+
+
+void Encounter::equipWeapons()
+{
+	int typeOfWeapon = 0;
+	bool again;
+	system("cls");
+
+	//display weapon menu
+
+	//<< rangedStr[equippedRanged] << std::endl << magicStr[equippedMagic];
+
+
+	/*switch (typeOfWeapon)
+	{
+	case 1:
+		for (int i = 1; i < NUMOFMELEE; i++)
+		{
+			if (meleeOwned[i] > 0)
+				std::cout << i << ". " << meleeStr[i] << std::endl;
+		}
+		meleeOwned[equippedMelee] = 1;
+		std::cin >> equippedMelee;
+		meleeOwned[equippedMelee] = 2;
+		meleeOwned[0] = 0;
+
+		break;
+	case 2:
+		for (int i = 1; i < NUMOFRANGED; i++)
+		{
+			if (rangedOwned[i] > 0)
+				std::cout << i << ". " << rangedStr[i] << std::endl;
+		}
+		rangedOwned[equippedRanged] = 1;
+		std::cin >> equippedRanged;
+		rangedOwned[equippedRanged] = 2;
+		rangedOwned[0] = 0;
+
+		break;
+	case 4:
+		system("cls");
+		return;
+	}
+
+	system("cls");
+	std::cout << "Equip more weapons?\n\n0. No\n1. Yes\n";
+	std::cin >> again;
+
+	if (again == true)
+		equipWeapons();
+	return;
+	*/
+
+}
+
+
+void Encounter::useItems()
+{
+	int menu;
+	system("cls");
+
+	//take input
+
+	//use items
+	return;
+}
+
+
+void Encounter::shop()
+{
+	int typeOfWeapon = 0, selection;
+	bool again;
+
+	//weapon shop menu
+	/*switch (typeOfWeapon)
+	{
+	case 1:
+		for (int i = 1; i < NUMOFMELEE; i++)
+		{
+			if (meleeOwned[i] == 0)
+				std::cout << i << ". " << meleeStr[i] << " (" << meleeCost[i] << ")" << std::endl;
+		}
+		std::cin >> selection;
+		meleeOwned[selection] = 1;
+		if (money >= meleeCost[selection])
+			money -= meleeCost[selection];
+		else
+		{
+			std::cout << "You don't have enough money to buy that";
+			system("pause");
+		}
+		break;
+	case 2:
+		for (int i = 1; i < NUMOFRANGED; i++)
+		{
+			if (rangedOwned[i] == 0)
+				std::cout << i << ". " << rangedStr[i] << " (" << rangedCost[i] << ")" << std::endl;
+		}
+		std::cin >> selection;
+		rangedOwned[selection] = 1;
+		if (money >= rangedCost[selection])
+			money -= rangedCost[selection];
+		else
+		{
+			std::cout << "You don't have enough money to buy that";
+			system("pause");
+		}
+		break;
+	case 4:
+		for (int i = 1; i < NUMOFITEMS; i++)
+		{
+			std::cout << i << ". " << itemStr[i] << " (" << itemsCost[i] << ")" << std::endl;
+		}
+		std::cin >> selection;
+		itemsOwned[selection]++;
+		if (money >= itemsCost[selection])
+			money -= itemsCost[selection];
+		else
+		{
+			std::cout << "You don't have enough money to buy that";
+			system("pause");
+		}
+		break;
+	case 5:
+		system("cls");
+		return;
+	}
+
+	system("cls");
+	std::cout << "Shop for more weapons?\n\n0. No\n1. Yes\n";
+	std::cin >> again;
+
+	if (again == true)
+		shop();
+	return;
+	*/
+}
+
+
+void Encounter::addMoney(int tempMoney)
+{
+	money += tempMoney;
 }

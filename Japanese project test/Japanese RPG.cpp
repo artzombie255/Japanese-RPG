@@ -117,13 +117,12 @@ int main()
             level.loadLevel(arr, "./Levels/" + std::to_string(xScreen) + "level" + std::to_string(yScreen) + ".txt");
         }
 
-        //move the player
-        if (inMenu == false && encounter.getInEncounter() == false)
-            player.move();
-
         //check collisions
-        player.collision(Npcs, INTERACTIONTYPE::NPC);
-        player.collision(Enemies, INTERACTIONTYPE::ENEMY);
+        //move the player
+        if (inMenu == false && encounter.getInEncounter() == false &&
+            player.collision(Npcs, INTERACTIONTYPE::NPC) == false &&
+            player.collision(Enemies, INTERACTIONTYPE::ENEMY) == false)
+            player.move();
 
         //prints the next window
         window.clear();
