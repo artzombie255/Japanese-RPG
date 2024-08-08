@@ -14,6 +14,7 @@
 
 const int WINDOWX = 600, WINDOWY = 600, NUMOFCHUNKS = 24, SIZEOFCHUNK = 25;
 
+//probably get rid of
 enum class NPCS
 {
     AUBREY,
@@ -88,7 +89,7 @@ int main()
         }
 
         inMenu = false;
-        //sets if in menu
+        //sets if in esc menu
         for (int i = 0; Npcs.size() > i; i++)
         {
             if (Npcs.at(i)->getInteraction() == true)
@@ -97,7 +98,7 @@ int main()
         if (player.getEscMenuOpen() == true)
             inMenu = true;
 
-
+        //sets if in encounter
         for (int i = Enemies.size() - 1; i >= 0; i--)
         {
             if (Enemies.at(i)->getInteraction() == true)
@@ -129,6 +130,7 @@ int main()
 
         window.draw(player);
         level.print(window, arr);
+
         //print npcs
         for (int i = Npcs.size() - 1; i >= 0; i--)
         {
@@ -141,13 +143,14 @@ int main()
         }
 
 
-        //interactions with entites
+        //interactions with entities
         for (int i = 0; Npcs.size() > i; i++)
         {
             if (Npcs.at(i)->getInteraction() == true)
                 Npcs.at(i)->talk(window, i);
         }
         
+        //display encounters
         if (encounter.getInEncounter() == true)
             encounter.displayEncounter(window);
 

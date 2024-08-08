@@ -12,7 +12,8 @@ const int NUMOFWEAPONS = 17, NUMOFRANGED = 5, NUMOFITEMS = 4;
 enum class MENUTYPE
 {
 	ACTIONS,
-	WEAPONS
+	WEAPONS, 
+	INVENTORY
 };
 
 enum class WEAPONTYPE
@@ -38,8 +39,10 @@ class Encounter
 	//screens
 	void ActionsMenu(sf::RenderWindow&);
 	void WeaponsMenu(sf::RenderWindow&);
+	void InvMenu(sf::RenderWindow&);
 	void PrintActionsMenu(sf::RenderWindow&);
 	void PrintWeaponsMenu(sf::RenderWindow&);
+	void PrintInvMenu(sf::RenderWindow&);
 
 	//get data
 	bool getInEncounter();
@@ -51,7 +54,6 @@ class Encounter
 	void addExp(int);
 	void levelUp();
 	void displayStats();
-	void openInv();
 	void equipWeapons();
 	void useItems();
 	void shop();

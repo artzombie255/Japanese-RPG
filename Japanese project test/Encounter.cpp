@@ -22,7 +22,7 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 	//do magic
 	sf::RectangleShape MenuOutline, MenuBackground, background, selection;
 
-
+	//set size, color, and position
 	background.setSize(sf::Vector2f(600, 600));
 	background.setFillColor(sf::Color::Black);
 
@@ -36,12 +36,12 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 	selection.setSize(sf::Vector2f(164, 60));
 	selection.setFillColor(sf::Color(111, 124, 128));
 
-
+	//draw the backgrounds and outlines
 	window.draw(background);
 	window.draw(MenuOutline);
 	window.draw(MenuBackground);
 
-
+	//display buttons
 	for (int i = 0; i < 3; i++)
 	{
 		selection.setPosition(32 + (i * 186), 430);
@@ -52,36 +52,40 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 		selection.setPosition(32 + (i * 186), 510);
 		window.draw(selection);
 	}
-	
-	selection.setFillColor(sf::Color(99, 99, 99));
 
-	if (currentMenuSelection >= 0 && currentMenuSelection < 3)
+	//display the button being hovered over
+	if (currentScreen != MENUTYPE::INVENTORY)
 	{
-		selection.setPosition(32 + (currentMenuSelection * 186), 430);
-		window.draw(selection);
+		selection.setFillColor(sf::Color(99, 99, 99));
 
-		selection.setSize(sf::Vector2f(154, 50));
-		selection.setFillColor(sf::Color(59, 59, 59));
-		selection.setPosition(37 + (currentMenuSelection * 186), 435);
-		window.draw(selection);
+		if (currentMenuSelection >= 0 && currentMenuSelection < 3)
+		{
+			selection.setPosition(32 + (currentMenuSelection * 186), 430);
+			window.draw(selection);
+
+			selection.setSize(sf::Vector2f(154, 50));
+			selection.setFillColor(sf::Color(59, 59, 59));
+			selection.setPosition(37 + (currentMenuSelection * 186), 435);
+			window.draw(selection);
+		}
+		else if (currentMenuSelection >= 3 && currentMenuSelection < 6)
+		{
+			selection.setPosition(32 + ((currentMenuSelection - 3) * 186), 510);
+			window.draw(selection);
+
+			selection.setSize(sf::Vector2f(154, 50));
+			selection.setFillColor(sf::Color(59, 59, 59));
+			selection.setPosition(37 + ((currentMenuSelection - 3) * 186), 515);
+			window.draw(selection);
+		}
+		else
+			selection.setPosition(-100, -100);
 	}
-	else if (currentMenuSelection >= 3 && currentMenuSelection < 6)
-	{
-		selection.setPosition(32 + ((currentMenuSelection - 3) * 186), 510);
-		window.draw(selection);
 
-		selection.setSize(sf::Vector2f(154, 50));
-		selection.setFillColor(sf::Color(59, 59, 59));
-		selection.setPosition(37 + ((currentMenuSelection - 3) * 186), 515);
-		window.draw(selection);
-	}
-	else
-		selection.setPosition(-100, -100);
-
-	//text.setPosition(20, 320);
 
 	window.draw(selection);
 
+	//send it to the next display screen
 	switch (currentScreen)
 	{
 	case MENUTYPE::ACTIONS:
@@ -89,6 +93,9 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::WEAPONS:
 		PrintWeaponsMenu(window);
+		break;
+	case MENUTYPE::INVENTORY:
+		PrintInvMenu(window);
 	}
 }
 
@@ -99,26 +106,30 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 
 	currentMenuSelection = -1;
 
-	if (position.y > 430 && position.y < 490)
+	//track where the cursor is
+	if (currentScreen != MENUTYPE::INVENTORY)
 	{
-		for (int i = 0; i < 3; i++)
+		if (position.y > 430 && position.y < 490)
 		{
-			if (position.x > 32 + (i * 186) && position.x < 196 + (i * 186))
-				currentMenuSelection = i;
+			for (int i = 0; i < 3; i++)
+			{
+				if (position.x > 32 + (i * 186) && position.x < 196 + (i * 186))
+					currentMenuSelection = i;
+			}
 		}
-	}
-	else if(position.y > 510 && position.y < 570)
-	{
-		for (int i = 0; i < 3; i++)
+		else if (position.y > 510 && position.y < 570)
 		{
-			if (position.x > 32 + (i * 186) && position.x < 196 + (i * 186))
-				currentMenuSelection = i + 3;
+			for (int i = 0; i < 3; i++)
+			{
+				if (position.x > 32 + (i * 186) && position.x < 196 + (i * 186))
+					currentMenuSelection = i + 3;
+			}
 		}
+		else
+			currentMenuSelection = -1;
 	}
-	else
-		currentMenuSelection = -1;
 
-
+	//send to the next background/logic screen
 	switch (currentScreen)
 	{
 	case MENUTYPE::ACTIONS:
@@ -126,6 +137,9 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::WEAPONS:
 		WeaponsMenu(window);
+		break;
+	case MENUTYPE::INVENTORY:
+		InvMenu(window);
 	}
 }
 
@@ -138,7 +152,7 @@ void Encounter::setEncounter()
 
 void Encounter::ActionsMenu(sf::RenderWindow& window)
 {
-
+	
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
 	{
 		switch (currentMenuSelection)
@@ -155,6 +169,7 @@ void Encounter::ActionsMenu(sf::RenderWindow& window)
 			break;
 		case 3:
 			//Switch weapons?
+			currentScreen = MENUTYPE::INVENTORY;
 			break;
 		case 4:
 			//
@@ -198,10 +213,39 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 }
 
 
+void Encounter::InvMenu(sf::RenderWindow& window)
+{
+	sf::Vector2i position = sf::Mouse::getPosition(window);
+
+	currentMenuSelection = -1;
+
+	//players button tracking
+	if (position.x > 108 && position.x < 168)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (position.y > 108 + (i * 108) && position.y < 168 + (i * 108))
+				currentMenuSelection = i;
+		}
+	}
+	/*
+	else if (position.y > 510 && position.y < 570)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (position.x > 32 + (i * 186) && position.x < 196 + (i * 186))
+				currentMenuSelection = i + 3;
+		}
+	}*/
+	else
+		currentMenuSelection = -1;
+}
+
+
 void Encounter::PrintActionsMenu(sf::RenderWindow& window)
 {
 	sf::Text text;
-	sf::String message[6] = { L"Attack",  L"Items",  L"Switch characters order",  L"Switch weapons?",  L"Run",  L"Run" };
+	sf::String message[6] = { L"Attack",  L"Items",  L"Switch characters order",  L"Switch weapons?",  L"",  L"Run" };
 	sf::Font font;
 
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -227,6 +271,7 @@ void Encounter::PrintActionsMenu(sf::RenderWindow& window)
 
 void Encounter::PrintWeaponsMenu(sf::RenderWindow& window)
 {
+	//sets up text
 	sf::Text text;
 	sf::String message[6] = { L"basic attack",  L"unique",  L"special",  L"dodge",  L"ready attack",  L"back" };
 	sf::Font font;
@@ -234,6 +279,7 @@ void Encounter::PrintWeaponsMenu(sf::RenderWindow& window)
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
 	text.setFont(font);
 
+	//prints text on buttons
 	for (int i = 0; i < 3; i++)
 	{
 		text.setString(message[i]);
@@ -252,6 +298,51 @@ void Encounter::PrintWeaponsMenu(sf::RenderWindow& window)
 }
 
 
+void Encounter::PrintInvMenu(sf::RenderWindow& window)
+{
+	//sets up backgrounds and outlines and selection
+	sf::RectangleShape MenuOutline, MenuBackground, selection;
+
+	MenuOutline.setSize(sf::Vector2f(500, 500));
+	MenuOutline.setPosition(50, 50);
+
+	MenuBackground.setSize(sf::Vector2f(480, 480));
+	MenuBackground.setPosition(60, 60);
+	MenuBackground.setFillColor(sf::Color::Black);
+
+	selection.setSize(sf::Vector2f(60, 60));
+	selection.setFillColor(sf::Color(111, 124, 128));
+
+	window.draw(MenuOutline);
+	window.draw(MenuBackground);
+
+
+	selection.setFillColor(sf::Color(99, 99, 99));
+
+	//button highlights
+	if (currentMenuSelection >= 0 && currentMenuSelection < 4)
+	{
+		selection.setPosition(108, 108 + (currentMenuSelection * 108));
+		window.draw(selection);
+	}
+	//need to change to work
+	/*else if (currentMenuSelection >= 3 && currentMenuSelection < 6)
+	{
+		selection.setPosition(32 + ((currentMenuSelection - 3) * 186), 510);
+		window.draw(selection);
+
+		selection.setSize(sf::Vector2f(154, 50));
+		selection.setFillColor(sf::Color(59, 59, 59));
+		selection.setPosition(37 + ((currentMenuSelection - 3) * 186), 515);
+		window.draw(selection);
+	}*/
+	else
+		selection.setPosition(-100, -100);
+
+
+}
+
+
 bool Encounter::getInEncounter()
 {
 	return inEncounter;
@@ -264,6 +355,7 @@ int Encounter::getEncounterType()
 }
 
 
+//deals with weapon logic
 int Encounter::attack()
 {
 	int attack = 0, slash;
@@ -394,32 +486,6 @@ void Encounter::displayStats()
 {
 	//display stats
 	return;
-}
-
-
-void Encounter::openInv()
-{
-	int menu = 0;
-
-	do
-	{
-		//show inventory
-
-		//std::cout << "Inventory options:\n\n1. Equip weapons\n2. Use items\n3. Display stats\n4. Exit\n";
-
-		switch (menu)
-		{
-		case 1:
-			equipWeapons();
-			break;
-		case 2:
-			useItems();
-			break;
-		case 3:
-			displayStats();
-			break;
-		}
-	} while (menu != 4);
 }
 
 
