@@ -18,4 +18,6 @@ public:
 
 private:
 	sf::RectangleShape rect;
+	sf::Texture img;
+	sf::Sprite sprite;
 };

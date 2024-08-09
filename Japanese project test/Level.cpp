@@ -19,7 +19,8 @@ Level::~Level()
 void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName)
 {
 	std::ifstream file;
-	file.open(fileName);
+
+	file.open(fileName + ".txt");
 
 	if (file.is_open())
 	{
@@ -34,11 +35,15 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName)
 		}
 		file.close();
 	}
+
+	img.loadFromFile(fileName + "background.png");
+	sprite.setTexture(img);
 }
 
 
 void Level::print(sf::RenderWindow& window, DoubleSubscriptedArray& arr)
 {
+	
 	for (int i = 0; i < 24; i++)
 	{
 		for (int j = 0; j < 24; j++)
@@ -49,4 +54,7 @@ void Level::print(sf::RenderWindow& window, DoubleSubscriptedArray& arr)
 		}
 	}
 	rect.setPosition(-50, -50);
+	
+
+	window.draw(sprite);
 }

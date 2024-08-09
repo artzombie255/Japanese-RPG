@@ -58,7 +58,7 @@ int main()
     window.setFramerateLimit(60);
 
     //load the first level
-    level.loadLevel(arr, "./Levels/1level1.txt");
+    level.loadLevel(arr, "./Levels/1level1");
 
 
     //main loop
@@ -108,16 +108,6 @@ int main()
             }
         }
 
-
-        //checks the screen the player is on
-        if (xScreen != player.getScreenX() || yScreen != player.getScreenY())
-        {
-            std::cout << "switchLevel";
-            xScreen = player.getScreenX();
-            yScreen = player.getScreenY();
-            level.loadLevel(arr, "./Levels/" + std::to_string(xScreen) + "level" + std::to_string(yScreen) + ".txt");
-        }
-
         //check collisions
         //move the player
         if (inMenu == false && encounter.getInEncounter() == false &&
@@ -125,11 +115,20 @@ int main()
             player.collision(Enemies, INTERACTIONTYPE::ENEMY) == false)
             player.move();
 
+        //checks the screen the player is on
+        if (xScreen != player.getScreenX() || yScreen != player.getScreenY())
+        {
+            std::cout << "switchLevel";
+            xScreen = player.getScreenX();
+            yScreen = player.getScreenY();
+            level.loadLevel(arr, "./Levels/" + std::to_string(xScreen) + "level" + std::to_string(yScreen));
+        }
+
         //prints the next window
         window.clear();
 
-        window.draw(player);
         level.print(window, arr);
+        window.draw(player);
 
         //print npcs
         for (int i = Npcs.size() - 1; i >= 0; i--)
