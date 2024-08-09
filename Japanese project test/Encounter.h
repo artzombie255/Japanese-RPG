@@ -7,16 +7,17 @@
 #include "Level.h"
 
 
-const int NUMOFWEAPONS = 17, NUMOFRANGED = 5, NUMOFITEMS = 4;
+constexpr int NUMOFWEAPONS = 17, NUMOFRANGED = 5, NUMOFITEMS = 4;
 
-enum class MENUTYPE
+
+enum class MENUTYPE : unsigned char
 {
 	ACTIONS,
 	WEAPONS, 
 	INVENTORY
 };
 
-enum class WEAPONTYPE
+enum class WEAPONTYPE : unsigned char
 {
 	PIERCE,
 	SLASH,
@@ -27,7 +28,7 @@ enum class WEAPONTYPE
 
 class Encounter
 {
-	public:
+public:
 	Encounter();
 	Encounter(Player&, Level&);
 	~Encounter();
@@ -59,20 +60,24 @@ class Encounter
 	void shop();
 	void addMoney(int);
 
-	private:
+private:
+
 	bool inEncounter = false;
+
+	//left == true, right == false
+	bool lost, burn = false, escMenuOpen = false;
+
 	int encounterType = 0, currentMenuSelection = 0;
 	MENUTYPE currentScreen = MENUTYPE::ACTIONS;
 
 	int str, dex, hp, natArmor, maxHp;
-	//left == true, right == false
-	bool lost, burn = false, escMenuOpen = false;
 	int lvl, exp, money,
 		equippedWeapon = 1, equippedRanged = 0, equippedMagic = 0, weapon, activeBurn = 0;
 		//possession
 		/*meleeOwned[NUMOFMELEE] = {0, 1, 0, 0, 0, 0, 0, 0},
 		rangedOwned[NUMOFRANGED] = { 0, 0, 0, 0, 0 },
 		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };*/
+
 	//levels
 	const int levels[10] = { 0, 5, 15, 30, 50, 75, 105, 140, 180, 225 },
 		//effect
@@ -95,16 +100,52 @@ class Encounter
 		//meleeBurn[NUMOFWEAPONS] = { 0, 0, 0, 0 },
 		//rangedBurn[NUMOFRANGED] = { 0, 0, 0, 0 },
 		//itemsBurn[NUMOFITEMS] = { 0, 0, 0, 0 };
-	//name
-	const sf::String weaponStr[NUMOFWEAPONS] = { L"ぼう", L"す　やり", L"おみ　やり", L"じゅもんじ　やり", L"たんと",
-		L"わきざし", L"ちょくと", L"つるぎ", L"かたな", L"こんぼう", L"spiked bat", L"morningstar", L"war hammer" 
-	, L"Ninja star", L"Chakram", L"Bow", L"Crossbow" },
-		rangedStr[NUMOFRANGED] = { L"Nothing equipped", L"Ninja star", L"Chakram", L"Bow", L"Crossbow" },
-		itemStr[NUMOFITEMS] = { "Nothing equipped", "Small health potion", "Large health potion", "Full heal" };
-	//weapon type
-	WEAPONTYPE weaponType[NUMOFWEAPONS] = { WEAPONTYPE::PIERCE, WEAPONTYPE::PIERCE, WEAPONTYPE::PIERCE, WEAPONTYPE::PIERCE, WEAPONTYPE::SLASH,
-		WEAPONTYPE::SLASH, WEAPONTYPE::SLASH, WEAPONTYPE::SLASH, WEAPONTYPE::SLASH, WEAPONTYPE::BLUDGEON, WEAPONTYPE::BLUDGEON, WEAPONTYPE::BLUDGEON, 
-		WEAPONTYPE::BLUDGEON, WEAPONTYPE::RANGED, WEAPONTYPE::RANGED, WEAPONTYPE::RANGED, WEAPONTYPE::RANGED };
+	
+	/**
+	 * Holds the data necessary to define a specific weapon
+	 * 
+	 * @param name_ The name of the weapon.
+	 * @param type_ The type of weapon it is.
+	 * 
+	 */
+	struct Weapon
+	{
+		// The name of the weapon.
+		const wchar_t* name;
 
+		// The type of weapon it is.
+		const WEAPONTYPE type;
+
+		Weapon(const wchar_t* name_, WEAPONTYPE type_) : name(name_), type(type_) {}
+	};
+
+	// Weapons
+	const Weapon WEAPONS[NUMOFWEAPONS] =
+	{
+		{L"ぼう",			WEAPONTYPE::PIERCE},
+		{L"す　やり",			WEAPONTYPE::PIERCE},
+		{L"おみ　やり",		WEAPONTYPE::PIERCE},
+		{L"じゅもんじ　やり",	WEAPONTYPE::PIERCE},
+		{L"たんと",			WEAPONTYPE::SLASH},
+		{L"わきざし",			WEAPONTYPE::SLASH},
+		{L"ちょくと",			WEAPONTYPE::SLASH},
+		{L"つるぎ",			WEAPONTYPE::SLASH},
+		{L"かたな",			WEAPONTYPE::SLASH},
+		{L"こんぼう",			WEAPONTYPE::BLUDGEON},
+		{L"spiked bat",		WEAPONTYPE::BLUDGEON}, // Translate
+		{L"morningstar",	WEAPONTYPE::BLUDGEON}, // Translate
+		{L"war hammer",		WEAPONTYPE::BLUDGEON}, // Translate
+		{L"Ninja star",		WEAPONTYPE::RANGED},   // Translate
+		{L"Chakram",		WEAPONTYPE::RANGED},   // Translate
+		{L"Bow",			WEAPONTYPE::RANGED},   // Translate
+		{L"Crossbow" ,		WEAPONTYPE::RANGED}    // Translate
+	};
+
+	sf::String rangedStr[NUMOFRANGED] = { L"Nothing equipped", L"Ninja star", L"Chakram", L"Bow", L"Crossbow" },
+			   itemStr[NUMOFITEMS] = { "Nothing equipped", "Small health potion", "Large health potion", "Full heal" };
+	//weapon type
+	const wchar_t* tee = L"test";
+
+	sf::String test = tee;
 };
 
