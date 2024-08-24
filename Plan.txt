@@ -2,13 +2,13 @@ Final Boss
 - zombie Beatty sensei
 
 weapons
-- melee
+- melee; d20 + 
   - spiked bat
   - katana
   - longsword
   - smallsword
   - dagger
-  - staff
+  - staff; 
   - Morningstar
 -ranged
   - bow

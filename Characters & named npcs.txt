@@ -14,7 +14,7 @@ ranged magic; flash
 ranged martial; volley; 
 ranged rogue; sneak attack
 melee magic; 
-melee martial; parry; 
+melee martial; second wind 二つ風; 
 melee rogue; sneak attack; poison weapon
 protector magic; shield spell;
 protector martial; guard;

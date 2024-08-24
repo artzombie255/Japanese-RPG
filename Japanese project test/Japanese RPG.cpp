@@ -14,17 +14,6 @@
 
 const int WINDOWX = 600, WINDOWY = 600, NUMOFCHUNKS = 24, SIZEOFCHUNK = 25;
 
-//probably get rid of
-enum class NPCS
-{
-    AUBREY,
-    ASHTON,
-    AERYK,
-    LILLY,
-    KIMORA,
-    SHIN
-};
-
 
 int main()
 {

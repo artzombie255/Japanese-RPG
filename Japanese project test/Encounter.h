@@ -22,7 +22,18 @@ enum class WEAPONTYPE : unsigned char
 	PIERCE,
 	SLASH,
 	BLUDGEON,
-	RANGED
+	RANGED,
+	MELEE
+};
+
+enum CHARACTERS
+{
+	AERYK = 0,
+	ASHTON,
+	AUBREY,
+	PHOENIX,
+	ROWAN,
+	BLANK
 };
 
 
@@ -37,6 +48,10 @@ public:
 	void playEncounter(sf::RenderWindow&);
 	void setEncounter();
 
+	void switchTurn();
+
+	void enemiesTurn();
+
 	//screens
 	void ActionsMenu(sf::RenderWindow&);
 	void WeaponsMenu(sf::RenderWindow&);
@@ -49,8 +64,9 @@ public:
 	bool getInEncounter();
 	int getEncounterType();
 
+	int enumToIntCharacters(CHARACTERS);
 
-	int attack();
+	void attack();
 	void loseHealth(int);
 	void addExp(int);
 	void levelUp();
@@ -72,12 +88,13 @@ private:
 
 	int str, dex, hp, natArmor, maxHp;
 	int lvl, exp, money,
-		equippedWeapon = 1, equippedRanged = 0, equippedMagic = 0, weapon, activeBurn = 0;
+		equippedWeapon = 1, equippedRanged = 0, equippedMagic = 0, weapon, activeBurn = 0,
+		enemyHp[4] = {10, 0, 0, 0}, currentTeamSpot = 0;
 		//possession
 		/*meleeOwned[NUMOFMELEE] = {0, 1, 0, 0, 0, 0, 0, 0},
 		rangedOwned[NUMOFRANGED] = { 0, 0, 0, 0, 0 },
 		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };*/
-
+	CHARACTERS currentTeam[4] = { CHARACTERS::PHOENIX,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
 	//levels
 	const int levels[10] = { 0, 5, 15, 30, 50, 75, 105, 140, 180, 225 },
 		//effect
@@ -147,5 +164,44 @@ private:
 	const wchar_t* tee = L"test";
 
 	sf::String test = tee;
+
+
+	/**
+	* int str, dex, hp, natArmor, maxHp;
+	int lvl, exp, money,
+		equippedWeapon = 1,
+
+	 * Holds the data necessary to define Characters
+	 *
+	 * @param name_ The name of the character.
+	 * @param type_ The type of weapon they can use.
+	 *
+	 */
+	struct Characters
+	{
+		// The name of the weapon.
+		const CHARACTERS name;
+
+		// The type of weapon it is.
+		const WEAPONTYPE type;
+
+		int maxHp, hp, str, dex, mag, lvl, exp, equippedWeapon;
+
+		Characters(CHARACTERS name_, WEAPONTYPE type_, int maxHp_, int hp_, int str_,
+			int dex_, int mag_, int lvl_, int exp_, int equippedWeapon_) : 
+			name(name_), type(type_), maxHp(maxHp_), hp(hp_), str(str_), dex(dex_), 
+			mag(mag_), lvl(lvl_), exp(exp_), equippedWeapon(equippedWeapon_) {}
+	};
+
+	// Weapons
+	const Characters C[5] =
+	{
+		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE, 25, 25, 3, 0, 2, 0, 0, 0},
+		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE, 5, 0, 0, 0, 0, 0, 0, 0},
+		{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE, 20, 20, 2, 3, 1, 0, 0, 0},
+		{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 4, 3, 0, 0, 0},
+		{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 2, 5, 0, 0, 0}
+	};
+
 };
 

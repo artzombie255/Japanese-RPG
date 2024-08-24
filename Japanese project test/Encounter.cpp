@@ -102,6 +102,8 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 
 void Encounter::playEncounter(sf::RenderWindow &window)
 {
+
+
 	sf::Vector2i position = sf::Mouse::getPosition(window);
 
 	currentMenuSelection = -1;
@@ -150,6 +152,27 @@ void Encounter::setEncounter()
 }
 
 
+void Encounter::switchTurn()
+{
+	currentScreen = MENUTYPE::ACTIONS;
+	
+	if (currentTeamSpot < 4)
+		currentTeamSpot++;
+	else
+	{
+		currentTeamSpot = -1;
+	}
+
+	if (currentTeamSpot != -1)
+		if (currentTeam[currentTeamSpot] == CHARACTERS::BLANK)
+			switchTurn();
+}
+
+void Encounter::enemiesTurn()
+{
+}
+
+
 void Encounter::ActionsMenu(sf::RenderWindow& window)
 {
 	
@@ -192,18 +215,24 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 		{
 		case 0:
 			//basic attack
+			attack();
+			switchTurn();
 			break;
 		case 1:
 			//unique
+			switchTurn();
 			break;
 		case 2:
 			//special
+			switchTurn();
 			break;
 		case 3:
 			//dodge
+			switchTurn();
 			break;
 		case 4:
 			//ready attack
+			switchTurn();
 			break;
 		case 5:
 			currentScreen = MENUTYPE::ACTIONS;
@@ -216,6 +245,7 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 void Encounter::InvMenu(sf::RenderWindow& window)
 {
 	sf::Vector2i position = sf::Mouse::getPosition(window);
+	int temp = 0;
 
 	currentMenuSelection = -1;
 
@@ -239,6 +269,20 @@ void Encounter::InvMenu(sf::RenderWindow& window)
 	}*/
 	else
 		currentMenuSelection = -1;
+
+
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection != -1)
+	{
+		if (C[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::RANGED)
+		{
+
+		}
+		else if (C[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::MELEE)
+		{
+
+		}
+	}
 }
 
 
@@ -325,17 +369,6 @@ void Encounter::PrintInvMenu(sf::RenderWindow& window)
 		selection.setPosition(108, 108 + (currentMenuSelection * 108));
 		window.draw(selection);
 	}
-	//need to change to work
-	/*else if (currentMenuSelection >= 3 && currentMenuSelection < 6)
-	{
-		selection.setPosition(32 + ((currentMenuSelection - 3) * 186), 510);
-		window.draw(selection);
-
-		selection.setSize(sf::Vector2f(154, 50));
-		selection.setFillColor(sf::Color(59, 59, 59));
-		selection.setPosition(37 + ((currentMenuSelection - 3) * 186), 515);
-		window.draw(selection);
-	}*/
 	else
 		selection.setPosition(-100, -100);
 
@@ -355,42 +388,68 @@ int Encounter::getEncounterType()
 }
 
 
+int Encounter::enumToIntCharacters(CHARACTERS temp)
+{
+	switch (temp)
+	{
+	case CHARACTERS::AERYK:
+	
+		return 0;
+	case CHARACTERS::ASHTON:
+		
+		return 1;
+	case CHARACTERS::AUBREY:
+		
+		return 2;
+	case CHARACTERS::PHOENIX:
+		
+		return 3;
+	case CHARACTERS::ROWAN:
+		
+		return 4;
+	case CHARACTERS::BLANK:
+		
+		return 5;
+	}
+}
+
+
 //deals with weapon logic
-int Encounter::attack()
+void Encounter::attack()
 {
 	int attack = 0, slash;
 
-	switch (weaponType[equippedWeapon])
+	switch (WEAPONS[equippedWeapon].type)
 	{
 	case WEAPONTYPE::PIERCE:
-		if ((rand() % 20 + dex) > 11)
+		if ((rand() % 20 + dex + 1) > 11)
 		{
-			attack = rand() % weapons[equippedWeapon] + dex + 2;
+			attack = rand() % weapons[equippedWeapon] + dex + 3;
 		}
 		break;
 	case WEAPONTYPE::SLASH:
-		slash = rand() % 20 + dex;
+		slash = rand() % 20 + dex + 1;
 		if (slash > 11)
 		{
 			slash -= 11;
-			attack = rand() % weapons[equippedWeapon] + (str / 2) + slash;
+			attack = rand() % weapons[equippedWeapon] + (str / 2) + slash + 1;
 		}
 		break;
 	case WEAPONTYPE::BLUDGEON:
-		if ((rand() % 20 + str) > 9)
+		if ((rand() % 20 + str + 1) > 9)
 		{
-			attack = rand() % weapons[equippedWeapon] + str;
+			attack = rand() % weapons[equippedWeapon] + str + 1;
 		}
 		break;
 	case WEAPONTYPE::RANGED:
-		if ((rand() % 20 + dex) > 14)
+		if ((rand() % 20 + dex + 1) > 14)
 		{
-			attack = rand() % weapons[equippedWeapon] + dex + 2;
+			attack = rand() % weapons[equippedWeapon] + dex + 3;
 		}
 		break;
 	}
 
-	return attack;
+	enemyHp[0] -= attack;
 }
 
 
