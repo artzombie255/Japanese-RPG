@@ -89,7 +89,7 @@ private:
 	int str, dex, hp, natArmor, maxHp;
 	int lvl, exp, money,
 		equippedWeapon = 1, equippedRanged = 0, equippedMagic = 0, weapon, activeBurn = 0,
-		enemyHp[4] = {10, 0, 0, 0}, currentTeamSpot = 0;
+		enemyHp[4] = {10, 0, 0, 0}, currentTeamSpot = 0, enemyTurn = 0;
 		//possession
 		/*meleeOwned[NUMOFMELEE] = {0, 1, 0, 0, 0, 0, 0, 0},
 		rangedOwned[NUMOFRANGED] = { 0, 0, 0, 0, 0 },

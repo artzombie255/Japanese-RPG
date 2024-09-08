@@ -156,7 +156,7 @@ void Encounter::switchTurn()
 {
 	currentScreen = MENUTYPE::ACTIONS;
 	
-	if (currentTeamSpot < 4)
+	if (currentTeamSpot < 3)
 		currentTeamSpot++;
 	else
 	{
@@ -168,8 +168,10 @@ void Encounter::switchTurn()
 			switchTurn();
 }
 
+
 void Encounter::enemiesTurn()
 {
+
 }
 
 

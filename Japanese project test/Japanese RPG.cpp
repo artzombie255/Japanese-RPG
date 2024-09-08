@@ -47,7 +47,7 @@ int main()
     window.setFramerateLimit(60);
 
     //load the first level
-    level.loadLevel(arr, "./Levels/1level1");
+    level.loadLevel(arr, "1level1");
 
 
     //main loop
@@ -101,7 +101,9 @@ int main()
         //move the player
         if (inMenu == false && encounter.getInEncounter() == false &&
             player.collision(Npcs, INTERACTIONTYPE::NPC) == false &&
-            player.collision(Enemies, INTERACTIONTYPE::ENEMY) == false)
+            player.collision(Enemies, INTERACTIONTYPE::ENEMY) == false 
+            //player.collision(level.getWalls(), INTERACTIONTYPE::WALL) == false
+            )
             player.move();
 
         //checks the screen the player is on
@@ -110,7 +112,7 @@ int main()
             std::cout << "switchLevel";
             xScreen = player.getScreenX();
             yScreen = player.getScreenY();
-            level.loadLevel(arr, "./Levels/" + std::to_string(xScreen) + "level" + std::to_string(yScreen));
+            level.loadLevel(arr, std::to_string(xScreen) + "level" + std::to_string(yScreen));
         }
 
         //prints the next window

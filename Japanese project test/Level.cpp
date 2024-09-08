@@ -2,11 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <windows.h>
 
 
 Level::Level()
 {
 	rect.setSize(sf::Vector2f(25, 25));
+	sprite.setScale(sf::Vector2f(3.125, 3.125));
 }
 
 
@@ -19,42 +21,40 @@ Level::~Level()
 void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName)
 {
 	std::ifstream file;
+	int LY = 0, LX = 0, RY = 0, RX = 0, NumOfWalls = 0;
 
-	file.open(fileName + ".txt");
+	file.open("./Levels/" + fileName + ".txt");
+
+	system("cls");
 
 	if (file.is_open())
 	{
-		for (int i = 0; i < 24; i++)
+		file >> NumOfWalls;
+
+		for (int i = 0; i < NumOfWalls; i++)
 		{
-			for (int j = 0; j < 24; j++)
-			{
-				arr(j, i) = '0';
-				file >> arr(j, i);
-				std::cout << arr(j, i);
-			}
+			file >> LX >> LY >> RX >> RY;
+			
+			wallVec.push_back(new Intaractable);
+			wallVec.at(i)->setPosition(LX, RY);
+			wallVec.at(i)->setSize(sf::Vector2f(RX - LX, RY - LY));
 		}
+
 		file.close();
 	}
 
-	img.loadFromFile(fileName + "background.png");
+	img.loadFromFile("./Sprites/rooms/" + fileName + ".png");
 	sprite.setTexture(img);
 }
 
 
 void Level::print(sf::RenderWindow& window, DoubleSubscriptedArray& arr)
 {
-	
-	for (int i = 0; i < 24; i++)
-	{
-		for (int j = 0; j < 24; j++)
-		{
-			if (arr(j, i) == '1')
-				rect.setPosition(j * 25,i * 25);
-			window.draw(rect);
-		}
-	}
-	rect.setPosition(-50, -50);
-	
-
 	window.draw(sprite);
+}
+
+
+std::vector<Intaractable*> Level::getWalls()
+{
+	return wallVec;
 }

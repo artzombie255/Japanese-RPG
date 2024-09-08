@@ -33,7 +33,8 @@ public:
 	bool getEscMenuOpen();
 
 private:
-	int xMove = 0, yMove = 0, xScreen = 1, yScreen = 1, escDelay = 0, currentMenuSelection = 0;
+	int xScreen = 1, yScreen = 1, escDelay = 0, currentMenuSelection = 0;
+	double xMove = 0, yMove = 0;
 	//left == true, right == false
 	bool lost, escMenuOpen = false;
 

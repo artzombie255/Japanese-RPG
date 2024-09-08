@@ -24,19 +24,19 @@ void Player::moveCheck()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		xMove = -3;
+		xMove = -3.125;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		xMove = 3;
+		xMove = 3.125;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		yMove = -3;
+		yMove = -3.125;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		yMove = 3;
+		yMove = 3.125;
 	}
 	
 
