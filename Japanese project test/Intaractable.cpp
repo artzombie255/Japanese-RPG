@@ -42,3 +42,9 @@ void Intaractable::increaseLength(int person)
 {
 	currentLength[person]++;
 }
+
+
+void Intaractable::print(sf::RenderWindow &window)
+{
+	window.draw(sprite);
+}

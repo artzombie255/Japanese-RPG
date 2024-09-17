@@ -12,5 +12,6 @@ public:
 	~Enemy();
 
 private:
+
 };
 

@@ -6,6 +6,10 @@ Enemy::Enemy()
 {
 	setSize(sf::Vector2f(50, 50));
 	setPosition(100, 100);
+	img.loadFromFile("./Sprites/zombies/basic.png");
+	sprite.setTexture(img);
+	sprite.setScale(3.125,3.125);
+	sprite.setPosition(getPosition().x, getPosition().y);
 }
 
 
@@ -16,7 +20,10 @@ Enemy::Enemy(int type)
 	setFillColor(sf::Color::Red);
 	if (type == 1)
 	{
-
+		img.loadFromFile("./Sprites/zombies/basic.png");
+		sprite.setTexture(img);
+		sprite.setScale(3.125, 3.125);
+		sprite.setPosition(getPosition().x, getPosition().y);
 	}
 	else
 	{

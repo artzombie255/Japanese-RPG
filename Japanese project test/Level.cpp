@@ -14,7 +14,10 @@ Level::Level()
 
 Level::~Level()
 {
-
+	for (int i = wallVec.size() - 1; i >= 0; i--)
+	{
+		delete wallVec.at(i);
+	}
 }
 
 
@@ -22,6 +25,12 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName)
 {
 	std::ifstream file;
 	int LY = 0, LX = 0, RY = 0, RX = 0, NumOfWalls = 0;
+
+	
+	for (int i = wallVec.size() - 1; i >= 0; i--)
+	{
+		delete wallVec.at(i);
+	}
 
 	file.open("./Levels/" + fileName + ".txt");
 
@@ -36,8 +45,9 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName)
 			file >> LX >> LY >> RX >> RY;
 			
 			wallVec.push_back(new Intaractable);
-			wallVec.at(i)->setPosition(LX, RY);
 			wallVec.at(i)->setSize(sf::Vector2f(RX - LX, RY - LY));
+			wallVec.at(i)->setPosition(LX, LY);
+			std::cout << "terst";
 		}
 
 		file.close();
@@ -51,10 +61,19 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName)
 void Level::print(sf::RenderWindow& window, DoubleSubscriptedArray& arr)
 {
 	window.draw(sprite);
+
+	for (int i = wallVec.size() - 1; i >= 0; i--)
+		window.draw(*wallVec.at(i));
 }
 
 
-std::vector<Intaractable*> Level::getWalls()
+Intaractable* Level::getWalls(int temp)
 {
-	return wallVec;
+	return wallVec.at(temp);
+}
+
+
+int Level::getWallsNum()
+{
+	return wallVec.size();
 }

@@ -16,10 +16,12 @@ public:
 	virtual void talk(sf::RenderWindow&, int);
 	virtual void nextLine();
 	void increaseLength(int person);
+	void print(sf::RenderWindow&);
 
 protected:
 	bool interaction = false;
 	int currentLine = 0, currentLength[6] = {};
-
+	sf::Texture img;
+	sf::Sprite sprite;
 };
 

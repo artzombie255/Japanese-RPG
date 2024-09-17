@@ -28,6 +28,7 @@ int main()
     DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
     std::vector<Intaractable*> Npcs;
     std::vector<Intaractable*> Enemies;
+    std::vector<Intaractable*> wallVec;
     bool inMenu = false;
     
     //create entities
@@ -36,6 +37,7 @@ int main()
 
     for (int i = 0; i < 6; i++)
         Enemies.push_back(new Enemy(1));
+
 
     //set up doing tect and window name
     font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -48,7 +50,11 @@ int main()
 
     //load the first level
     level.loadLevel(arr, "1level1");
-
+    for (int i = 0; i <= level.getWallsNum() - 1; i++)
+    {
+        wallVec.push_back(new Intaractable);
+        wallVec.at(i) = level.getWalls(i);
+    }
 
     //main loop
     while (window.isOpen())
@@ -96,29 +102,44 @@ int main()
                 Enemies.at(i)->setInteraction(false);
             }
         }
+  
 
         //check collisions
         //move the player
         if (inMenu == false && encounter.getInEncounter() == false &&
             player.collision(Npcs, INTERACTIONTYPE::NPC) == false &&
-            player.collision(Enemies, INTERACTIONTYPE::ENEMY) == false 
-            //player.collision(level.getWalls(), INTERACTIONTYPE::WALL) == false
+            player.collision(Enemies, INTERACTIONTYPE::ENEMY) == false &&
+            player.collision(wallVec, INTERACTIONTYPE::WALL) == false
             )
             player.move();
 
         //checks the screen the player is on
         if (xScreen != player.getScreenX() || yScreen != player.getScreenY())
         {
+            for (int i = wallVec.size() - 1; i > 0; i--)
+            {
+                delete wallVec.at(i);
+            }
             std::cout << "switchLevel";
             xScreen = player.getScreenX();
             yScreen = player.getScreenY();
             level.loadLevel(arr, std::to_string(xScreen) + "level" + std::to_string(yScreen));
+
+            for (int i = 0; i <= level.getWallsNum() - 1; i++)
+            {
+                wallVec.push_back(new Intaractable);
+                wallVec.at(i) = level.getWalls(i);
+            }
         }
 
         //prints the next window
         window.clear();
 
         level.print(window, arr);
+        for (int i = 0; i < Enemies.size(); i++)
+        {
+            Enemies.at(i)->print(window);
+        }
         window.draw(player);
 
         //print npcs
@@ -127,10 +148,10 @@ int main()
             window.draw(*Npcs.at(i));
         }
 
-        for (int i = Enemies.size() - 1; i >= 0; i--)
+        /*for (int i = Enemies.size() - 1; i >= 0; i--)
         {
             window.draw(*Enemies.at(i));
-        }
+        }*/
 
 
         //interactions with entities
@@ -157,6 +178,11 @@ int main()
     for (int i = Enemies.size() - 1; i >= 0; i--)
     {
         delete Enemies.at(i);
+    }
+
+    for (int i = wallVec.size() - 1; i >= 0; i--)
+    {
+        delete wallVec.at(i);
     }
 
     return 0;

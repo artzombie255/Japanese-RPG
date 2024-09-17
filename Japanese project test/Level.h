@@ -17,7 +17,8 @@ public:
 
 	void loadLevel(DoubleSubscriptedArray&, std::string);
 	void print(sf::RenderWindow&, DoubleSubscriptedArray&);
-	std::vector<Intaractable*> getWalls();
+	Intaractable* getWalls(int);
+	int getWallsNum();
 
 private:
 	sf::RectangleShape rect;

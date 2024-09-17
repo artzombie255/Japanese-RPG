@@ -154,6 +154,17 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shop.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Levels\0level0.txt" />
+    <Text Include="Levels\0level1.txt" />
+    <Text Include="Levels\0level2.txt" />
+    <Text Include="Levels\1level0.txt" />
+    <Text Include="Levels\1level1.txt" />
+    <Text Include="Levels\1level2.txt" />
+    <Text Include="Levels\2level0.txt" />
+    <Text Include="Levels\2level1.txt" />
+    <Text Include="Levels\2level2.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
