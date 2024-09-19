@@ -37,5 +37,6 @@ private:
 	double xMove = 0, yMove = 0;
 	//left == true, right == false
 	bool lost, escMenuOpen = false;
+	sf::Vector2i lastScreen = sf::Vector2i(1, 1);
 
 };

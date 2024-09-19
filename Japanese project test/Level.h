@@ -15,14 +15,11 @@ public:
 	Level();
 	~Level();
 
-	void loadLevel(DoubleSubscriptedArray&, std::string);
+	void loadLevel(DoubleSubscriptedArray&, std::string, std::vector<Intaractable*>&);
 	void print(sf::RenderWindow&, DoubleSubscriptedArray&);
-	Intaractable* getWalls(int);
-	int getWallsNum();
 
 private:
 	sf::RectangleShape rect;
 	sf::Texture img;
 	sf::Sprite sprite;
-	std::vector<Intaractable*> wallVec;
 };

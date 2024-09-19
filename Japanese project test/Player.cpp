@@ -60,6 +60,7 @@ void Player::move()
 	if (getPosition().x < 0)
 	{
 		RectangleShape::setPosition(WINDOWX - 50, getPosition().y);
+		lastScreen.x = xScreen;
 		xScreen--;
 		std::cout << "x: " << xScreen << std::endl;
 		std::cout << "y: " << yScreen << std::endl;
@@ -67,6 +68,7 @@ void Player::move()
 	if (getPosition().y < 0)
 	{
 		RectangleShape::setPosition(getPosition().x, WINDOWY - 50);
+		lastScreen.y = yScreen;
 		yScreen--;
 		std::cout << "x: " << xScreen << std::endl;
 		std::cout << "y: " << yScreen << std::endl;
@@ -74,6 +76,7 @@ void Player::move()
 	if (getPosition().x > WINDOWX - 50)
 	{
 		RectangleShape::setPosition(0, getPosition().y);
+		lastScreen.x = xScreen;
 		xScreen++;
 		std::cout << "x: " << xScreen << std::endl;
 		std::cout << "y: " << yScreen << std::endl;
@@ -81,6 +84,7 @@ void Player::move()
 	if (getPosition().y > WINDOWY - 50)
 	{
 		RectangleShape::setPosition(getPosition().x, 0);
+		lastScreen.y = yScreen;
 		yScreen++;
 		std::cout << "x: " << xScreen << std::endl;
 		std::cout << "y: " << yScreen << std::endl;
@@ -117,6 +121,10 @@ bool Player::collision(std::vector<Intaractable*> &rect, INTERACTIONTYPE type)
 			else if (type == ENEMY)
 			{
 				rect.at(i)->setInteraction(true);
+				return true;
+			}
+			else if (type == WALL)
+			{
 				return true;
 			}
 		}

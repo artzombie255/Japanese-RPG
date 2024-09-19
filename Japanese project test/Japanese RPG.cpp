@@ -49,12 +49,12 @@ int main()
     window.setFramerateLimit(60);
 
     //load the first level
-    level.loadLevel(arr, "1level1");
-    for (int i = 0; i <= level.getWallsNum() - 1; i++)
+    level.loadLevel(arr, "1level1", wallVec);
+    /*for (int i = 0; i <= wallVec.size() - 1; i++)
     {
         wallVec.push_back(new Intaractable);
         wallVec.at(i) = level.getWalls(i);
-    }
+    }*/
 
     //main loop
     while (window.isOpen())
@@ -120,16 +120,17 @@ int main()
             {
                 delete wallVec.at(i);
             }
+            wallVec.clear();
             std::cout << "switchLevel";
             xScreen = player.getScreenX();
             yScreen = player.getScreenY();
-            level.loadLevel(arr, std::to_string(xScreen) + "level" + std::to_string(yScreen));
+            level.loadLevel(arr, std::to_string(xScreen) + "level" + std::to_string(yScreen), wallVec);
 
-            for (int i = 0; i <= level.getWallsNum() - 1; i++)
+            /*for (int i = 0; i <= wallVec.size() - 1; i++)
             {
                 wallVec.push_back(new Intaractable);
                 wallVec.at(i) = level.getWalls(i);
-            }
+            }*/
         }
 
         //prints the next window
@@ -140,6 +141,10 @@ int main()
         {
             Enemies.at(i)->print(window);
         }
+
+        //for (int i = wallVec.size() - 1; i >= 0; i--)
+            //window.draw(*wallVec.at(i));
+
         window.draw(player);
 
         //print npcs
@@ -148,10 +153,10 @@ int main()
             window.draw(*Npcs.at(i));
         }
 
-        /*for (int i = Enemies.size() - 1; i >= 0; i--)
+        for (int i = Enemies.size() - 1; i >= 0; i--)
         {
             window.draw(*Enemies.at(i));
-        }*/
+        }
 
 
         //interactions with entities
@@ -184,6 +189,5 @@ int main()
     {
         delete wallVec.at(i);
     }
-
     return 0;
 }
