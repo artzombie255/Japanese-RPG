@@ -19,6 +19,7 @@ public:
 	void print(sf::RenderWindow&, DoubleSubscriptedArray&);
 
 private:
+	bool oneLevelOneUpdated = false;
 	sf::RectangleShape rect;
 	sf::Texture img;
 	sf::Sprite sprite;

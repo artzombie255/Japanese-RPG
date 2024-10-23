@@ -13,12 +13,12 @@ public:
 	~Npc();
 
 	void continueTalking(sf::RenderWindow&);
-	void talk(sf::RenderWindow&, int person);
+	void talk(sf::RenderWindow&);
 
 private:
 	//AUBREY, ASHTON, AERYK, LILLY, KIMORA, SHIN
-	std::string voiceLines[6][10];
-	int voiceLinesLength[6][1];
+	std::string voiceLines[10];
+	int voiceLinesLength[10], CurrentInteraction = 0;
 	sf::Font font;
 	sf::Text text;
 	int currentLine = 0, inputDelay = 0;

@@ -141,6 +141,7 @@
     <ClCompile Include="Japanese RPG.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Npc.cpp" />
+    <ClCompile Include="PathFindingAStar.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shop.cpp" />
   </ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="Intaractable.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Npc.h" />
+    <ClInclude Include="PathFindingAStar.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shop.h" />
   </ItemGroup>
@@ -164,6 +166,7 @@
     <Text Include="Levels\2level0.txt" />
     <Text Include="Levels\2level1.txt" />
     <Text Include="Levels\2level2.txt" />
+    <Text Include="Levels\p1level1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

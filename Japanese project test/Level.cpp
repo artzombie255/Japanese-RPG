@@ -22,6 +22,8 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName, std::ve
 	std::ifstream file;
 	int LY = 0, LX = 0, RY = 0, RX = 0, NumOfWalls = 0;
 
+	if (fileName == "1level1" && oneLevelOneUpdated == false)
+		fileName = "p" + fileName;
 	
 	//for (int i = wallVec.size() - 1; i >= 0; i--)
 	//{

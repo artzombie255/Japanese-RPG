@@ -27,7 +27,7 @@ bool Intaractable::getInteraction()
 }
 
 
-void Intaractable::talk(sf::RenderWindow&, int)
+void Intaractable::talk(sf::RenderWindow&)
 {
 }
 

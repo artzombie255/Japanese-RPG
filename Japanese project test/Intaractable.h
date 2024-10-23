@@ -13,7 +13,7 @@ public:
 	virtual void continueTalking(sf::RenderWindow&);
 	void setInteraction(bool);
 	bool getInteraction();
-	virtual void talk(sf::RenderWindow&, int);
+	virtual void talk(sf::RenderWindow&);
 	virtual void nextLine();
 	void increaseLength(int person);
 	void print(sf::RenderWindow&);

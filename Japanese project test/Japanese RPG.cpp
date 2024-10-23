@@ -17,6 +17,8 @@ const int WINDOWX = 600, WINDOWY = 600, NUMOFCHUNKS = 24, SIZEOFCHUNK = 25;
 
 int main()
 {
+    srand(time(NULL));
+
     //create everything
     sf::Font font;
     sf::String hdr;
@@ -29,7 +31,7 @@ int main()
     std::vector<Intaractable*> Npcs;
     std::vector<Intaractable*> Enemies;
     std::vector<Intaractable*> wallVec;
-    bool inMenu = false;
+    bool inMenu = false, printWalls = false;
     
     //create entities
     for (int i = 0; i < 6; i++)
@@ -81,6 +83,12 @@ int main()
             //encounter
             if (encounter.getInEncounter() == true)
                 encounter.playEncounter(window);
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+                printWalls = true;
+            else
+                printWalls = false;
+
         }
 
         inMenu = false;
@@ -142,8 +150,9 @@ int main()
             Enemies.at(i)->print(window);
         }
 
-        //for (int i = wallVec.size() - 1; i >= 0; i--)
-            //window.draw(*wallVec.at(i));
+        if (printWalls == true)
+            for (int i = wallVec.size() - 1; i >= 0; i--)
+                window.draw(*wallVec.at(i));
 
         window.draw(player);
 
@@ -163,7 +172,7 @@ int main()
         for (int i = 0; Npcs.size() > i; i++)
         {
             if (Npcs.at(i)->getInteraction() == true)
-                Npcs.at(i)->talk(window, i);
+                Npcs.at(i)->talk(window);
         }
         
         //display encounters

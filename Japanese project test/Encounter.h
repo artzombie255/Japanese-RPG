@@ -14,7 +14,8 @@ enum class MENUTYPE : unsigned char
 {
 	ACTIONS,
 	WEAPONS, 
-	INVENTORY
+	INVENTORY,
+	TARGET
 };
 
 enum class WEAPONTYPE : unsigned char
@@ -56,9 +57,12 @@ public:
 	void ActionsMenu(sf::RenderWindow&);
 	void WeaponsMenu(sf::RenderWindow&);
 	void InvMenu(sf::RenderWindow&);
+	void targetMenu(sf::RenderWindow&);
+
 	void PrintActionsMenu(sf::RenderWindow&);
 	void PrintWeaponsMenu(sf::RenderWindow&);
 	void PrintInvMenu(sf::RenderWindow&);
+	void printTargetMenu(sf::RenderWindow&);
 
 	//get data
 	bool getInEncounter();
@@ -85,15 +89,14 @@ private:
 
 	int encounterType = 0, currentMenuSelection = 0;
 	MENUTYPE currentScreen = MENUTYPE::ACTIONS;
-
+	bool enemyAlive[4] = { true, false, false, false }, enemiesAlive = false;
 	int str, dex, hp, natArmor, maxHp;
 	int lvl, exp, money,
 		equippedWeapon = 1, equippedRanged = 0, equippedMagic = 0, weapon, activeBurn = 0,
-		enemyHp[4] = {10, 0, 0, 0}, currentTeamSpot = 0, enemyTurn = 0;
+		enemyHp[4] = {10, 0, 0, 0}, currentTeamSpot = 0, enemyTurn = 0, currentEnemySpot = 0,
 		//possession
-		/*meleeOwned[NUMOFMELEE] = {0, 1, 0, 0, 0, 0, 0, 0},
-		rangedOwned[NUMOFRANGED] = { 0, 0, 0, 0, 0 },
-		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };*/
+		meleeOwned[NUMOFWEAPONS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };
 	CHARACTERS currentTeam[4] = { CHARACTERS::PHOENIX,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
 	//levels
 	const int levels[10] = { 0, 5, 15, 30, 50, 75, 105, 140, 180, 225 },
@@ -161,9 +164,9 @@ private:
 	sf::String rangedStr[NUMOFRANGED] = { L"Nothing equipped", L"Ninja star", L"Chakram", L"Bow", L"Crossbow" },
 			   itemStr[NUMOFITEMS] = { "Nothing equipped", "Small health potion", "Large health potion", "Full heal" };
 	//weapon type
-	const wchar_t* tee = L"test";
+	/*const wchar_t* tee = L"test";
 
-	sf::String test = tee;
+	sf::String test = tee;*/
 
 
 	/**
@@ -194,7 +197,7 @@ private:
 	};
 
 	// Weapons
-	const Characters C[5] =
+	Characters C[5] =
 	{
 		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE, 25, 25, 3, 0, 2, 0, 0, 0},
 		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE, 5, 0, 0, 0, 0, 0, 0, 0},

@@ -154,23 +154,46 @@ void Encounter::setEncounter()
 
 void Encounter::switchTurn()
 {
-	currentScreen = MENUTYPE::ACTIONS;
-	
-	if (currentTeamSpot < 3)
-		currentTeamSpot++;
-	else
-	{
-		currentTeamSpot = -1;
-	}
-
 	if (currentTeamSpot != -1)
-		if (currentTeam[currentTeamSpot] == CHARACTERS::BLANK)
-			switchTurn();
+	{
+		std::cout << currentTeamSpot << std::endl;
+		if (currentTeamSpot < 3 && currentTeamSpot != -1)
+		{
+			currentTeamSpot++;
+			currentScreen = MENUTYPE::ACTIONS;
+		}
+		else
+		{
+			currentTeamSpot = -1;
+			currentEnemySpot = 0;
+		}
+
+		if (currentTeamSpot != -1)
+			if (currentTeam[currentTeamSpot] == CHARACTERS::BLANK)
+				switchTurn();
+
+	}
+	if (currentTeamSpot == -1)
+		enemiesTurn();
 }
 
 
 void Encounter::enemiesTurn()
 {
+	std::cout << currentEnemySpot << ":" << enemyHp[currentEnemySpot] << std::endl;
+	if (currentEnemySpot < 3 && currentEnemySpot != -1)
+	{
+		currentEnemySpot++;
+	}
+	else
+	{
+		currentTeamSpot = 0;
+		currentEnemySpot = -1;
+	}
+
+	if (currentEnemySpot != -1)
+		if (enemyHp[currentEnemySpot] <= 0)
+			enemiesTurn();
 
 }
 
@@ -269,6 +292,11 @@ void Encounter::InvMenu(sf::RenderWindow& window)
 				currentMenuSelection = i + 3;
 		}
 	}*/
+	else if(position.x > 510 && position.x < 540)
+	{
+		if (position.y > 60 && position.y < 90)
+			currentMenuSelection = 4;
+	}
 	else
 		currentMenuSelection = -1;
 
@@ -276,15 +304,33 @@ void Encounter::InvMenu(sf::RenderWindow& window)
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection != -1)
 	{
-		if (C[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::RANGED)
+		switch (currentMenuSelection)
 		{
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+			if (C[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::RANGED)
+			{
 
-		}
-		else if (C[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::MELEE)
-		{
+			}
+			else if (C[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::MELEE)
+			{
 
+			}
+			break;
+			
+		case 4:
+			currentScreen = MENUTYPE::ACTIONS;
+			break;
 		}
 	}
+}
+
+
+void Encounter::targetMenu(sf::RenderWindow&)
+{
+
 }
 
 
@@ -371,9 +417,22 @@ void Encounter::PrintInvMenu(sf::RenderWindow& window)
 		selection.setPosition(108, 108 + (currentMenuSelection * 108));
 		window.draw(selection);
 	}
+	else if (currentMenuSelection == 4)
+	{
+		selection.setSize(sf::Vector2f(30, 30));
+		selection.setFillColor(sf::Color::Red);
+		selection.setPosition(510, 60);
+		window.draw(selection);
+	}
 	else
 		selection.setPosition(-100, -100);
 
+
+}
+
+
+void Encounter::printTargetMenu(sf::RenderWindow&)
+{
 
 }
 
@@ -420,38 +479,49 @@ int Encounter::enumToIntCharacters(CHARACTERS temp)
 void Encounter::attack()
 {
 	int attack = 0, slash;
+	enemiesAlive = false;
 
 	switch (WEAPONS[equippedWeapon].type)
 	{
 	case WEAPONTYPE::PIERCE:
-		if ((rand() % 20 + dex + 1) > 11)
+		if ((rand() % 20 + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1) > 11)
 		{
-			attack = rand() % weapons[equippedWeapon] + dex + 3;
+			attack = rand() % weapons[equippedWeapon] + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 3;
 		}
 		break;
 	case WEAPONTYPE::SLASH:
-		slash = rand() % 20 + dex + 1;
+		slash = rand() % 20 + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1;
 		if (slash > 11)
 		{
 			slash -= 11;
-			attack = rand() % weapons[equippedWeapon] + (str / 2) + slash + 1;
+			attack = rand() % weapons[equippedWeapon] + (C[enumToIntCharacters(currentTeam[currentMenuSelection])].str / 2) + slash + 1;
 		}
 		break;
 	case WEAPONTYPE::BLUDGEON:
-		if ((rand() % 20 + str + 1) > 9)
+		if ((rand() % 20 + C[enumToIntCharacters(currentTeam[currentMenuSelection])].str + 1) > 9)
 		{
-			attack = rand() % weapons[equippedWeapon] + str + 1;
+			attack = rand() % weapons[equippedWeapon] + C[enumToIntCharacters(currentTeam[currentMenuSelection])].str + 1;
 		}
 		break;
 	case WEAPONTYPE::RANGED:
-		if ((rand() % 20 + dex + 1) > 14)
+		if ((rand() % 20 + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1) > 14)
 		{
-			attack = rand() % weapons[equippedWeapon] + dex + 3;
+			attack = rand() % weapons[equippedWeapon] + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 3;
 		}
 		break;
 	}
-
+	//std::cout << "hp:" << enemyHp[currentEnemySpot] << std::endl << "hit:" << attack << std::endl;
 	enemyHp[0] -= attack;
+	//std::cout << "hp:" << enemyHp[currentEnemySpot] << std::endl << "hit:" << attack << std::endl;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (enemyHp[i] <= 0)
+			enemyAlive[i] = false;
+
+		if (enemyAlive[i] == true)
+			enemiesAlive = true;
+	}
 }
 
 

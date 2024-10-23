@@ -42,6 +42,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PathFindingAStar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -66,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFindingAStar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,6 +101,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Levels\1level1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Levels\p1level1.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

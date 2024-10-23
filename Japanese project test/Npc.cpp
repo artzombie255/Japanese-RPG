@@ -7,24 +7,25 @@ Npc::Npc()
 
 	setSize(sf::Vector2f(50, 50));
 	setPosition(100,100);
-	for (int i = 0; i < 6; i++)
-		for (int j = 0; j < 2; j++)
-			voiceLines[i][j] = std::to_string(i);
+	
+
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
 	text.setFont(font);
 }
 
 
-Npc::Npc(int)
+Npc::Npc(int player)
 {
 	setSize(sf::Vector2f(50, 50));
 	setPosition(100, 100);
-	for (int i = 0; i < 6; i++)
-		for (int j = 0; j < 10; j++)
-			voiceLines[i][j] = std::to_string(j);
+
+	for (int j = 0; j < 10; j++)
+			voiceLines[j] = std::to_string(j);
+
+	for (int j = 0; j < 10; j++)
+			voiceLinesLength[j] = 2 * j;
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
 	text.setFont(font);
-
 
 }
 
@@ -43,14 +44,23 @@ void Npc::continueTalking(sf::RenderWindow& window)
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && interaction == true 
 		&& inputDelay > 5 && position.y > 300)
 	{
-		currentLine++;
-		inputDelay = 0;
+		if (voiceLinesLength[CurrentInteraction] <= currentLine)
+		{
+			interaction = false;
+			currentLine++;
+			CurrentInteraction++;
+		}
+		else
+		{
+			currentLine++;
+			inputDelay = 0;
+		}
 	}
 }
 
 
 //display text
-void Npc::talk(sf::RenderWindow &window, int person)
+void Npc::talk(sf::RenderWindow &window)
 {
 	//do magic
 	sf::RectangleShape outline, background;
@@ -67,10 +77,7 @@ void Npc::talk(sf::RenderWindow &window, int person)
 	window.draw(outline);
 	window.draw(background);
 
+	text.setString(voiceLines[currentLine]);
 
-	if (person < 6)
-		text.setString(voiceLines[person][currentLine]);
-	else
-		std::cout << "above 6";
 	window.draw(text);
 }
