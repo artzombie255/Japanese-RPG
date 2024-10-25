@@ -240,7 +240,11 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 		{
 		case 0:
 			//basic attack
-			attack();
+
+			//std::cout << "hp:" << enemyHp[currentEnemySpot] << std::endl << "hit:" << attack << std::endl;
+			enemyHp[0] -= attack();
+			//std::cout << "hp:" << enemyHp[currentEnemySpot] << std::endl << "hit:" << attack << std::endl;
+
 			switchTurn();
 			break;
 		case 1:
@@ -262,6 +266,16 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 		case 5:
 			currentScreen = MENUTYPE::ACTIONS;
 			break;
+		}
+		enemiesAlive = false;
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (enemyHp[i] <= 0)
+				enemyAlive[i] = false;
+
+			if (enemyAlive[i] == true)
+				enemiesAlive = true;
 		}
 	}
 }
@@ -476,10 +490,15 @@ int Encounter::enumToIntCharacters(CHARACTERS temp)
 
 
 //deals with weapon logic
-void Encounter::attack()
+int Encounter::attack()
 {
 	int attack = 0, slash;
-	enemiesAlive = false;
+
+	if (currentTeamSpot >= 0)
+		equippedWeapon = C[enumToIntCharacters(currentTeam[currentMenuSelection])].equippedWeapon;
+	else
+		std::cout << "enemy turn";
+		//equippedWeapon = currentTeam[currentTeamSpot].equippedWeapon;
 
 	switch (WEAPONS[equippedWeapon].type)
 	{
@@ -510,18 +529,8 @@ void Encounter::attack()
 		}
 		break;
 	}
-	//std::cout << "hp:" << enemyHp[currentEnemySpot] << std::endl << "hit:" << attack << std::endl;
-	enemyHp[0] -= attack;
-	//std::cout << "hp:" << enemyHp[currentEnemySpot] << std::endl << "hit:" << attack << std::endl;
 
-	for (int i = 0; i < 4; i++)
-	{
-		if (enemyHp[i] <= 0)
-			enemyAlive[i] = false;
-
-		if (enemyAlive[i] == true)
-			enemiesAlive = true;
-	}
+	return attack;
 }
 
 

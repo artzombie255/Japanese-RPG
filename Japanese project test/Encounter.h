@@ -70,7 +70,7 @@ public:
 
 	int enumToIntCharacters(CHARACTERS);
 
-	void attack();
+	int attack();
 	void loseHealth(int);
 	void addExp(int);
 	void levelUp();
@@ -92,7 +92,7 @@ private:
 	bool enemyAlive[4] = { true, false, false, false }, enemiesAlive = false;
 	int str, dex, hp, natArmor, maxHp;
 	int lvl, exp, money,
-		equippedWeapon = 1, equippedRanged = 0, equippedMagic = 0, weapon, activeBurn = 0,
+		equippedWeapon = 1, weapon, activeBurn = 0,
 		enemyHp[4] = {10, 0, 0, 0}, currentTeamSpot = 0, enemyTurn = 0, currentEnemySpot = 0,
 		//possession
 		meleeOwned[NUMOFWEAPONS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -199,11 +199,12 @@ private:
 	// Weapons
 	Characters C[5] =
 	{
-		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE, 25, 25, 3, 0, 2, 0, 0, 0},
-		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE, 5, 0, 0, 0, 0, 0, 0, 0},
-		{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE, 20, 20, 2, 3, 1, 0, 0, 0},
-		{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 4, 3, 0, 0, 0},
-		{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 2, 5, 0, 0, 0}
+		//name, type, max hp, current hp, strength, dexterity, magic slots, level, xp, current weapon
+		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE, 25, 25, 2, 0, 1, 1, 0, 10},
+		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE, 25, 0, 0, 0, 0, 0, 0, 6},
+		{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE, 20, 20, 2, 1, 1, 1, 0, 5},
+		{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 2, 3, 1, 0, 14},
+		{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 2, 5, 3, 0, 14}
 	};
 
 };
