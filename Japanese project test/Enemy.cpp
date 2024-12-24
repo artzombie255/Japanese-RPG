@@ -36,3 +36,9 @@ Enemy::~Enemy()
 {
 
 }
+
+
+void Enemy::print(sf::RenderWindow &window)
+{
+	window.draw(sprite);
+}

@@ -164,7 +164,7 @@ int main()
 
         for (int i = Enemies.size() - 1; i >= 0; i--)
         {
-            window.draw(*Enemies.at(i));
+            Enemies.at(i)->print(window);
         }
 
 

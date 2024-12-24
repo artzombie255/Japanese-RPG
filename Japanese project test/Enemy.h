@@ -11,6 +11,7 @@ public:
 	Enemy(int);
 	~Enemy();
 
+	void print(sf::RenderWindow&);
 private:
 
 };

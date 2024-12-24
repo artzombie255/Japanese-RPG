@@ -15,7 +15,8 @@ enum class MENUTYPE : unsigned char
 	ACTIONS,
 	WEAPONS, 
 	INVENTORY,
-	TARGET
+	TARGET,
+	CHARACTER_TARGET
 };
 
 enum class WEAPONTYPE : unsigned char
@@ -34,8 +35,25 @@ enum CHARACTERS
 	AUBREY,
 	PHOENIX,
 	ROWAN,
+	STEVE,
+	CHASE,
+	
+	BRIT,
+	KIMORA,
+	ALEX,
+
+	LILLY,
+	LEAH,
+	NATHAN,
 	BLANK
 };
+
+
+enum ENEMIES
+{
+	BLANK_E
+};
+
 
 
 class Encounter
@@ -58,11 +76,13 @@ public:
 	void WeaponsMenu(sf::RenderWindow&);
 	void InvMenu(sf::RenderWindow&);
 	void targetMenu(sf::RenderWindow&);
+	int targetCharacterMenu(sf::RenderWindow&);
 
 	void PrintActionsMenu(sf::RenderWindow&);
 	void PrintWeaponsMenu(sf::RenderWindow&);
 	void PrintInvMenu(sf::RenderWindow&);
 	void printTargetMenu(sf::RenderWindow&);
+	void printTargetCharacterMenu(sf::RenderWindow&);
 
 	//get data
 	bool getInEncounter();
@@ -71,6 +91,7 @@ public:
 	int enumToIntCharacters(CHARACTERS);
 
 	int attack();
+	void unique();
 	void loseHealth(int);
 	void addExp(int);
 	void levelUp();
@@ -94,6 +115,8 @@ private:
 	int lvl, exp, money,
 		equippedWeapon = 1, weapon, activeBurn = 0,
 		enemyHp[4] = {10, 0, 0, 0}, currentTeamSpot = 0, enemyTurn = 0, currentEnemySpot = 0,
+		//used for Aeryk's unique
+		targetingTeam[4] = {0, 1, 2, 3},
 		//possession
 		meleeOwned[NUMOFWEAPONS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };
@@ -106,7 +129,7 @@ private:
 		//slashing
 		4, 7, 9, 12, 14,
 		//bludgeoning
-		6, 9, 12, 17,
+		6, 9, 12, 17, 
 		//ranged
 		8, 12, 17, 21 },
 
@@ -188,24 +211,56 @@ private:
 		// The type of weapon it is.
 		const WEAPONTYPE type;
 
-		int maxHp, hp, str, dex, mag, lvl, exp, equippedWeapon;
+		int maxHp, hp, armor, str, dex, mag, lvl, exp, equippedWeapon;
 
-		Characters(CHARACTERS name_, WEAPONTYPE type_, int maxHp_, int hp_, int str_,
+		Characters(CHARACTERS name_, WEAPONTYPE type_, int maxHp_, int hp_, int armor_, int str_,
 			int dex_, int mag_, int lvl_, int exp_, int equippedWeapon_) : 
-			name(name_), type(type_), maxHp(maxHp_), hp(hp_), str(str_), dex(dex_), 
+			name(name_), type(type_), maxHp(maxHp_), hp(hp_), armor(armor_), str(str_), dex(dex_), 
 			mag(mag_), lvl(lvl_), exp(exp_), equippedWeapon(equippedWeapon_) {}
 	};
 
 	// Weapons
-	Characters C[5] =
+	Characters PlayableCharacters[7] =
 	{
-		//name, type, max hp, current hp, strength, dexterity, magic slots, level, xp, current weapon
-		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE, 25, 25, 2, 0, 1, 1, 0, 10},
-		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE, 25, 0, 0, 0, 0, 0, 0, 6},
-		{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE, 20, 20, 2, 1, 1, 1, 0, 5},
-		{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 2, 3, 1, 0, 14},
-		{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 2, 5, 3, 0, 14}
+		//name, type, max hp, current hp, armor, strength, dexterity, magic slots, level, xp, current weapon
+		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE,  25, 25, 1, 1, 0, 1, 1, 0, 10},
+		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE,  25, 25, 2, 3, 0, 2, 5, 0, 6},
+		{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE,  20, 20, 0, 2, 1, 1, 1, 0, 5},
+		{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 1, 0, 14},
+		{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 3, 0, 14},
+		{CHARACTERS::STEVE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 1, 0, 14},
+		{CHARACTERS::CHASE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 3, 0, 14}
 	};
+
+
+
+
+
+	struct Enemies
+	{
+		// The name of the weapon.
+		const ENEMIES enemyName;
+
+		int maxHp, hp, armor, str, dex, mag, lvl, exp, equippedWeapon;
+
+		Enemies(ENEMIES name_, int maxHp_, int hp_, int armor_, int str_,
+			int dex_, int mag_, int lvl_, int exp_, int equippedWeapon_) :
+			enemyName(name_), maxHp(maxHp_), hp(hp_), armor(armor_), str(str_), dex(dex_),
+			mag(mag_), lvl(lvl_), exp(exp_), equippedWeapon(equippedWeapon_) {}
+	};
+
+	// Weapons
+	Enemies DefaultEnemies[7] =
+	{
+		//name, type, max hp, current hp, armor, strength, dexterity, magic slots, level, xp, current weapon
+		{ENEMIES::BLANK_E,	25, 25, 1, 1, 0, 1, 1, 0, 10},
+		{ENEMIES::BLANK_E,	25, 0, 0, 0, 0, 0, 0, 0, 6},
+		{ENEMIES::BLANK_E,	20, 20, 0, 2, 1, 1, 1, 0, 5},
+		{ENEMIES::BLANK_E,	15, 15, 0, 0, 2, 3, 1, 0, 14},
+		{ENEMIES::BLANK_E,	15, 15, 0, 0, 2, 5, 3, 0, 14},
+		{ENEMIES::BLANK_E,	15, 15, 0, 0, 2, 3, 1, 0, 14},
+		{ENEMIES::BLANK_E,	15, 15, 0, 0, 2, 5, 3, 0, 14}
+	}; 
 
 };
 

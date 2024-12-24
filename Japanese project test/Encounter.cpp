@@ -54,7 +54,7 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 	}
 
 	//display the button being hovered over
-	if (currentScreen != MENUTYPE::INVENTORY)
+	if (currentScreen != MENUTYPE::INVENTORY && currentScreen != MENUTYPE::CHARACTER_TARGET)
 	{
 		selection.setFillColor(sf::Color(99, 99, 99));
 
@@ -96,6 +96,11 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::INVENTORY:
 		PrintInvMenu(window);
+		break;
+	case MENUTYPE::TARGET:
+		printTargetMenu(window);
+	case MENUTYPE::CHARACTER_TARGET:
+		printTargetCharacterMenu(window);
 	}
 }
 
@@ -142,6 +147,8 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::INVENTORY:
 		InvMenu(window);
+	case MENUTYPE::TARGET:
+		targetMenu(window);
 	}
 }
 
@@ -240,16 +247,17 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 		{
 		case 0:
 			//basic attack
-
+			currentScreen = MENUTYPE::TARGET;
 			//std::cout << "hp:" << enemyHp[currentEnemySpot] << std::endl << "hit:" << attack << std::endl;
-			enemyHp[0] -= attack();
+			//enemyHp[0] -= attack();
 			//std::cout << "hp:" << enemyHp[currentEnemySpot] << std::endl << "hit:" << attack << std::endl;
 
-			switchTurn();
+			//switchTurn();
 			break;
 		case 1:
 			//unique
-			switchTurn();
+			// 
+			//switchTurn();
 			break;
 		case 2:
 			//special
@@ -324,11 +332,11 @@ void Encounter::InvMenu(sf::RenderWindow& window)
 		case 1:
 		case 2:
 		case 3:
-			if (C[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::RANGED)
+			if (PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::RANGED)
 			{
 
 			}
-			else if (C[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::MELEE)
+			else if (PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::MELEE)
 			{
 
 			}
@@ -345,6 +353,38 @@ void Encounter::InvMenu(sf::RenderWindow& window)
 void Encounter::targetMenu(sf::RenderWindow&)
 {
 
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
+	{
+		switch (currentMenuSelection)
+		{
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+			enemyHp[currentMenuSelection] -= attack();
+			switchTurn();
+		case 5:
+			currentScreen = MENUTYPE::WEAPONS;
+			break;
+		}
+		enemiesAlive = false;
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (enemyHp[i] <= 0)
+				enemyAlive[i] = false;
+
+			if (enemyAlive[i] == true)
+				enemiesAlive = true;
+		}
+	}
+}
+
+
+int Encounter::targetCharacterMenu(sf::RenderWindow&)
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
+		return currentMenuSelection;
 }
 
 
@@ -445,9 +485,72 @@ void Encounter::PrintInvMenu(sf::RenderWindow& window)
 }
 
 
-void Encounter::printTargetMenu(sf::RenderWindow&)
+void Encounter::printTargetMenu(sf::RenderWindow& window)
 {
+	//sets up text
+	sf::Text text;
+	sf::String message[6] = { L"",  L"",  L"",  L"",  L"",  L"back" };
+	sf::Font font;
 
+	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
+	text.setFont(font);
+
+	//prints text on buttons
+	for (int i = 0; i < 3; i++)
+	{
+		text.setString(message[i]);
+		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
+		text.setPosition(113 + (i * 186), 454);
+		window.draw(text);
+	}
+
+	for (int i = 3; i < 6; i++)
+	{
+		text.setString(message[i]);
+		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
+		text.setPosition(113 + ((i - 3) * 186), 534);
+		window.draw(text);
+	}
+}
+
+
+void Encounter::printTargetCharacterMenu(sf::RenderWindow& window)
+{
+	//sets up backgrounds and outlines and selection
+	sf::RectangleShape MenuOutline, MenuBackground, selection;
+
+	MenuOutline.setSize(sf::Vector2f(200, 400));
+	MenuOutline.setPosition(200, 100);
+
+	MenuBackground.setSize(sf::Vector2f(180, 380));
+	MenuBackground.setPosition(210, 110);
+	MenuBackground.setFillColor(sf::Color::Black);
+
+	//not set yet
+	selection.setSize(sf::Vector2f(60, 60));
+	selection.setFillColor(sf::Color(111, 124, 128));
+
+	window.draw(MenuOutline);
+	window.draw(MenuBackground);
+
+
+	selection.setFillColor(sf::Color(99, 99, 99));
+
+	//button highlights
+	if (currentMenuSelection >= 0 && currentMenuSelection < 4)
+	{
+		selection.setPosition(108, 108 + (currentMenuSelection * 108));
+		window.draw(selection);
+	}
+	else if (currentMenuSelection == 4)
+	{
+		selection.setSize(sf::Vector2f(30, 30));
+		selection.setFillColor(sf::Color::Red);
+		selection.setPosition(510, 60);
+		window.draw(selection);
+	}
+	else
+		selection.setPosition(-100, -100);
 }
 
 
@@ -495,7 +598,7 @@ int Encounter::attack()
 	int attack = 0, slash;
 
 	if (currentTeamSpot >= 0)
-		equippedWeapon = C[enumToIntCharacters(currentTeam[currentMenuSelection])].equippedWeapon;
+		equippedWeapon = PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].equippedWeapon;
 	else
 		std::cout << "enemy turn";
 		//equippedWeapon = currentTeam[currentTeamSpot].equippedWeapon;
@@ -503,34 +606,61 @@ int Encounter::attack()
 	switch (WEAPONS[equippedWeapon].type)
 	{
 	case WEAPONTYPE::PIERCE:
-		if ((rand() % 20 + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1) > 11)
+		if ((rand() % 20 + PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1) > 11)
 		{
-			attack = rand() % weapons[equippedWeapon] + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 3;
+			attack = rand() % weapons[equippedWeapon] + PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 3;
 		}
 		break;
 	case WEAPONTYPE::SLASH:
-		slash = rand() % 20 + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1;
+		slash = rand() % 20 + PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1;
 		if (slash > 11)
 		{
 			slash -= 11;
-			attack = rand() % weapons[equippedWeapon] + (C[enumToIntCharacters(currentTeam[currentMenuSelection])].str / 2) + slash + 1;
+			attack = rand() % weapons[equippedWeapon] + (PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].str / 2) + slash + 1;
 		}
 		break;
 	case WEAPONTYPE::BLUDGEON:
-		if ((rand() % 20 + C[enumToIntCharacters(currentTeam[currentMenuSelection])].str + 1) > 9)
+		if ((rand() % 20 + PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].str + 1) > 9)
 		{
-			attack = rand() % weapons[equippedWeapon] + C[enumToIntCharacters(currentTeam[currentMenuSelection])].str + 1;
+			attack = rand() % weapons[equippedWeapon] + PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].str + 1;
 		}
 		break;
 	case WEAPONTYPE::RANGED:
-		if ((rand() % 20 + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1) > 14)
+		if ((rand() % 20 + PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 1) > 14)
 		{
-			attack = rand() % weapons[equippedWeapon] + C[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 3;
+			attack = rand() % weapons[equippedWeapon] + PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].dex + 3;
 		}
 		break;
 	}
 
 	return attack;
+}
+
+
+void Encounter::unique()
+{
+	switch (currentTeam[currentTeamSpot])
+	{
+	case CHARACTERS::AERYK:
+		//targetingTeam[] = currentTeamSpot
+		break;
+	case CHARACTERS::ASHTON:
+		//second wind
+		PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].hp += rand() % 10 + PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].lvl;
+		break;
+	case CHARACTERS::AUBREY:
+
+		break;
+	case CHARACTERS::PHOENIX:
+
+		break;
+	case CHARACTERS::ROWAN:
+
+		break;
+	case CHARACTERS::BLANK:
+
+		break;
+	}
 }
 
 
