@@ -99,6 +99,7 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::TARGET:
 		printTargetMenu(window);
+		break;
 	case MENUTYPE::CHARACTER_TARGET:
 		printTargetCharacterMenu(window);
 	}
@@ -114,7 +115,7 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 	currentMenuSelection = -1;
 
 	//track where the cursor is
-	if (currentScreen != MENUTYPE::INVENTORY)
+	if (currentScreen != MENUTYPE::INVENTORY && currentScreen != MENUTYPE::CHARACTER_TARGET)
 	{
 		if (position.y > 430 && position.y < 490)
 		{
@@ -149,6 +150,9 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 		InvMenu(window);
 	case MENUTYPE::TARGET:
 		targetMenu(window);
+		break;
+	case MENUTYPE::CHARACTER_TARGET:
+		targetCharacterMenu(window);
 	}
 }
 
@@ -256,7 +260,7 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 			break;
 		case 1:
 			//unique
-			// 
+			unique();
 			//switchTurn();
 			break;
 		case 2:
@@ -381,10 +385,39 @@ void Encounter::targetMenu(sf::RenderWindow&)
 }
 
 
-int Encounter::targetCharacterMenu(sf::RenderWindow&)
+void Encounter::targetCharacterMenu(sf::RenderWindow& window)
 {
+	sf::Vector2i position = sf::Mouse::getPosition(window);
+	int temp = 0;
+
+	currentMenuSelection = -1;
+
+	//players button tracking
+	if (position.x > 210 && position.x < 390)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (position.y > 110 + (i * 100) && position.y < 170 + (i * 100))
+				currentMenuSelection = i;
+		}
+	}
+	else
+		currentMenuSelection = -1;
+
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
-		return currentMenuSelection;
+	{
+		switch (currentTeam[currentTeamSpot])
+		{
+		case CHARACTERS::AERYK:
+			targetingTeam[currentMenuSelection] = currentTeamSpot;
+			break;
+		case CHARACTERS::ROWAN:
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].hp += rand() % 6 + PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].lvl + 
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].maxMag;
+			break;
+		}
+		switchTurn();
+	}
 }
 
 
@@ -526,8 +559,8 @@ void Encounter::printTargetCharacterMenu(sf::RenderWindow& window)
 	MenuBackground.setPosition(210, 110);
 	MenuBackground.setFillColor(sf::Color::Black);
 
-	//not set yet
-	selection.setSize(sf::Vector2f(60, 60));
+
+	selection.setSize(sf::Vector2f(180, 80));
 	selection.setFillColor(sf::Color(111, 124, 128));
 
 	window.draw(MenuOutline);
@@ -539,14 +572,7 @@ void Encounter::printTargetCharacterMenu(sf::RenderWindow& window)
 	//button highlights
 	if (currentMenuSelection >= 0 && currentMenuSelection < 4)
 	{
-		selection.setPosition(108, 108 + (currentMenuSelection * 108));
-		window.draw(selection);
-	}
-	else if (currentMenuSelection == 4)
-	{
-		selection.setSize(sf::Vector2f(30, 30));
-		selection.setFillColor(sf::Color::Red);
-		selection.setPosition(510, 60);
+		selection.setPosition(210, 110 + (currentMenuSelection * 100));
 		window.draw(selection);
 	}
 	else
@@ -643,10 +669,12 @@ void Encounter::unique()
 	{
 	case CHARACTERS::AERYK:
 		//targetingTeam[] = currentTeamSpot
+		currentScreen = MENUTYPE::CHARACTER_TARGET;
 		break;
 	case CHARACTERS::ASHTON:
 		//second wind
 		PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].hp += rand() % 10 + PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].lvl;
+		switchTurn();
 		break;
 	case CHARACTERS::AUBREY:
 

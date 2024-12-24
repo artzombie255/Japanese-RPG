@@ -76,7 +76,7 @@ public:
 	void WeaponsMenu(sf::RenderWindow&);
 	void InvMenu(sf::RenderWindow&);
 	void targetMenu(sf::RenderWindow&);
-	int targetCharacterMenu(sf::RenderWindow&);
+	void targetCharacterMenu(sf::RenderWindow&);
 
 	void PrintActionsMenu(sf::RenderWindow&);
 	void PrintWeaponsMenu(sf::RenderWindow&);
@@ -117,10 +117,11 @@ private:
 		enemyHp[4] = {10, 0, 0, 0}, currentTeamSpot = 0, enemyTurn = 0, currentEnemySpot = 0,
 		//used for Aeryk's unique
 		targetingTeam[4] = {0, 1, 2, 3},
+		targetedCharacter,
 		//possession
 		meleeOwned[NUMOFWEAPONS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };
-	CHARACTERS currentTeam[4] = { CHARACTERS::PHOENIX,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
+	CHARACTERS currentTeam[4] = { CHARACTERS::AERYK,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
 	//levels
 	const int levels[10] = { 0, 5, 15, 30, 50, 75, 105, 140, 180, 225 },
 		//effect
@@ -211,25 +212,25 @@ private:
 		// The type of weapon it is.
 		const WEAPONTYPE type;
 
-		int maxHp, hp, armor, str, dex, mag, lvl, exp, equippedWeapon;
+		int maxHp, hp, armor, str, dex, mag, maxMag, lvl, exp, equippedWeapon;
 
 		Characters(CHARACTERS name_, WEAPONTYPE type_, int maxHp_, int hp_, int armor_, int str_,
-			int dex_, int mag_, int lvl_, int exp_, int equippedWeapon_) : 
+			int dex_, int mag_, int maxMag_, int lvl_, int exp_, int equippedWeapon_) : 
 			name(name_), type(type_), maxHp(maxHp_), hp(hp_), armor(armor_), str(str_), dex(dex_), 
-			mag(mag_), lvl(lvl_), exp(exp_), equippedWeapon(equippedWeapon_) {}
+			mag(mag_), maxMag(maxMag_), lvl(lvl_), exp(exp_), equippedWeapon(equippedWeapon_) {}
 	};
 
 	// Weapons
 	Characters PlayableCharacters[7] =
 	{
-		//name, type, max hp, current hp, armor, strength, dexterity, magic slots, level, xp, current weapon
-		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE,  25, 25, 1, 1, 0, 1, 1, 0, 10},
-		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE,  25, 25, 2, 3, 0, 2, 5, 0, 6},
-		{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE,  20, 20, 0, 2, 1, 1, 1, 0, 5},
-		{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 1, 0, 14},
-		{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 3, 0, 14},
-		{CHARACTERS::STEVE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 1, 0, 14},
-		{CHARACTERS::CHASE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 3, 0, 14}
+		//name, type, max hp, current hp, armor, strength, dexterity, magic slots, max magic slots, level, xp, current weapon
+		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE,  25, 25, 1, 1, 0, 1, 1, 1, 0, 10},
+		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE,  25, 25, 2, 3, 0, 2, 2, 5, 0, 6},
+		{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE,  20, 20, 0, 2, 1, 1, 1, 1, 0, 5},
+		{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 3, 1, 0, 14},
+		{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 3, 0, 14},
+		{CHARACTERS::STEVE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 3, 1, 0, 14},
+		{CHARACTERS::CHASE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 3, 0, 14}
 	};
 
 
