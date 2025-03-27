@@ -14,10 +14,30 @@ Npc::Npc()
 }
 
 
-Npc::Npc(int player)
+Npc::Npc(CHARACTERS player)
 {
 	setSize(sf::Vector2f(50, 50));
 	setPosition(100, 100);
+
+	switch (player)
+	{
+	case AERYK:
+		setPosition(200, 2000);
+		break;
+	case ASHTON:
+	case AUBREY:
+		setPosition(300, 2000);
+		break;
+	case PHOENIX:
+	case ROWAN:
+	case STEVE:
+	case BRIT:
+	case KIMORA:
+	case ALEX:
+	case LEAH:
+	case NATHAN:
+		break;
+	}
 
 	for (int j = 0; j < 10; j++)
 			voiceLines[j] = std::to_string(j);
@@ -60,19 +80,19 @@ void Npc::continueTalking(sf::RenderWindow& window)
 
 
 //display text
-void Npc::talk(sf::RenderWindow &window)
+void Npc::talk(sf::RenderWindow &window, int x, int y)
 {
 	//do magic
 	sf::RectangleShape outline, background;
 
 	outline.setSize(sf::Vector2f(600, 300));
-	outline.setPosition(0, 300);
+	outline.setPosition(0 + ((x - 1) * 600), 300 + ((y - 1) * 600));
 
 	background.setSize(sf::Vector2f(580, 280));
-	background.setPosition(10, 310);
+	background.setPosition(10 + ((x - 1) * 600), 310 + ((y - 1) * 600));
 	background.setFillColor(sf::Color::Black);
 
-	text.setPosition(20, 320);
+	text.setPosition(20 + ((x - 1) * 600), 320 + ((y - 1) * 600));
 
 	window.draw(outline);
 	window.draw(background);

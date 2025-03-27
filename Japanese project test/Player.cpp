@@ -9,7 +9,7 @@ Player::Player()
 {
 	setSize(sf::Vector2f(50, 50));
 	setOrigin(0, 0);
-	setPosition(0, 550);
+	setPosition(0, 1750);
 	setFillColor(sf::Color::Green);
 }
 
@@ -57,35 +57,35 @@ void Player::move()
 	//move
 	RectangleShape::move(xMove, yMove);
 
-	if (getPosition().x < 0)
+	if (getPosition().x < WINDOWX * xScreen - 600)
 	{
-		RectangleShape::setPosition(WINDOWX - 50, getPosition().y);
-		lastScreen.x = xScreen;
 		xScreen--;
-		std::cout << "x: " << xScreen << std::endl;
-		std::cout << "y: " << yScreen << std::endl;
-	}
-	if (getPosition().y < 0)
-	{
-		RectangleShape::setPosition(getPosition().x, WINDOWY - 50);
-		lastScreen.y = yScreen;
-		yScreen--;
-		std::cout << "x: " << xScreen << std::endl;
-		std::cout << "y: " << yScreen << std::endl;
-	}
-	if (getPosition().x > WINDOWX - 50)
-	{
-		RectangleShape::setPosition(0, getPosition().y);
+		RectangleShape::setPosition(WINDOWX * xScreen - 50, getPosition().y);
 		lastScreen.x = xScreen;
-		xScreen++;
 		std::cout << "x: " << xScreen << std::endl;
 		std::cout << "y: " << yScreen << std::endl;
 	}
-	if (getPosition().y > WINDOWY - 50)
+	if (getPosition().y < WINDOWY * yScreen - 600)
 	{
-		RectangleShape::setPosition(getPosition().x, 0);
+		yScreen--;
+		RectangleShape::setPosition(getPosition().x, WINDOWY * yScreen - 50);
 		lastScreen.y = yScreen;
+		std::cout << "x: " << xScreen << std::endl;
+		std::cout << "y: " << yScreen << std::endl;
+	}
+	if (getPosition().x > WINDOWX * xScreen - 50)
+	{
+		xScreen++;
+		RectangleShape::setPosition(WINDOWX * xScreen - 600, getPosition().y);
+		lastScreen.x = xScreen;
+		std::cout << "x: " << xScreen << std::endl;
+		std::cout << "y: " << yScreen << std::endl;
+	}
+	if (getPosition().y > WINDOWY * yScreen - 50)
+	{
 		yScreen++;
+		RectangleShape::setPosition(getPosition().x, WINDOWY * yScreen - 600);
+		lastScreen.y = yScreen;
 		std::cout << "x: " << xScreen << std::endl;
 		std::cout << "y: " << yScreen << std::endl;
 	}
@@ -228,10 +228,10 @@ void Player::printEscMenu(sf::RenderWindow& window)
 	text.setFont(font);
 
 	outline.setSize(sf::Vector2f(300, 420));
-	outline.setPosition(150, 100);
+	outline.setPosition(150 + (600 * (xScreen - 1)), 100 + (600 * (yScreen - 1)));
 
 	background.setSize(sf::Vector2f(280, 400));
-	background.setPosition(160, 110);
+	background.setPosition(160 + (600 * (xScreen - 1)), 110 + (600 * (yScreen - 1)));
 	background.setFillColor(sf::Color::Black);
 
 	selection.setSize(sf::Vector2f(280, 50));
@@ -243,9 +243,9 @@ void Player::printEscMenu(sf::RenderWindow& window)
 		window.draw(background);
 
 		if (currentMenuSelection >= 0)
-			selection.setPosition(160, 110 + (currentMenuSelection * 50));
+			selection.setPosition(160 + (600 * (xScreen - 1)), 110 + (currentMenuSelection * 50) + (600 * (yScreen - 1)));
 		else 
-			selection.setPosition(-100, -100);
+			selection.setPosition(-100 + (600 * (xScreen - 1)), -100 + (600 * (yScreen - 1)));
 		if (currentMenuSelection == 7)
 			selection.setFillColor(sf::Color::Red);
 		window.draw(selection);
@@ -254,7 +254,7 @@ void Player::printEscMenu(sf::RenderWindow& window)
 		{
 			text.setString(message[i]);
 			text.setOrigin(text.getLocalBounds().width /2, text.getGlobalBounds().height / 2);
-			text.setPosition(300, 130 + (i * 50));
+			text.setPosition(300 + (600 * (xScreen - 1)), 130 + (i * 50) + (600 * (yScreen - 1)));
 			window.draw(text);
 		}
 	}

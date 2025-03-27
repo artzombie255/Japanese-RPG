@@ -3,17 +3,18 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "Intaractable.h"
+#include "globals.h"
 
 
 class Npc : public Intaractable
 {
 public:
 	Npc();
-	Npc(int);
+	Npc(enum CHARACTERS);
 	~Npc();
 
 	void continueTalking(sf::RenderWindow&);
-	void talk(sf::RenderWindow&);
+	void talk(sf::RenderWindow&, int, int);
 
 private:
 	//AUBREY, ASHTON, AERYK, LILLY, KIMORA, SHIN

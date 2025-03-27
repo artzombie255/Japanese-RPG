@@ -149,6 +149,7 @@
     <ClInclude Include="DoubleSubscriptedArray.h" />
     <ClInclude Include="Encounter.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="globals.h" />
     <ClInclude Include="Intaractable.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Npc.h" />
@@ -157,16 +158,16 @@
     <ClInclude Include="Shop.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Levels\0level0.txt" />
-    <Text Include="Levels\0level1.txt" />
     <Text Include="Levels\0level2.txt" />
-    <Text Include="Levels\1level0.txt" />
-    <Text Include="Levels\1level1.txt" />
+    <Text Include="Levels\0level3.txt" />
+    <Text Include="Levels\0level4.txt" />
     <Text Include="Levels\1level2.txt" />
-    <Text Include="Levels\2level0.txt" />
-    <Text Include="Levels\2level1.txt" />
+    <Text Include="Levels\1level3.txt" />
+    <Text Include="Levels\1level4.txt" />
     <Text Include="Levels\2level2.txt" />
-    <Text Include="Levels\p1level1.txt" />
+    <Text Include="Levels\2level3.txt" />
+    <Text Include="Levels\2level4.txt" />
+    <Text Include="Levels\p1level3.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,6 +17,34 @@ Encounter::~Encounter()
 }
 
 
+void Encounter::addToTeam(CHARACTERS newCharacter)
+{
+	int i = 0;
+	bool added = false;
+
+	team.push_back(newCharacter);
+	if (team.size() > 4)
+		changeTeam();
+	else 
+		while (i < 4 && added == false)
+		{
+			if (currentTeam[i] == CHARACTERS::BLANK)
+			{
+				currentTeam[i] = newCharacter;
+				added = true;
+			}
+			i++;
+		}
+	return;
+}
+
+
+void Encounter::changeTeam()
+{
+
+}
+
+
 void Encounter::displayEncounter(sf::RenderWindow &window)
 {
 	//do magic
@@ -367,6 +395,7 @@ void Encounter::targetMenu(sf::RenderWindow&)
 		case 3:
 			enemyHp[currentMenuSelection] -= attack();
 			switchTurn();
+			break;
 		case 5:
 			currentScreen = MENUTYPE::WEAPONS;
 			break;
@@ -683,7 +712,7 @@ void Encounter::unique()
 
 		break;
 	case CHARACTERS::ROWAN:
-
+		currentScreen = MENUTYPE::CHARACTER_TARGET;
 		break;
 	case CHARACTERS::BLANK:
 

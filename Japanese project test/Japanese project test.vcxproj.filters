@@ -74,36 +74,39 @@
     <ClInclude Include="PathFindingAStar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Levels\1level2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Levels\2level0.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Levels\2level1.txt">
+    <Text Include="Levels\1level4.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Levels\2level2.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Levels\0level0.txt">
+    <Text Include="Levels\2level3.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Levels\0level1.txt">
+    <Text Include="Levels\2level4.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Levels\0level2.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Levels\1level0.txt">
+    <Text Include="Levels\0level3.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Levels\1level1.txt">
+    <Text Include="Levels\0level4.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Levels\p1level1.txt">
+    <Text Include="Levels\1level2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Levels\1level3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Levels\p1level3.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

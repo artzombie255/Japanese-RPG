@@ -13,10 +13,11 @@ public:
 	virtual void continueTalking(sf::RenderWindow&);
 	void setInteraction(bool);
 	bool getInteraction();
-	virtual void talk(sf::RenderWindow&);
+	virtual void talk(sf::RenderWindow&, int, int);
 	virtual void nextLine();
 	void increaseLength(int person);
 	void print(sf::RenderWindow&);
+	virtual void move(int, int, std::vector<Intaractable*>&);
 
 protected:
 	bool interaction = false;

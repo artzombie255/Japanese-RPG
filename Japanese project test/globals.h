@@ -1,0 +1,21 @@
+#pragma once
+
+enum CHARACTERS
+{
+	AERYK = 0,
+	ASHTON,
+	AUBREY,
+	PHOENIX,
+	ROWAN,
+	STEVE,
+	CHASE,
+
+	BRIT,
+	KIMORA,
+	ALEX,
+
+	LILLY,
+	LEAH,
+	NATHAN,
+	BLANK
+};

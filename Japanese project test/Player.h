@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include "Intaractable.h"
 #include <vector>
+#include "globals.h"
 
 
 extern const int WINDOWX, WINDOWY;
@@ -33,10 +34,10 @@ public:
 	bool getEscMenuOpen();
 
 private:
-	int xScreen = 1, yScreen = 1, escDelay = 0, currentMenuSelection = 0;
+	int xScreen = 1, yScreen = 3, escDelay = 0, currentMenuSelection = 0;
 	double xMove = 0, yMove = 0;
 	//left == true, right == false
 	bool lost, escMenuOpen = false;
-	sf::Vector2i lastScreen = sf::Vector2i(1, 1);
+	sf::Vector2i lastScreen = sf::Vector2i(1, 3);
 
 };

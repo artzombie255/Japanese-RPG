@@ -10,6 +10,7 @@
 #include "Enemy.h"
 #include "Encounter.h"
 #include "Intaractable.h"
+#include "globals.h"
 
 
 const int WINDOWX = 600, WINDOWY = 600, NUMOFCHUNKS = 24, SIZEOFCHUNK = 25;
@@ -20,24 +21,30 @@ int main()
     srand(time(NULL));
 
     //create everything
+    sf::View viewport;
     sf::Font font;
     sf::String hdr;
     sf::Text text;
     Player player;
     Level level;
     Encounter encounter;
-    int xScreen = 1, yScreen = 1;
+    int xScreen = 1, yScreen = 3;
     DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
     std::vector<Intaractable*> Npcs;
     std::vector<Intaractable*> Enemies;
     std::vector<Intaractable*> wallVec;
     bool inMenu = false, printWalls = false;
-    
-    //create entities
-    for (int i = 0; i < 6; i++)
-        Npcs.push_back(new Npc(i));
 
-    for (int i = 0; i < 6; i++)
+    viewport.setSize(600, 600);
+    viewport.setCenter(300, 1500);
+
+    //create entities
+  
+    Npcs.push_back(new Npc(AERYK));
+    Npcs.push_back(new Npc(AUBREY));
+
+
+    //for (int i = 0; i < 1; i++)
         Enemies.push_back(new Enemy(1));
 
 
@@ -47,11 +54,12 @@ int main()
     text.setFont(font);
     //make window
     sf::RenderWindow window(sf::VideoMode(WINDOWX, WINDOWY), hdr);
+    window.setView(viewport);
 
     window.setFramerateLimit(60);
 
     //load the first level
-    level.loadLevel(arr, "1level1", wallVec);
+    level.loadLevel(arr, "1level3", wallVec, 1, 3, viewport);
     /*for (int i = 0; i <= wallVec.size() - 1; i++)
     {
         wallVec.push_back(new Intaractable);
@@ -82,14 +90,21 @@ int main()
 
             //encounter
             if (encounter.getInEncounter() == true)
+            {
+                viewport.setCenter(300, 300);
                 encounter.playEncounter(window);
+            }
+            else 
+                viewport.setCenter((600.f * player.getScreenX()) - 300, (600.f * player.getScreenY()) - 300);
 
+            window.setView(viewport);
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
                 printWalls = true;
             else
                 printWalls = false;
 
         }
+
 
         inMenu = false;
         //sets if in esc menu
@@ -119,21 +134,28 @@ int main()
             player.collision(Enemies, INTERACTIONTYPE::ENEMY) == false &&
             player.collision(wallVec, INTERACTIONTYPE::WALL) == false
             )
+        {
             player.move();
+        }
+        if (inMenu == false && encounter.getInEncounter() == false)
+            for (int i = 0; i < Enemies.size(); i++)
+            {
+                Enemies.at(i)->move(player.getPosition().x, player.getPosition().y, wallVec);
+            }
 
         //checks the screen the player is on
         if (xScreen != player.getScreenX() || yScreen != player.getScreenY())
         {
-            for (int i = wallVec.size() - 1; i > 0; i--)
+            /*for (int i = wallVec.size() - 1; i > 0; i--)
             {
                 delete wallVec.at(i);
-            }
-            wallVec.clear();
+            }*/
+            //wallVec.clear();
             std::cout << "switchLevel";
             xScreen = player.getScreenX();
             yScreen = player.getScreenY();
-            level.loadLevel(arr, std::to_string(xScreen) + "level" + std::to_string(yScreen), wallVec);
-
+            level.loadLevel(arr, std::to_string(xScreen) + "level" + std::to_string(yScreen), wallVec, xScreen, yScreen, viewport);
+            window.setView(viewport);
             /*for (int i = 0; i <= wallVec.size() - 1; i++)
             {
                 wallVec.push_back(new Intaractable);
@@ -147,6 +169,7 @@ int main()
         level.print(window, arr);
         for (int i = 0; i < Enemies.size(); i++)
         {
+            //window.draw(*Enemies.at(i));
             Enemies.at(i)->print(window);
         }
 
@@ -155,6 +178,7 @@ int main()
                 window.draw(*wallVec.at(i));
 
         window.draw(player);
+
 
         //print npcs
         for (int i = Npcs.size() - 1; i >= 0; i--)
@@ -167,12 +191,16 @@ int main()
             Enemies.at(i)->print(window);
         }
 
+        level.printF(window, arr);
 
         //interactions with entities
         for (int i = 0; Npcs.size() > i; i++)
         {
             if (Npcs.at(i)->getInteraction() == true)
-                Npcs.at(i)->talk(window);
+            {
+                Npcs.at(i)->talk(window, xScreen, yScreen);
+                level.updateRoom(1,1);
+            }
         }
         
         //display encounters

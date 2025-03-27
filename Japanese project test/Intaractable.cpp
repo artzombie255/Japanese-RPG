@@ -27,7 +27,7 @@ bool Intaractable::getInteraction()
 }
 
 
-void Intaractable::talk(sf::RenderWindow&)
+void Intaractable::talk(sf::RenderWindow&, int, int)
 {
 }
 
@@ -46,5 +46,11 @@ void Intaractable::increaseLength(int person)
 
 void Intaractable::print(sf::RenderWindow &window)
 {
+	sprite.setPosition(getPosition().x, getPosition().y);
 	window.draw(sprite);
+}
+
+
+void Intaractable::move(int, int, std::vector<Intaractable*>&)
+{
 }

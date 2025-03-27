@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Player.h"
 #include "Level.h"
+#include "globals.h"
 
 
 constexpr int NUMOFWEAPONS = 17, NUMOFRANGED = 5, NUMOFITEMS = 4;
@@ -28,26 +29,6 @@ enum class WEAPONTYPE : unsigned char
 	MELEE
 };
 
-enum CHARACTERS
-{
-	AERYK = 0,
-	ASHTON,
-	AUBREY,
-	PHOENIX,
-	ROWAN,
-	STEVE,
-	CHASE,
-	
-	BRIT,
-	KIMORA,
-	ALEX,
-
-	LILLY,
-	LEAH,
-	NATHAN,
-	BLANK
-};
-
 
 enum ENEMIES
 {
@@ -62,6 +43,9 @@ public:
 	Encounter();
 	Encounter(Player&, Level&);
 	~Encounter();
+
+	void addToTeam(CHARACTERS);
+	void changeTeam();
 
 	void displayEncounter(sf::RenderWindow&);
 	void playEncounter(sf::RenderWindow&);
@@ -121,7 +105,8 @@ private:
 		//possession
 		meleeOwned[NUMOFWEAPONS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };
-	CHARACTERS currentTeam[4] = { CHARACTERS::AERYK,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
+	CHARACTERS currentTeam[4] = { CHARACTERS::PHOENIX,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
+	std::vector<CHARACTERS> team;
 	//levels
 	const int levels[10] = { 0, 5, 15, 30, 50, 75, 105, 140, 180, 225 },
 		//effect
