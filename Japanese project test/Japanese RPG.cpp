@@ -28,7 +28,7 @@ int main()
     Player player;
     Level level;
     Encounter encounter;
-    int xScreen = 1, yScreen = 3;
+    int xScreen = 1, yScreen = 3, enemyEncounterNum = 0;
     DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
     std::vector<Intaractable*> Npcs;
     std::vector<Intaractable*> Enemies;
@@ -93,6 +93,18 @@ int main()
             {
                 viewport.setCenter(300, 300);
                 encounter.playEncounter(window);
+                if (encounter.endEncounter() == true)
+                {
+                    if (Enemies.size() - 1 != enemyEncounterNum)
+                    {
+                        for (int i = enemyEncounterNum; i < Enemies.size(); i++)
+                        {
+                            Enemies.at(i - 1) = Enemies.at(i);
+                        }
+                    }
+                    Enemies.pop_back();
+
+                }
             }
             else 
                 viewport.setCenter((600.f * player.getScreenX()) - 300, (600.f * player.getScreenY()) - 300);
@@ -121,6 +133,7 @@ int main()
         {
             if (Enemies.at(i)->getInteraction() == true)
             {
+                enemyEncounterNum = i;
                 encounter.setEncounter();
                 Enemies.at(i)->setInteraction(false);
             }
@@ -183,7 +196,7 @@ int main()
         //print npcs
         for (int i = Npcs.size() - 1; i >= 0; i--)
         {
-            window.draw(*Npcs.at(i));
+            Npcs.at(i)->print(window);
         }
 
         for (int i = Enemies.size() - 1; i >= 0; i--)

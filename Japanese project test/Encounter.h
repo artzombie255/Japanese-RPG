@@ -43,6 +43,8 @@ public:
 	Encounter();
 	Encounter(Player&, Level&);
 	~Encounter();
+	
+	bool endEncounter();
 
 	void addToTeam(CHARACTERS);
 	void changeTeam();
@@ -94,7 +96,7 @@ private:
 
 	int encounterType = 0, currentMenuSelection = 0;
 	MENUTYPE currentScreen = MENUTYPE::ACTIONS;
-	bool enemyAlive[4] = { true, false, false, false }, enemiesAlive = false;
+	bool enemyAlive[4] = { true, false, false, false }, enemiesAlive = true;
 	int str, dex, hp, natArmor, maxHp;
 	int lvl, exp, money,
 		equippedWeapon = 1, weapon, activeBurn = 0,

@@ -17,6 +17,17 @@ Encounter::~Encounter()
 }
 
 
+bool Encounter::endEncounter()
+{
+	if (enemiesAlive == false)
+	{
+		inEncounter = false;
+		return true;
+	}
+	return false;
+}
+
+
 void Encounter::addToTeam(CHARACTERS newCharacter)
 {
 	int i = 0;
@@ -239,7 +250,7 @@ void Encounter::enemiesTurn()
 
 void Encounter::ActionsMenu(sf::RenderWindow& window)
 {
-	
+
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection >= 0)
 	{
 		switch (currentMenuSelection)

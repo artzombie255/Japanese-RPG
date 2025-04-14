@@ -26,6 +26,10 @@ Npc::Npc(CHARACTERS player)
 		break;
 	case ASHTON:
 	case AUBREY:
+		img.loadFromFile("./Sprites/characters/AU_R.png");
+		sprite.setTexture(img);
+		sprite.setScale(3.125, 3.125);
+		sprite.setPosition(getPosition().x, getPosition().y);
 		setPosition(300, 2000);
 		break;
 	case PHOENIX:
@@ -100,4 +104,11 @@ void Npc::talk(sf::RenderWindow &window, int x, int y)
 	text.setString(voiceLines[currentLine]);
 
 	window.draw(text);
+}
+
+
+void Npc::print(sf::RenderWindow& window)
+{
+	sprite.setPosition(getPosition().x, getPosition().y);
+	window.draw(sprite);
 }

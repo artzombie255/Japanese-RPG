@@ -14,7 +14,8 @@ public:
 	~Npc();
 
 	void continueTalking(sf::RenderWindow&);
-	void talk(sf::RenderWindow&, int, int);
+	void talk(sf::RenderWindow&, int, int); 
+	void print(sf::RenderWindow&);
 
 private:
 	//AUBREY, ASHTON, AERYK, LILLY, KIMORA, SHIN
