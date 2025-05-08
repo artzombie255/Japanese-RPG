@@ -17,12 +17,13 @@ public:
 	void talk(sf::RenderWindow&, int, int); 
 	void print(sf::RenderWindow&);
 
+
 private:
 	//AUBREY, ASHTON, AERYK, LILLY, KIMORA, SHIN
-	std::string voiceLines[10];
-	int voiceLinesLength[10], CurrentInteraction = 0;
+	static sf::String voiceLines[42];
+	static int voiceLinesLength[10];
 	sf::Font font;
 	sf::Text text;
-	int currentLine = 0, inputDelay = 0;
+	static int inputDelay;
 };
 

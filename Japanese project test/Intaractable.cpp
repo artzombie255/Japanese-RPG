@@ -1,5 +1,8 @@
 #include "Intaractable.h"
 
+//int Intaractable::CurrentInteraction = 0;
+//int Intaractable::currentLine = 0;
+
 Intaractable::Intaractable()
 {
 }

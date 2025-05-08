@@ -40,6 +40,7 @@ int main()
 
     //create entities
   
+    Npcs.push_back(new Npc(BLANK));
     Npcs.push_back(new Npc(AERYK));
     Npcs.push_back(new Npc(AUBREY));
 
@@ -212,8 +213,25 @@ int main()
             if (Npcs.at(i)->getInteraction() == true)
             {
                 Npcs.at(i)->talk(window, xScreen, yScreen);
-                level.updateRoom(1,1);
+                //std::cout << Npcs.at(i)->getCurrentInteraction();
+             
+
             }
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 1)
+        {
+            Npcs.at(0)->setPosition(-100, -100);
+            Npcs.at(0)->setSize(sf::Vector2f(0, 0));
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 2)
+        {
+            level.updateRoom(1, 1);
+            Npcs.at(1)->setPosition(-100, -100);
+            Npcs.at(1)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(2)->setPosition(-100, -100);
+            Npcs.at(2)->setSize(sf::Vector2f(0, 0));
         }
         
         //display encounters

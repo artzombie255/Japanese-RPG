@@ -18,10 +18,12 @@ public:
 	void increaseLength(int person);
 	void print(sf::RenderWindow&);
 	virtual void move(int, int, std::vector<Intaractable*>&);
+	int getCurrentInteraction() { return CurrentInteraction; }
 
 protected:
 	bool interaction = false;
-	int currentLine = 0, currentLength[6] = {};
+	static int currentLine, CurrentInteraction;
+	int currentLength[6] = {};
 	sf::Texture img;
 	sf::Sprite sprite;
 };

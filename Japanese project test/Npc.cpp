@@ -1,6 +1,19 @@
 ﻿#include "Npc.h"
 #include <iostream>
 
+int Npc::CurrentInteraction = 0;
+int Npc::currentLine = 0;
+int Npc::inputDelay = 0;
+sf::String Npc::voiceLines[42] = { L"Aubrey：助けてください！", 
+L"Aubrey：ゾンビたちは私たちを\n驚かしました。", 
+L"Aeryk：ゾンビが多過ぎます。",
+L"Aubrey：こちらはだめです。", 
+L"Aeryk：私たちを助けてくれるなら、\n私は転石が押せます。", 
+L"Aeryk：行きましょう！"};
+int Npc::voiceLinesLength[10] = {0, 5};
+
+
+
 
 Npc::Npc()
 {
@@ -22,7 +35,11 @@ Npc::Npc(CHARACTERS player)
 	switch (player)
 	{
 	case AERYK:
-		setPosition(200, 2000);
+		img.loadFromFile("./Sprites/characters/AE_L.png");
+		sprite.setTexture(img);
+		sprite.setScale(3.125, 3.125);
+		sprite.setPosition(getPosition().x, getPosition().y);
+		setPosition(225, 3200);
 		break;
 	case ASHTON:
 	case AUBREY:
@@ -30,7 +47,7 @@ Npc::Npc(CHARACTERS player)
 		sprite.setTexture(img);
 		sprite.setScale(3.125, 3.125);
 		sprite.setPosition(getPosition().x, getPosition().y);
-		setPosition(300, 2000);
+		setPosition(300, 3200);
 		break;
 	case PHOENIX:
 	case ROWAN:
@@ -40,14 +57,13 @@ Npc::Npc(CHARACTERS player)
 	case ALEX:
 	case LEAH:
 	case NATHAN:
+	case BLANK:
+		setSize(sf::Vector2f(600, 600));
+		setPosition(0, 3100);
 		break;
 	}
 
-	for (int j = 0; j < 10; j++)
-			voiceLines[j] = std::to_string(j);
 
-	for (int j = 0; j < 10; j++)
-			voiceLinesLength[j] = 2 * j;
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
 	text.setFont(font);
 
@@ -68,14 +84,19 @@ void Npc::continueTalking(sf::RenderWindow& window)
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && interaction == true 
 		&& inputDelay > 5 && position.y > 300)
 	{
-		if (voiceLinesLength[CurrentInteraction] <= currentLine)
+		if (voiceLinesLength[CurrentInteraction] == currentLine)
 		{
-			interaction = false;
+			std::cout << currentLine;
 			currentLine++;
 			CurrentInteraction++;
+			interaction = false;
+			std::cout << "interacted" << CurrentInteraction;
+
+
 		}
 		else
 		{
+			std::cout << currentLine;
 			currentLine++;
 			inputDelay = 0;
 		}
