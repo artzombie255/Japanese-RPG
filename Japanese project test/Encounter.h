@@ -96,7 +96,7 @@ private:
 	//left == true, right == false
 	bool lost, burn = false, escMenuOpen = false;
 
-	int encounterType = 0, currentMenuSelection = 0;
+	int encounterType = 0, currentMenuSelection = 0, currentLeveling = 0;
 	MENUTYPE currentScreen = MENUTYPE::ACTIONS;
 	bool enemyAlive[4] = { true, false, false, false }, enemiesAlive = true;
 	int str, dex, hp, natArmor, maxHp;

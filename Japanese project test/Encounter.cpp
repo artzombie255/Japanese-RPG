@@ -106,7 +106,8 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 	}
 
 	//display the button being hovered over
-	if (currentScreen != MENUTYPE::INVENTORY && currentScreen != MENUTYPE::CHARACTER_TARGET)
+	if (currentScreen != MENUTYPE::INVENTORY && currentScreen != MENUTYPE::CHARACTER_TARGET 
+		&& currentScreen != MENUTYPE::LEVEL_UP)
 	{
 		selection.setFillColor(sf::Color(99, 99, 99));
 
@@ -154,6 +155,7 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::CHARACTER_TARGET:
 		printTargetCharacterMenu(window);
+		break;
 	case MENUTYPE::LEVEL_UP:
 		printLevelUpMenu(window);
 	}
@@ -169,7 +171,8 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 	currentMenuSelection = -1;
 
 	//track where the cursor is
-	if (currentScreen != MENUTYPE::INVENTORY && currentScreen != MENUTYPE::CHARACTER_TARGET)
+	if (currentScreen != MENUTYPE::INVENTORY && currentScreen != MENUTYPE::CHARACTER_TARGET
+		&& currentScreen != MENUTYPE::LEVEL_UP)
 	{
 		if (position.y > 430 && position.y < 490)
 		{
@@ -202,11 +205,13 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::INVENTORY:
 		InvMenu(window);
+		break;
 	case MENUTYPE::TARGET:
 		targetMenu(window);
 		break;
 	case MENUTYPE::CHARACTER_TARGET:
 		targetCharacterMenu(window);
+		break;
 	case MENUTYPE::LEVEL_UP:
 		levelUpMenu(window);
 	}
@@ -422,8 +427,9 @@ void Encounter::targetMenu(sf::RenderWindow&)
 		case 2:
 		case 3:
 			enemyHp[currentMenuSelection] -= attack();
-			addExp(10);
+			//addExp(10);
 			switchTurn();
+			//currentScreen = MENUTYPE::LEVEL_UP;
 			break;
 		case 5:
 			currentScreen = MENUTYPE::WEAPONS;
@@ -439,6 +445,8 @@ void Encounter::targetMenu(sf::RenderWindow&)
 			if (enemyAlive[i] == true)
 				enemiesAlive = true;
 		}
+		if (enemiesAlive == false)
+			addExp(rand() % 10);
 	}
 }
 
@@ -481,13 +489,28 @@ void Encounter::targetCharacterMenu(sf::RenderWindow& window)
 
 void Encounter::levelUpMenu(sf::RenderWindow& window)
 {
-	int improvementPoints = 3, menu = 0;
-	bool dexUp = true, strUp = true, wisUp = true, hpUp = true;
+	//int improvementPoints = 3, menu = 0;
+	//bool dexUp = true, strUp = true, wisUp = true, hpUp = true;
 
 	sf::Vector2i position = sf::Mouse::getPosition(window);
 	int temp = 0;
 
 	currentMenuSelection = -1;
+
+	
+	if ((!(levels[PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl] <=
+		PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].exp) ||
+		currentTeam[currentLeveling] == CHARACTERS::BLANK) && currentLeveling <= 2)
+	{
+		currentLeveling++;
+	}
+	else if (currentLeveling == 3 && (!(levels[PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl] <=
+		PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].exp) ||
+		currentTeam[currentLeveling] == CHARACTERS::BLANK))
+	{
+		currentScreen = MENUTYPE::ACTIONS;
+		currentLeveling = 0;
+	}
 
 	//players button tracking
 	if (position.x > 108 && position.x < 168)
@@ -498,15 +521,6 @@ void Encounter::levelUpMenu(sf::RenderWindow& window)
 				currentMenuSelection = i;
 		}
 	}
-	/*
-	else if (position.y > 510 && position.y < 570)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			if (position.x > 32 + (i * 186) && position.x < 196 + (i * 186))
-				currentMenuSelection = i + 3;
-		}
-	}*/
 	else if (position.x > 510 && position.x < 540)
 	{
 		if (position.y > 60 && position.y < 90)
@@ -515,24 +529,44 @@ void Encounter::levelUpMenu(sf::RenderWindow& window)
 	else
 		currentMenuSelection = -1;
 
-
+	std::cout << currentLeveling << std::endl;
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection != -1)
 	{
 		switch (currentMenuSelection)
 		{
 		case 0:
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxHp += 5;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl++;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].hp =
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxHp;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].mag =
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxMag;
+			break;
 		case 1:
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].dex++;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl++;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].hp =
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxHp;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].mag =
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxMag;
+			break;
 		case 2:
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].str++;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl++;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].hp =
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxHp;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].mag =
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxMag;
+			break;
 		case 3:
-			if (PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::RANGED)
-			{
-
-			}
-			else if (PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::MELEE)
-			{
-
-			}
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxMag++;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].mag++;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl++;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].hp =
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxHp;
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].mag =
+				PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxMag;
 			break;
 
 		case 4:
@@ -541,7 +575,6 @@ void Encounter::levelUpMenu(sf::RenderWindow& window)
 		}
 	}
 
-	lvl += 1;
 
 		//display menu
 		/*
@@ -557,7 +590,7 @@ void Encounter::levelUpMenu(sf::RenderWindow& window)
 		*/
 
 		//menu for choices
-		switch (menu)
+		/*switch (menu)
 		{
 		case 1:
 			if (dex < 10 && dexUp == true)
@@ -593,7 +626,7 @@ void Encounter::levelUpMenu(sf::RenderWindow& window)
 		}
 
 	hp = maxHp;
-
+	*/
 	return;
 }
 
@@ -762,7 +795,14 @@ void Encounter::printLevelUpMenu(sf::RenderWindow& window)
 {
 	//sets up backgrounds and outlines and selection
 	sf::RectangleShape MenuOutline, MenuBackground, selection;
+	//sets up text
+	sf::Text text;
+	sf::String message[4] = { L"HP",  L"DEX",  L"STR",  L"MAG" };
+	sf::Font font;
 
+	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
+	text.setFont(font);
+	
 	MenuOutline.setSize(sf::Vector2f(500, 500));
 	MenuOutline.setPosition(50, 50);
 
@@ -794,6 +834,15 @@ void Encounter::printLevelUpMenu(sf::RenderWindow& window)
 	}
 	else
 		selection.setPosition(-100, -100);
+
+	for (int i = 0; i < 4; i++)
+	{
+		text.setString(message[i]);
+		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
+		text.setPosition(135, 130 + (i * 108));
+		window.draw(text);
+	}
+
 
 
 }
@@ -929,13 +978,15 @@ void Encounter::addExp(int tempExp)
 {
 	for (int i = 0; i < 4; i++)
 	{
-		PlayableCharacters[currentTeam[i]].exp += tempExp;
+		PlayableCharacters[enumToIntCharacters(currentTeam[i])].exp += tempExp;
 		/*while (levels[lvl + 1] <= exp)
 		{
 			levelUp(i);
 		}*/
+		if (levels[PlayableCharacters[enumToIntCharacters(currentTeam[i])].lvl] <=
+			PlayableCharacters[enumToIntCharacters(currentTeam[i])].exp)
+			currentScreen = MENUTYPE::LEVEL_UP;
 	}
-	currentScreen = MENUTYPE::LEVEL_UP;
 	return;
 }
 

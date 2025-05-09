@@ -225,7 +225,7 @@ int main()
             Npcs.at(0)->setSize(sf::Vector2f(0, 0));
         }
 
-        if (Npcs.at(0)->getCurrentInteraction() >= 2)
+        if (Npcs.at(0)->getCurrentInteraction() >= 2 || true)
         {
             level.updateRoom(1, 1);
             Npcs.at(1)->setPosition(-100, -100);
