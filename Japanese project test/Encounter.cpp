@@ -1,6 +1,19 @@
 ﻿#include "Encounter.h"
 
 
+Encounter::Characters Encounter::PlayableCharacters[8] =
+{
+	//name, type, max hp, current hp, armor, strength, dexterity, magic slots, max magic slots, level, xp, current weapon
+	{CHARACTERS::AERYK,		WEAPONTYPE::MELEE,  25, 25, 1, 1, 0, 1, 1, 1, 0, 10},
+	{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE,  25, 25, 2, 3, 0, 2, 2, 5, 0, 6},
+	{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE,  20, 20, 0, 2, 1, 1, 1, 1, 0, 5},
+	{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 3, 1, 0, 14},
+	{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 3, 0, 14},
+	{CHARACTERS::STEVE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 3, 1, 0, 14},
+	{CHARACTERS::CHASE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 3, 0, 14},
+	{CHARACTERS::BLANK,		WEAPONTYPE::MELEE,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
 Encounter::Encounter()
 {
 }
@@ -19,7 +32,7 @@ Encounter::~Encounter()
 
 bool Encounter::endEncounter()
 {
-	if (enemiesAlive == false)
+	if (enemiesAlive == false && currentScreen != MENUTYPE::LEVEL_UP)
 	{
 		inEncounter = false;
 		return true;
@@ -141,6 +154,8 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::CHARACTER_TARGET:
 		printTargetCharacterMenu(window);
+	case MENUTYPE::LEVEL_UP:
+		printLevelUpMenu(window);
 	}
 }
 
@@ -192,6 +207,8 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 		break;
 	case MENUTYPE::CHARACTER_TARGET:
 		targetCharacterMenu(window);
+	case MENUTYPE::LEVEL_UP:
+		levelUpMenu(window);
 	}
 }
 
@@ -405,6 +422,7 @@ void Encounter::targetMenu(sf::RenderWindow&)
 		case 2:
 		case 3:
 			enemyHp[currentMenuSelection] -= attack();
+			addExp(10);
 			switchTurn();
 			break;
 		case 5:
@@ -459,6 +477,126 @@ void Encounter::targetCharacterMenu(sf::RenderWindow& window)
 		switchTurn();
 	}
 }
+
+
+void Encounter::levelUpMenu(sf::RenderWindow& window)
+{
+	int improvementPoints = 3, menu = 0;
+	bool dexUp = true, strUp = true, wisUp = true, hpUp = true;
+
+	sf::Vector2i position = sf::Mouse::getPosition(window);
+	int temp = 0;
+
+	currentMenuSelection = -1;
+
+	//players button tracking
+	if (position.x > 108 && position.x < 168)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (position.y > 108 + (i * 108) && position.y < 168 + (i * 108))
+				currentMenuSelection = i;
+		}
+	}
+	/*
+	else if (position.y > 510 && position.y < 570)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (position.x > 32 + (i * 186) && position.x < 196 + (i * 186))
+				currentMenuSelection = i + 3;
+		}
+	}*/
+	else if (position.x > 510 && position.x < 540)
+	{
+		if (position.y > 60 && position.y < 90)
+			currentMenuSelection = 4;
+	}
+	else
+		currentMenuSelection = -1;
+
+
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentMenuSelection != -1)
+	{
+		switch (currentMenuSelection)
+		{
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+			if (PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::RANGED)
+			{
+
+			}
+			else if (PlayableCharacters[enumToIntCharacters(currentTeam[currentMenuSelection])].type == WEAPONTYPE::MELEE)
+			{
+
+			}
+			break;
+
+		case 4:
+			currentScreen = MENUTYPE::ACTIONS;
+			break;
+		}
+	}
+
+	lvl += 1;
+
+		//display menu
+		/*
+		std::cout << "New level: " << lvl << std::endl << "What do you want to improve?\n";
+		if (dex < 10 && dexUp == true)
+			std::cout << "1. Dexterity (" << dex << ")\n";
+		if (str < 10 && strUp == true)
+			std::cout << "2. Strength (" << str << ")\n";
+		if (maxHp < 60 && hpUp == true)
+			std::cout << "4. Health (" << maxHp << ")\n";
+		if (natArmor < 10 && improvementPoints > 1)
+			std::cout << "5. Armor (" << natArmor << ") (Takes 2 improvement points)\n";
+		*/
+
+		//menu for choices
+		switch (menu)
+		{
+		case 1:
+			if (dex < 10 && dexUp == true)
+			{
+				dex++;
+				improvementPoints--;
+				dexUp = false;
+			}
+			break;
+		case 2:
+			if (str < 10 && strUp == true)
+			{
+				str++;
+				improvementPoints--;
+				strUp = false;
+			}
+			break;
+		case 4:
+			if (maxHp < 60 && hpUp == true)
+			{
+				maxHp += 5;
+				improvementPoints--;
+				hpUp = false;
+			}
+			break;
+		case 5:
+			if (natArmor < 10 && improvementPoints > 1)
+			{
+				natArmor++;
+				improvementPoints -= 2;
+			}
+			break;
+		}
+
+	hp = maxHp;
+
+	return;
+}
+
 
 
 void Encounter::PrintActionsMenu(sf::RenderWindow& window)
@@ -620,6 +758,47 @@ void Encounter::printTargetCharacterMenu(sf::RenderWindow& window)
 }
 
 
+void Encounter::printLevelUpMenu(sf::RenderWindow& window)
+{
+	//sets up backgrounds and outlines and selection
+	sf::RectangleShape MenuOutline, MenuBackground, selection;
+
+	MenuOutline.setSize(sf::Vector2f(500, 500));
+	MenuOutline.setPosition(50, 50);
+
+	MenuBackground.setSize(sf::Vector2f(480, 480));
+	MenuBackground.setPosition(60, 60);
+	MenuBackground.setFillColor(sf::Color::Black);
+
+	selection.setSize(sf::Vector2f(60, 60));
+	selection.setFillColor(sf::Color(111, 124, 128));
+
+	window.draw(MenuOutline);
+	window.draw(MenuBackground);
+
+
+	selection.setFillColor(sf::Color(99, 99, 99));
+
+	//button highlights
+	if (currentMenuSelection >= 0 && currentMenuSelection < 4)
+	{
+		selection.setPosition(108, 108 + (currentMenuSelection * 108));
+		window.draw(selection);
+	}
+	else if (currentMenuSelection == 4)
+	{
+		selection.setSize(sf::Vector2f(30, 30));
+		selection.setFillColor(sf::Color::Red);
+		selection.setPosition(510, 60);
+		window.draw(selection);
+	}
+	else
+		selection.setPosition(-100, -100);
+
+
+}
+
+
 bool Encounter::getInEncounter()
 {
 	return inEncounter;
@@ -748,74 +927,15 @@ void Encounter::loseHealth(int damage)
 
 void Encounter::addExp(int tempExp)
 {
-	exp += tempExp;
-	while (levels[lvl + 1] <= exp)
+	for (int i = 0; i < 4; i++)
 	{
-		levelUp();
-	}
-	return;
-}
-
-
-void Encounter::levelUp()
-{
-	int improvementPoints = 3, menu = 0;
-	bool dexUp = true, strUp = true, wisUp = true, hpUp = true;
-
-	lvl += 1;
-	do
-	{
-		//display menu
-		/*
-		std::cout << "New level: " << lvl << std::endl << "What do you want to improve?\n";
-		if (dex < 10 && dexUp == true)
-			std::cout << "1. Dexterity (" << dex << ")\n";
-		if (str < 10 && strUp == true)
-			std::cout << "2. Strength (" << str << ")\n";
-		if (maxHp < 60 && hpUp == true)
-			std::cout << "4. Health (" << maxHp << ")\n";
-		if (natArmor < 10 && improvementPoints > 1)
-			std::cout << "5. Armor (" << natArmor << ") (Takes 2 improvement points)\n";
-		*/
-
-		//menu for choices
-		switch (menu)
+		PlayableCharacters[currentTeam[i]].exp += tempExp;
+		/*while (levels[lvl + 1] <= exp)
 		{
-		case 1:
-			if (dex < 10 && dexUp == true)
-			{
-				dex++;
-				improvementPoints--;
-				dexUp = false;
-			}
-			break;
-		case 2:
-			if (str < 10 && strUp == true)
-			{
-				str++;
-				improvementPoints--;
-				strUp = false;
-			}
-			break;
-		case 4:
-			if (maxHp < 60 && hpUp == true)
-			{
-				maxHp += 5;
-				improvementPoints--;
-				hpUp = false;
-			}
-			break;
-		case 5:
-			if (natArmor < 10 && improvementPoints > 1)
-			{
-				natArmor++;
-				improvementPoints -= 2;
-			}
-			break;
-		}
-	} while (improvementPoints != 0);
-	hp = maxHp;
-
+			levelUp(i);
+		}*/
+	}
+	currentScreen = MENUTYPE::LEVEL_UP;
 	return;
 }
 

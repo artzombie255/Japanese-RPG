@@ -17,7 +17,8 @@ enum class MENUTYPE : unsigned char
 	WEAPONS, 
 	INVENTORY,
 	TARGET,
-	CHARACTER_TARGET
+	CHARACTER_TARGET,
+	LEVEL_UP
 };
 
 enum class WEAPONTYPE : unsigned char
@@ -63,12 +64,14 @@ public:
 	void InvMenu(sf::RenderWindow&);
 	void targetMenu(sf::RenderWindow&);
 	void targetCharacterMenu(sf::RenderWindow&);
+	void levelUpMenu(sf::RenderWindow&);
 
 	void PrintActionsMenu(sf::RenderWindow&);
 	void PrintWeaponsMenu(sf::RenderWindow&);
 	void PrintInvMenu(sf::RenderWindow&);
 	void printTargetMenu(sf::RenderWindow&);
 	void printTargetCharacterMenu(sf::RenderWindow&);
+	void printLevelUpMenu(sf::RenderWindow&);
 
 	//get data
 	bool getInEncounter();
@@ -80,7 +83,6 @@ public:
 	void unique();
 	void loseHealth(int);
 	void addExp(int);
-	void levelUp();
 	void displayStats();
 	void equipWeapons();
 	void useItems();
@@ -208,18 +210,7 @@ private:
 	};
 
 	// Weapons
-	Characters PlayableCharacters[7] =
-	{
-		//name, type, max hp, current hp, armor, strength, dexterity, magic slots, max magic slots, level, xp, current weapon
-		{CHARACTERS::AERYK,		WEAPONTYPE::MELEE,  25, 25, 1, 1, 0, 1, 1, 1, 0, 10},
-		{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE,  25, 25, 2, 3, 0, 2, 2, 5, 0, 6},
-		{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE,  20, 20, 0, 2, 1, 1, 1, 1, 0, 5},
-		{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 3, 1, 0, 14},
-		{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 3, 0, 14},
-		{CHARACTERS::STEVE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 3, 1, 0, 14},
-		{CHARACTERS::CHASE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 3, 0, 14}
-	};
-
+	static Characters PlayableCharacters[8];
 
 
 
