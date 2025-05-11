@@ -11,6 +11,7 @@ enum CHARACTERS
 	CHASE,
 
 	BLANK,
+	BOOK,
 
 	BRIT,
 	KIMORA,

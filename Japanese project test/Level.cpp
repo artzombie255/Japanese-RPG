@@ -83,7 +83,7 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName, std::ve
 
 	if ((x == 1 && y == 3 && oneLevelThreeUpdated == true) || (x == 1 && y == 2) || (x == 2 && y == 0) || (x == 3 && y == 0)
 		|| (x == 0 && y == 3) || (x == 0 && y == 4) || (x == 1 && y == 4) || (x == 2 && y == 4)
-		|| (x == 4 && y == 0) || (x == 4 && y == 1) || (x == 5 && y == 0))
+		|| (x == 4 && y == 0) || (x == 4 && y == 1) || (x == 5 && y == 0) || (x == 4 && y == 4) || (x == 5 && y == 4))
 	{
 		imgF.loadFromFile("./Sprites/rooms/f" + fileName + ".png");
 		foreground.setTexture(imgF);

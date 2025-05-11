@@ -43,7 +43,8 @@ int main()
     Npcs.push_back(new Npc(BLANK));
     Npcs.push_back(new Npc(AERYK));
     Npcs.push_back(new Npc(AUBREY));
-
+    Npcs.push_back(new Npc(ROWAN));
+    Npcs.push_back(new Npc(BOOK));
 
     //for (int i = 0; i < 1; i++)
         Enemies.push_back(new Enemy(1));
@@ -246,6 +247,31 @@ int main()
         {
             Npcs.at(0)->setSize(sf::Vector2f(500, 600));
             Npcs.at(0)->setPosition(1870, -600);
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 4)
+        {
+            Npcs.at(0)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(0)->setPosition(-100, -100);
+            Npcs.at(3)->setPosition(2210, -157);
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 5)
+        {   
+            Npcs.at(4)->setSize(sf::Vector2f(25, 25));
+            Npcs.at(4)->setPosition(2210, 2100);
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 6)
+        {
+            Npcs.at(4)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(4)->setPosition(-100, -100);
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 7)
+        {
+            Npcs.at(3)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(3)->setPosition(-100, -100);
         }
 
 
