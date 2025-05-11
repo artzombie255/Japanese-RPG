@@ -326,15 +326,15 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 			break;
 		case 2:
 			//special
-			switchTurn();
+			//switchTurn();
 			break;
 		case 3:
 			//dodge
-			switchTurn();
+			//switchTurn();
 			break;
 		case 4:
 			//ready attack
-			switchTurn();
+			//switchTurn();
 			break;
 		case 5:
 			currentScreen = MENUTYPE::ACTIONS;
@@ -445,8 +445,12 @@ void Encounter::targetMenu(sf::RenderWindow&)
 			if (enemyAlive[i] == true)
 				enemiesAlive = true;
 		}
+		int rando = rand() % 10;
 		if (enemiesAlive == false)
-			addExp(rand() % 10);
+		{
+			addExp(rando);
+			std::cout << " : " << rando;
+		}
 	}
 }
 
@@ -635,7 +639,7 @@ void Encounter::levelUpMenu(sf::RenderWindow& window)
 void Encounter::PrintActionsMenu(sf::RenderWindow& window)
 {
 	sf::Text text;
-	sf::String message[6] = { L"Attack",  L"Items",  L"Switch characters order",  L"Switch weapons?",  L"",  L"Run" };
+	sf::String message[6] = { L"おそう",  L"だめ",  L"だめ",  L"ウエポンズ",  L"だめ",  L"走る" };
 	sf::Font font;
 
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -663,7 +667,7 @@ void Encounter::PrintWeaponsMenu(sf::RenderWindow& window)
 {
 	//sets up text
 	sf::Text text;
-	sf::String message[6] = { L"basic attack",  L"unique",  L"special",  L"dodge",  L"ready attack",  L"back" };
+	sf::String message[6] = { L"おそう",  L"ユニーク",  L"だめ",  L"だめ",  L"だめ",  L"帰る" };
 	sf::Font font;
 
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -733,7 +737,7 @@ void Encounter::printTargetMenu(sf::RenderWindow& window)
 {
 	//sets up text
 	sf::Text text;
-	sf::String message[6] = { L"",  L"",  L"",  L"",  L"",  L"back" };
+	sf::String message[6] = { L"一",  L"二",  L"三",  L"四",  L"だめ",  L"帰る" };
 	sf::Font font;
 
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
@@ -986,6 +990,9 @@ void Encounter::addExp(int tempExp)
 		if (levels[PlayableCharacters[enumToIntCharacters(currentTeam[i])].lvl] <=
 			PlayableCharacters[enumToIntCharacters(currentTeam[i])].exp)
 			currentScreen = MENUTYPE::LEVEL_UP;
+
+		std::cout << "xp: " << PlayableCharacters[enumToIntCharacters(currentTeam[i])].exp
+			<< "\nxp gained: " << tempExp << "\n";
 	}
 	return;
 }
