@@ -9,8 +9,11 @@ L"Aubrey：ゾンビたちは私たちを\n驚かしました。",
 L"Aeryk：ゾンビが多過ぎます。",
 L"Aubrey：こちらはだめです。", 
 L"Aeryk：私たちを助けてくれるなら、\n私は転石が押せます。", 
-L"Aeryk：行きましょう！"};
-int Npc::voiceLinesLength[10] = {0, 5};
+L"Aeryk：行きましょう！",
+L"Aubrey：私たちははしを渡りたいなら、\nはしを直さなければなりません。",
+L"Aeryk：うん、そうね、\n誰が橋を直せるでしょう。",
+L"Rowan：誰ですか？！\nゾンビは帰ってくれませんか。私はおいしくない。"};
+int Npc::voiceLinesLength[10] = {0, 5, 7, 9};
 
 
 

@@ -112,9 +112,15 @@ int main()
 
             window.setView(viewport);
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+            {
                 printWalls = true;
+                window.setFramerateLimit(240);
+            }
             else
+            {
                 printWalls = false;
+                window.setFramerateLimit(60);
+            }
 
         }
 
@@ -221,8 +227,8 @@ int main()
 
         if (Npcs.at(0)->getCurrentInteraction() >= 1)
         {
-            Npcs.at(0)->setPosition(-100, -100);
             Npcs.at(0)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(0)->setPosition(-100, -100);
         }
 
         if (Npcs.at(0)->getCurrentInteraction() >= 2)
@@ -232,8 +238,17 @@ int main()
             Npcs.at(1)->setSize(sf::Vector2f(0, 0));
             Npcs.at(2)->setPosition(-100, -100);
             Npcs.at(2)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(0)->setSize(sf::Vector2f(1200, 25));
+            Npcs.at(0)->setPosition(-300, 3000);
         }
         
+        if (Npcs.at(0)->getCurrentInteraction() >= 3)
+        {
+            Npcs.at(0)->setSize(sf::Vector2f(500, 600));
+            Npcs.at(0)->setPosition(1870, -600);
+        }
+
+
         //display encounters
         if (encounter.getInEncounter() == true)
             encounter.displayEncounter(window);
