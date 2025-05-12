@@ -63,6 +63,32 @@ void Encounter::addToTeam(CHARACTERS newCharacter)
 }
 
 
+void Encounter::printTeamSpot(int temp)
+{
+	switch (currentTeam[temp])
+	{
+	case CHARACTERS::AERYK:
+		std::cout << "Aeryk\n";
+		break;
+	case CHARACTERS::ASHTON:
+		std::cout << "Ashton\n";
+		break;
+	case CHARACTERS::AUBREY:
+		std::cout << "Aubrey\n";
+		break;
+	case CHARACTERS::PHOENIX:
+		std::cout << "Phoenix\n";
+		break;
+	case CHARACTERS::ROWAN:
+		std::cout << "Rowan\n";
+		break;
+	case CHARACTERS::BLANK:
+		std::cout << "Blank\n";
+		break;
+	}
+}
+
+
 void Encounter::changeTeam()
 {
 
@@ -164,11 +190,15 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 
 void Encounter::playEncounter(sf::RenderWindow &window)
 {
-
+	printTeamSpot(currentTeamSpot);
 
 	sf::Vector2i position = sf::Mouse::getPosition(window);
 
 	currentMenuSelection = -1;
+
+	if (currentTeamSpot != -1)
+		if (currentTeam[currentTeamSpot] == CHARACTERS::BLANK)
+			switchTurn();
 
 	//track where the cursor is
 	if (currentScreen != MENUTYPE::INVENTORY && currentScreen != MENUTYPE::CHARACTER_TARGET
@@ -240,9 +270,6 @@ void Encounter::switchTurn()
 			currentEnemySpot = 0;
 		}
 
-		if (currentTeamSpot != -1)
-			if (currentTeam[currentTeamSpot] == CHARACTERS::BLANK)
-				switchTurn();
 
 	}
 	if (currentTeamSpot == -1)
@@ -890,6 +917,22 @@ int Encounter::enumToIntCharacters(CHARACTERS temp)
 }
 
 
+void Encounter::addToParty(CHARACTERS tempCharacter)
+{
+	int i = 0;
+	bool added = false;
+
+	while( i < 4 && added == false )
+	{
+		if (currentTeam[i] == CHARACTERS::BLANK)
+		{
+			currentTeam[i] = tempCharacter;
+			added = true;
+		}
+	}
+}
+
+
 //deals with weapon logic
 int Encounter::attack()
 {
@@ -931,6 +974,10 @@ int Encounter::attack()
 		break;
 	}
 
+	attack += increasedDamage;
+
+	increasedDamage = 0;
+
 	return attack;
 }
 
@@ -949,7 +996,8 @@ void Encounter::unique()
 		switchTurn();
 		break;
 	case CHARACTERS::AUBREY:
-
+		currentScreen = MENUTYPE::WEAPONS;
+		increasedDamage = PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].maxMag;
 		break;
 	case CHARACTERS::PHOENIX:
 

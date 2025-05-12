@@ -48,6 +48,7 @@ public:
 	bool endEncounter();
 
 	void addToTeam(CHARACTERS);
+	void printTeamSpot(int);
 	void changeTeam();
 
 	void displayEncounter(sf::RenderWindow&);
@@ -79,6 +80,8 @@ public:
 
 	int enumToIntCharacters(CHARACTERS);
 
+	void addToParty(CHARACTERS);
+
 	int attack();
 	void unique();
 	void loseHealth(int);
@@ -108,8 +111,8 @@ private:
 		targetedCharacter,
 		//possession
 		meleeOwned[NUMOFWEAPONS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 };
-	CHARACTERS currentTeam[4] = { CHARACTERS::PHOENIX,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
+		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 }, increasedDamage = 0;
+	CHARACTERS currentTeam[4] = { CHARACTERS::BLANK,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
 	std::vector<CHARACTERS> team;
 	//levels
 	const int levels[10] = { 0, 5, 15, 30, 50, 75, 105, 140, 180, 225 },
