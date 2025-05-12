@@ -38,6 +38,9 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName, std::ve
 	if ((x == 1 && y == 2) || (x == 2 && y == 0))
 		inCave = true;
 
+	//if ((x == 4 && y == 0) || (x == 5 && y == 0) || (x == 4 && y == 1))
+		//inCave = false;
+
 	file.open("./Levels/" + fileName + ".txt");
 
 	system("cls");
@@ -46,7 +49,7 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName, std::ve
 	{
 		file >> NumOfWalls;
 
-		if (loaded[x][y] == false)
+		if (loaded[x + 3][y] == false)
 		{
 			for (int i = 0; i < NumOfWalls; i++)
 			{
@@ -57,7 +60,7 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName, std::ve
 				wallVec.at(i + totalWalls)->setPosition(LX + ((x - 1) * 600), LY + ((y - 1) * 600));
 				std::cout << "terst";
 			}
-			loaded[x][y] = true;
+			loaded[x + 3][y] = true;
 			totalWalls += NumOfWalls;
 		}
 		if (x == 1 && y == 3 && oneLevelThreeUpdated == true)

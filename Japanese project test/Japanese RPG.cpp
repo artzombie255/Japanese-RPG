@@ -290,9 +290,12 @@ int main()
 
         }
 
+        //std::cout << "x: " << xScreen << "\ny: " << yScreen << "\n";
+        std::cout << level.getInCave();
+
         for (int i = 0; i < 4; i++)
         {
-            encounter.printTeamSpot(i);
+            //encounter.printTeamSpot(i);
         }
 
         //display encounters
