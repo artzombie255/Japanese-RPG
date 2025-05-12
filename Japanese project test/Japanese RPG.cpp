@@ -62,6 +62,24 @@ int main()
 
     //load the first level
     level.loadLevel(arr, "1level3", wallVec, 1, 3, viewport);
+
+    level.addWalls(4);
+    wallVec.push_back(new Intaractable);
+    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(5400, 7));
+    wallVec.at(wallVec.size() - 1)->setPosition(-2400, -600);
+
+    wallVec.push_back(new Intaractable);
+    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(5400, 7));
+    wallVec.at(wallVec.size() - 1)->setPosition(-2400, 4793);
+
+    wallVec.push_back(new Intaractable);
+    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(7, 5400));
+    wallVec.at(wallVec.size() - 1)->setPosition(2993, -600);
+
+    wallVec.push_back(new Intaractable);
+    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(7, 5400));
+    wallVec.at(wallVec.size() - 1)->setPosition(-2400, -600);
+
     /*for (int i = 0; i <= wallVec.size() - 1; i++)
     {
         wallVec.push_back(new Intaractable);
@@ -229,15 +247,15 @@ int main()
         if (Npcs.at(0)->getCurrentInteraction() >= 1)
         {
             Npcs.at(0)->setSize(sf::Vector2f(0, 0));
-            Npcs.at(0)->setPosition(-100, -100);
+            Npcs.at(0)->setPosition(-1000, -1000);
         }
 
         if (Npcs.at(0)->getCurrentInteraction() >= 2)
         {
             level.updateRoom(1, 1);
-            Npcs.at(1)->setPosition(-100, -100);
+            Npcs.at(1)->setPosition(-1000, -1000);
             Npcs.at(1)->setSize(sf::Vector2f(0, 0));
-            Npcs.at(2)->setPosition(-100, -100);
+            Npcs.at(2)->setPosition(-1000, -1000);
             Npcs.at(2)->setSize(sf::Vector2f(0, 0));
             Npcs.at(0)->setSize(sf::Vector2f(1200, 25));
             Npcs.at(0)->setPosition(-300, 3000);
@@ -262,7 +280,7 @@ int main()
         if (Npcs.at(0)->getCurrentInteraction() >= 4)
         {
             Npcs.at(0)->setSize(sf::Vector2f(0, 0));
-            Npcs.at(0)->setPosition(-100, -100);
+            Npcs.at(0)->setPosition(-1000, -1000);
             Npcs.at(3)->setPosition(2210, -157);
         }
 
@@ -275,19 +293,26 @@ int main()
         if (Npcs.at(0)->getCurrentInteraction() >= 6)
         {
             Npcs.at(4)->setSize(sf::Vector2f(0, 0));
-            Npcs.at(4)->setPosition(-100, -100);
+            Npcs.at(4)->setPosition(-1000, -1000);
         }
 
         if (Npcs.at(0)->getCurrentInteraction() >= 7)
         {
             Npcs.at(3)->setSize(sf::Vector2f(0, 0));
-            Npcs.at(3)->setPosition(-100, -100);
+            Npcs.at(3)->setPosition(-1000, -1000);
             if (addedCharacter[2] == false)
             {
                 encounter.addToTeam(CHARACTERS::ROWAN);
                 addedCharacter[2] = true;
             }
+            Npcs.at(0)->setSize(sf::Vector2f(600, 600));
+            Npcs.at(0)->setPosition(0, 3100);
+        }
 
+        if (Npcs.at(0)->getCurrentInteraction() >= 8)
+        {
+            Npcs.at(0)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(0)->setPosition(-1000, -1000);
         }
 
         //std::cout << "x: " << xScreen << "\ny: " << yScreen << "\n";

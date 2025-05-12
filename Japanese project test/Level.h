@@ -20,6 +20,7 @@ public:
 	void printF(sf::RenderWindow&, DoubleSubscriptedArray&);
 	void updateRoom(int, int);
 	bool getInCave() { return inCave; }
+	void addWalls(int temp) { totalWalls += temp; }
 
 private:
 	bool oneLevelThreeUpdated = false, loaded[9][9], inCave = false;

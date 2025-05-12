@@ -121,7 +121,7 @@ Npc::Npc(CHARACTERS player)
 		sprite.setScale(3.125, 3.125);
 		sprite.setPosition(getPosition().x, getPosition().y);
 		setSize(sf::Vector2f(0, 0));
-		setPosition(-100, -100);
+		setPosition(-1000, -1000);
 		break;
 
 	}
