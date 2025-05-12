@@ -28,7 +28,7 @@ int main()
     Player player;
     Level level;
     Encounter encounter;
-    int xScreen = 1, yScreen = 3, enemyEncounterNum = 0;
+    int xScreen = 1, yScreen = 3, enemyEncounterNum = 0, enemySpawn = 0;
     DoubleSubscriptedArray arr(NUMOFCHUNKS, NUMOFCHUNKS);
     std::vector<Intaractable*> Npcs;
     std::vector<Intaractable*> Enemies;
@@ -47,7 +47,6 @@ int main()
     Npcs.push_back(new Npc(BOOK));
 
     //for (int i = 0; i < 1; i++)
-        Enemies.push_back(new Enemy(1));
 
 
     //set up doing tect and window name
@@ -126,8 +125,18 @@ int main()
 
                 }
             }
-            else 
+            else
+            {
+                std::cout << "out of enmcopnter\n";
                 viewport.setCenter((600.f * player.getScreenX()) - 300, (600.f * player.getScreenY()) - 300);
+                if (rand() % 1800 + 600 <= enemySpawn && addedCharacter[0] == true)
+                {
+                    Enemies.push_back(new Enemy(1, xScreen, yScreen));
+                    enemySpawn = 0;
+                }
+                else
+                    enemySpawn++;
+            }
 
             window.setView(viewport);
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))

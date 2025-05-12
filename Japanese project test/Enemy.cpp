@@ -13,10 +13,49 @@ Enemy::Enemy()
 }
 
 
-Enemy::Enemy(int type)
+Enemy::Enemy(int type, int x, int y)
 {
+	int randX = 0, randY = 0;
+
+	switch (rand() % 8)
+	{
+	case 0:
+		randX = rand() % 600 - 600;
+		randY = rand() % 600;
+		break;
+	case 1:
+		randX = rand() % 600 - 600;
+		randY = rand() % 600 - 600;
+		break;
+	case 2:
+		randX = rand() % 600;
+		randY = rand() % 600 - 600;
+		break;
+	case 3:
+		randX = rand() % 600 + 600;
+		randY = rand() % 600 - 600;
+		break;
+	case 4:
+		randX = rand() % 600 + 600;
+		randY = rand() % 600;
+		break;
+	case 5:
+		randX = rand() % 600 + 600;
+		randY = rand() % 600 + 600;
+		break;
+	case 6:
+		randX = rand() % 600;
+		randY = rand() % 600 + 600;
+		break;
+	case 7:
+		randX = rand() % 600 - 600;
+		randY = rand() % 600 + 600;
+		break;
+	}
+
 	setSize(sf::Vector2f(50, 50));
-	setPosition(200, 200);
+	setPosition(((x - 1) * 600) + randX, ((y - 1) * 600) + randY);
+	//setPosition(200, 200);
 	setFillColor(sf::Color::Red);
 	if (type == 1)
 	{

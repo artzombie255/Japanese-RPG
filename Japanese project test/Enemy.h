@@ -8,7 +8,7 @@ class Enemy : public Intaractable
 {
 public: 
 	Enemy();
-	Enemy(int);
+	Enemy(int, int, int);
 	~Enemy();
 
 	void print(sf::RenderWindow&);
