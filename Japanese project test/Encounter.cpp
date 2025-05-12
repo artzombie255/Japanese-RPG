@@ -34,6 +34,7 @@ bool Encounter::endEncounter()
 {
 	if (enemiesAlive == false && currentScreen != MENUTYPE::LEVEL_UP)
 	{
+		enemiesAlive == true;
 		inEncounter = false;
 		return true;
 	}

@@ -88,6 +88,18 @@ int main()
     //main loop
     while (window.isOpen())
     {
+
+        //sets if in encounter
+        for (int i = 0; i < Enemies.size(); i++)
+        {
+            if (Enemies.at(i)->getInteraction() == true)
+            {
+                enemyEncounterNum = i;
+                encounter.setEncounter();
+                Enemies.at(i)->setInteraction(false);
+            }
+        }
+
         //events go here
         sf::Event event;
         while (window.pollEvent(event))
@@ -114,7 +126,8 @@ int main()
                 encounter.playEncounter(window);
                 if (encounter.endEncounter() == true)
                 {
-                    if (Enemies.size() - 1 != enemyEncounterNum)
+                    std::cout << "end encounter";
+                    if (Enemies.size() - 1 >= enemyEncounterNum && enemyEncounterNum)
                     {
                         for (int i = enemyEncounterNum; i < Enemies.size(); i++)
                         {
@@ -127,15 +140,7 @@ int main()
             }
             else
             {
-                std::cout << "out of enmcopnter\n";
                 viewport.setCenter((600.f * player.getScreenX()) - 300, (600.f * player.getScreenY()) - 300);
-                if (rand() % 1800 + 600 <= enemySpawn && addedCharacter[0] == true)
-                {
-                    Enemies.push_back(new Enemy(1, xScreen, yScreen));
-                    enemySpawn = 0;
-                }
-                else
-                    enemySpawn++;
             }
 
             window.setView(viewport);
@@ -153,6 +158,17 @@ int main()
         }
 
 
+        if (encounter.getInEncounter() == false)
+        {
+            //std::cout << "out of enmcopnter\n";
+            if (rand() % 1800 + 600 <= enemySpawn && addedCharacter[0] == true)
+            {
+                Enemies.push_back(new Enemy(1, xScreen, yScreen));
+                enemySpawn = 0;
+            }
+            else
+                enemySpawn++;
+        }
         inMenu = false;
         //sets if in esc menu
         for (int i = 0; Npcs.size() > i; i++)
@@ -162,17 +178,6 @@ int main()
         }
         if (player.getEscMenuOpen() == true)
             inMenu = true;
-
-        //sets if in encounter
-        for (int i = Enemies.size() - 1; i >= 0; i--)
-        {
-            if (Enemies.at(i)->getInteraction() == true)
-            {
-                enemyEncounterNum = i;
-                encounter.setEncounter();
-                Enemies.at(i)->setInteraction(false);
-            }
-        }
   
 
         //check collisions
