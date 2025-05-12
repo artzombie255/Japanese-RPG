@@ -33,7 +33,7 @@ int main()
     std::vector<Intaractable*> Npcs;
     std::vector<Intaractable*> Enemies;
     std::vector<Intaractable*> wallVec;
-    bool inMenu = false, printWalls = false;
+    bool inMenu = false, printWalls = false, addedCharacter[4] = {};
 
     viewport.setSize(600, 600);
     viewport.setCenter(300, 1500);
@@ -241,6 +241,16 @@ int main()
             Npcs.at(2)->setSize(sf::Vector2f(0, 0));
             Npcs.at(0)->setSize(sf::Vector2f(1200, 25));
             Npcs.at(0)->setPosition(-300, 3000);
+            if (addedCharacter[0] == false)
+            {
+                encounter.addToTeam(CHARACTERS::AUBREY);
+                addedCharacter[0] = true;
+            }
+            if (addedCharacter[1] == false)
+            {
+                encounter.addToTeam(CHARACTERS::AERYK);
+                addedCharacter[1] = true;
+            }
         }
         
         if (Npcs.at(0)->getCurrentInteraction() >= 3)
@@ -272,8 +282,18 @@ int main()
         {
             Npcs.at(3)->setSize(sf::Vector2f(0, 0));
             Npcs.at(3)->setPosition(-100, -100);
+            if (addedCharacter[2] == false)
+            {
+                encounter.addToTeam(CHARACTERS::ROWAN);
+                addedCharacter[2] = true;
+            }
+
         }
 
+        for (int i = 0; i < 4; i++)
+        {
+            encounter.printTeamSpot(i);
+        }
 
         //display encounters
         if (encounter.getInEncounter() == true)

@@ -9,7 +9,7 @@ Player::Player()
 {
 	setSize(sf::Vector2f(50, 50));
 	setOrigin(0, 0);
-	setPosition(0, 1750);
+	setPosition(270, 1600);
 	setFillColor(sf::Color::Green);
 }
 
