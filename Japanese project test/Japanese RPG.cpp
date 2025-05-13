@@ -117,7 +117,7 @@ int main()
     //main loop
     while (window.isOpen() && encounter.playerAlive() == true)
     {
-        system("cls");
+        //system("cls");
         //sets if in encounter
         for (int i = 0; i < Enemies.size(); i++)
         {
