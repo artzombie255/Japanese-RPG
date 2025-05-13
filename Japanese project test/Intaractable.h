@@ -10,10 +10,10 @@ public:
 	Intaractable();
 	~Intaractable();
 
-	virtual void continueTalking(sf::RenderWindow&);
+	virtual void continueTalking(sf::RenderWindow&, int);
 	void setInteraction(bool);
 	bool getInteraction();
-	virtual void talk(sf::RenderWindow&, int, int);
+	virtual void talk(sf::RenderWindow&, int, int, int);
 	virtual void nextLine();
 	void increaseLength(int person);
 	void print(sf::RenderWindow&);

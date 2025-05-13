@@ -4,13 +4,13 @@
 Encounter::Characters Encounter::PlayableCharacters[8] =
 {
 	//name, type, max hp, current hp, armor, strength, dexterity, magic slots, max magic slots, level, xp, current weapon
-	{CHARACTERS::AERYK,		WEAPONTYPE::MELEE,  25, 25, 1, 1, 0, 1, 1, 1, 0, 10},
-	{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE,  25, 25, 2, 3, 0, 2, 2, 5, 0, 6},
-	{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE,  20, 20, 0, 2, 1, 1, 1, 1, 0, 5},
+	{CHARACTERS::AERYK,		WEAPONTYPE::MELEE,  25, 25, 1, 1, 0, 2, 2, 1, 0, 10},
+	{CHARACTERS::ASHTON,	WEAPONTYPE::MELEE,  25, 25, 2, 3, 0, 2, 2, 1, 0, 6},
+	{CHARACTERS::AUBREY,	WEAPONTYPE::MELEE,  20, 20, 0, 2, 1, 2, 2, 1, 0, 5},
 	{CHARACTERS::PHOENIX,	WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 3, 1, 0, 14},
-	{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 3, 0, 14},
+	{CHARACTERS::ROWAN,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 7, 7, 1, 0, 14},
 	{CHARACTERS::STEVE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 3, 3, 1, 0, 14},
-	{CHARACTERS::CHASE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 3, 0, 14},
+	{CHARACTERS::CHASE,		WEAPONTYPE::RANGED, 15, 15, 0, 0, 2, 5, 5, 1, 0, 14},
 	{CHARACTERS::BLANK,		WEAPONTYPE::MELEE,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
@@ -157,7 +157,12 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 
 		playerHealth.setString(playerNames[i] + std::to_string(PlayableCharacters[enumToIntCharacters(currentTeam[i])].hp));
 		//playerHealth.setOrigin(playerHealth.getLocalBounds().width / 2, playerHealth.getGlobalBounds().height / 2);
-		playerHealth.setPosition(50, 50 + (i * 50));
+		playerHealth.setPosition(50, 50 + (i * 60));
+		window.draw(playerHealth);
+
+		playerHealth.setString("MAG: " + std::to_string(PlayableCharacters[enumToIntCharacters(currentTeam[i])].mag));
+		//playerHealth.setOrigin(playerHealth.getLocalBounds().width / 2, playerHealth.getGlobalBounds().height / 2);
+		playerHealth.setPosition(70, 75 + (i * 60));
 		window.draw(playerHealth);
 	}
 	for (int i = 0; i < 4; i++)
@@ -368,7 +373,7 @@ void Encounter::setEncounter(int temp)
 		currentEnemies[3] = ENEMIES::BLANK_E;
 		break;
 	case 2:
-		currentEnemies[0] = ENEMIES::CLUB;
+		currentEnemies[0] = ENEMIES::SENSEIE;
 		currentEnemies[1] = ENEMIES::BLANK_E;
 		currentEnemies[2] = ENEMIES::BLANK_E;
 		currentEnemies[3] = ENEMIES::BLANK_E;
@@ -406,26 +411,31 @@ void Encounter::enemiesTurn()
 {
 	int attack;
 	std::cout << currentEnemySpot << ":" << DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp << std::endl;
-	if (currentEnemySpot < 3 && currentEnemySpot != -1 && DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp > 0)
+	if (currentEnemySpot <= 3 && currentEnemySpot != -1 && DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp > 0)
 	{
 		attack = enemiesAttack();
 		std::cout << "ATK: " << attack << "\n";
 		PlayableCharacters[enumToIntCharacters(currentTeam[targetingTeam[rand() % totalTeam]])].hp -= attack;
 		currentEnemySpot++;
 	}
-	else if (currentEnemySpot < 3 && currentEnemySpot != -1)
+	else if (currentEnemySpot <= 3 && currentEnemySpot != -1 && DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp <= 0)
 	{
 		currentEnemySpot++;
 	}
-	else
+	if (currentEnemySpot > 3)
 	{
 		currentTeamSpot = 0;
 		currentEnemySpot = -1;
 	}
 
-	if (currentEnemySpot != -1)
+	if (currentEnemySpot >= 0)
+	{
 		if (DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp <= 0)
 			enemiesTurn();
+	}
+	else
+		currentScreen = MENUTYPE::ACTIONS;
+
 
 }
 
@@ -610,6 +620,8 @@ void Encounter::targetMenu(sf::RenderWindow&)
 		{
 			addExp(rando);
 			std::cout << " : " << rando;
+			if (DefaultEnemies[enumToIntEnemies(currentEnemies[0])].enemyName == ASHTONE)
+				addExp(25);
 		}
 	}
 }
@@ -1199,42 +1211,45 @@ int Encounter::enemiesAttack()
 	else
 		std::cout << "players turn";
 	//equippedWeapon = currentTeam[currentTeamSpot].equippedWeapon;
-
-	switch (WEAPONS[equippedWeapon].type)
+	if (currentEnemySpot >= 0)
 	{
-	case WEAPONTYPE::PIERCE:
-		if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1) > 11)
+		switch (WEAPONS[equippedWeapon].type)
 		{
-			attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 3;
+		case WEAPONTYPE::PIERCE:
+			if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1) > 11)
+			{
+				attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 3;
+			}
+			break;
+		case WEAPONTYPE::SLASH:
+			slash = rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1;
+			if (slash > 11)
+			{
+				slash -= 11;
+				attack = rand() % weapons[equippedWeapon] + (DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str / 2) + slash + 1;
+			}
+			break;
+		case WEAPONTYPE::BLUDGEON:
+			if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str + 1) > 9)
+			{
+				attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str + 1;
+			}
+			break;
+		case WEAPONTYPE::RANGED:
+			if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1) > 14)
+			{
+				attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 3;
+			}
+			break;
 		}
-		break;
-	case WEAPONTYPE::SLASH:
-		slash = rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1;
-		if (slash > 11)
-		{
-			slash -= 11;
-			attack = rand() % weapons[equippedWeapon] + (DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str / 2) + slash + 1;
-		}
-		break;
-	case WEAPONTYPE::BLUDGEON:
-		if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str + 1) > 9)
-		{
-			attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str + 1;
-		}
-		break;
-	case WEAPONTYPE::RANGED:
-		if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1) > 14)
-		{
-			attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 3;
-		}
-		break;
+
+		attack += increasedDamage;
+
+		increasedDamage = 0;
+
+		return attack;
 	}
-
-	attack += increasedDamage;
-
-	increasedDamage = 0;
-
-	return attack;
+	return 0;
 }
 
 
@@ -1267,6 +1282,7 @@ void Encounter::unique()
 
 			break;
 		}
+		PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].mag--;
 	}
 	else
 		currentScreen = MENUTYPE::WEAPONS;

@@ -12,7 +12,7 @@ Intaractable::~Intaractable()
 }
 
 
-void Intaractable::continueTalking(sf::RenderWindow&)
+void Intaractable::continueTalking(sf::RenderWindow&, int)
 {
 }
 
@@ -30,7 +30,7 @@ bool Intaractable::getInteraction()
 }
 
 
-void Intaractable::talk(sf::RenderWindow&, int, int)
+void Intaractable::talk(sf::RenderWindow&, int, int, int)
 {
 }
 

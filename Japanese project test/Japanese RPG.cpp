@@ -48,6 +48,7 @@ int main()
     Npcs.push_back(new Npc(STEVE));
     Npcs.push_back(new Npc(CHARACTERS::ASHTON));
     Npcs.push_back(new Npc(CHARACTERS::SENSEI));
+    Npcs.push_back(new Npc(CHARACTERS::LEAH));
 
     //for (int i = 0; i < 1; i++)
 
@@ -104,7 +105,7 @@ int main()
     wallVec.at(wallVec.size() - 1)->setPosition(-2400, -600);
 
     wallVec.push_back(new Intaractable);
-    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(100, 600));
+    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(100, 100));
     wallVec.at(wallVec.size() - 1)->setPosition(-175, 3000);
 
     /*for (int i = 0; i <= wallVec.size() - 1; i++)
@@ -144,7 +145,7 @@ int main()
             for (int i = 0; Npcs.size() > i; i++)
             {
                 if (player.getEscMenuOpen() == false)
-                    Npcs.at(i)->continueTalking(window);
+                    Npcs.at(i)->continueTalking(window, i);
             }
 
             //encounter
@@ -279,7 +280,7 @@ int main()
         {
             if (Npcs.at(i)->getInteraction() == true)
             {
-                Npcs.at(i)->talk(window, xScreen, yScreen);
+                Npcs.at(i)->talk(window, xScreen, yScreen, i);
                 //std::cout << Npcs.at(i)->getCurrentInteraction();
              
 
@@ -374,7 +375,7 @@ int main()
         {
             if (startedAshton == false)
             {
-                encounter.setEncounter(1);
+                //encounter.setEncounter(1);
                 startedAshton = true;
             }
         }
@@ -415,6 +416,7 @@ int main()
         {
             Npcs.at(7)->setPosition(-1200, -1000);
         }
+
 
         //std::cout << "x: " << xScreen << "\ny: " << yScreen << "\n";
         //std::cout << level.getInCave();

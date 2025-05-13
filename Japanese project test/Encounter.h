@@ -259,7 +259,7 @@ private:
 		{ENEMIES::SWORD,	20, 20, 1, 1, 1, 0, 1, 0, 5},
 		{ENEMIES::CLUB,		25, 25, 1, 2, 0, 0, 1, 0, 10},
 		{ENEMIES::ASHTONE,  100, 100, 2, 4, 0, 0, 5, 0, 7},
-		{ENEMIES::SENSEIE,   150, 150, 0, 4, 0, 0, 5, 0, 11}
+		{ENEMIES::SENSEIE,   200, 200, 3, 5, 0, 0, 5, 0, 11}
 	}; 
 
 };

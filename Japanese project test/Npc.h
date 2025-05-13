@@ -13,17 +13,19 @@ public:
 	Npc(enum CHARACTERS);
 	~Npc();
 
-	void continueTalking(sf::RenderWindow&);
-	void talk(sf::RenderWindow&, int, int); 
+	void continueTalking(sf::RenderWindow&, int);
+	void talk(sf::RenderWindow&, int, int, int); 
 	void print(sf::RenderWindow&);
 
 
 private:
 	//AUBREY, ASHTON, AERYK, LILLY, KIMORA, SHIN
-	static sf::String voiceLines[42];
-	static int voiceLinesLength[14];
+	static sf::String voiceLines[43];
+	static sf::String individualVoiceLines[3];
+	static int voiceLinesLength[15];
 	sf::Font font;
 	sf::Text text;
 	static int inputDelay;
+	int leahLine;
 };
 

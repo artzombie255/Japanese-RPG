@@ -4,65 +4,69 @@
 int Npc::CurrentInteraction = 0;
 int Npc::currentLine = 0;
 int Npc::inputDelay = 0;
-sf::String Npc::voiceLines[42] = { L"Aubrey：助けてください！", //1 0
+sf::String Npc::voiceLines[43] = { L"オーブリー：助けてください！", //1 0
 
-L"Aubrey：ゾンビたちは私たちを\n驚（おどろ）かしました。",
-L"Aeryk：ゾンビが多過（おおす）ぎます。",
-L"Aubrey：こちらはだめです。",
-L"Aeryk：私たちを助けてくれるなら、\n私は転石（てんせき）が押（お）せます。",
-L"Aeryk：行きましょう！", //5 5
+L"オーブリー：ゾンビたちは私たちを\n驚（おどろ）かしました。",
+L"エリック：ゾンビが\n多過（おおす）ぎます。",
+L"オーブリー：こちらはだめです。",
+L"エリック：私たちを助けてくれるなら、\n私は転石（てんせき）が押（お）せます。",
+L"エリック：行きましょう！", //5 5
 
-L"Aubrey：私たちははしを渡りたいなら、\nはしを直さなければなりません。",
-L"Aeryk：うん、そうね、\n誰が橋を直せるでしょう。", //2 7
+L"オーブリー：私たちは\nはしを渡りたいなら、\nはしを直さなければなりません。",
+L"エリック：うん、そうね、\n誰が橋を直せるでしょう。", //2 7
 
-L"Rowan：誰ですか？！\nゾンビは帰ってくれませんか。\n私はおいしくない。", //1 8
+L"ローワン：誰ですか？！\nゾンビは帰ってくれませんか。\n私はおいしくない。", //1 8
 
-L"Rowan：あ、人間か。どうやって、\n生（い）き残（のこ）りましたか。",
-L"Aubrey：フェニックスは\n助けてくれました。",
-L"Aeryk：うん、どうやって、\nあなたは生き残りましたか。",
-L"Rowan：うちに入って、待ちました。",
-L"Aubrey：そうですか。",
-L"Rowan：ところで、\n私のマジックブックを無（な）くしました。\nこの町の南にあるでしょう。",
-L"Rowan：ゾンビがいるから、あの町から\n逃（に）げなければなりませんでした。",
-L"Rowan：私のマジックブックを\n持っていると、ゾンビと\n戦（たたか）えます。",
-L"Aeryk：そうですか、私たちはあの町を調べます。", //9 17
+L"ローワン：あ、人間か。どうやって、\n生（い）き残（のこ）りましたか。",
+L"オーブリー：フェニックスは\n助けてくれました。",
+L"エリック：うん、どうやって、\nあなたは生き残りましたか。",
+L"ローワン：うちに入って、待ちました。",
+L"オーブリー：そうですか。",
+L"ローワン：ところで、\n私のマジックブックを\n無（な）くしました。\nこの町の南にあるでしょう。",
+L"ローワン：ゾンビがいるから、あの町から\n逃（に）げなければなりませんでした。",
+L"ローワン：私のマジックブックを\n持っていると、ゾンビと\n戦（たたか）えます。",
+L"エリック：そうですか、私たちは\nあの町を調べます。", //9 17
 
-L"Aubrey：あ、マジックブックを\n見つけました。",
-L"Aeryk：ローワンと一緒に\nあのゾンビたちを殺せるかもしれません。",
-L"Aubrey：うん、そうですね", //3 20
+L"オーブリー：あ、マジックブックを\n見つけました。",
+L"エリック：ローワンと一緒に\nあのゾンビたちを殺せるかもしれません。",
+L"オーブリー：うん、そうですね", //3 20
 
-L"Rowan：ありがとうございます！\n今からゾンビと戦えます。",//1 21
+L"ローワン：ありがとうございます！\n今からゾンビと戦えます。",//1 21
 
-L"Aeryk：あぁ、あの人はやばいです。",
-L"Aubrey：うん、\n私たちは助けたほうがいいです。", //2 23
+L"エリック：あぁ、あの人はやばいです。",
+L"オーブリー：うん、\n私たちは助けたほうがいいです。", //2 23
 
-L"Cal：どうも有難うございます！\n助けてくれなかったら、死んだでしょう。\n私は何で礼をできますか。",
-L"Rowan：橋を直せますか？",
-L"Cal：うん、橋を直せます。\nでも、どうして、橋を渡りたいですか。",
-L"Aubrey：最初にゾンビは\nあそこから来たと思うから。",
-L"Cal：そうですか。それから、\n私は助けてゾンビのリーダーを殺せます。", //5 28
+L"スティーブ：どうも有難うございます！\n助けてくれなかったら、死んだでしょう。\n私は何で礼をできますか。",
+L"ローワン：橋を直せますか？",
+L"スティーブ：うん、橋を直せます。\nでも、どうして、橋を渡りたいですか。",
+L"オーブリー：最初にゾンビは\nあそこから来たと思うから。",
+L"スティーブ：そうですか。それから、\n私は助けてゾンビのリーダーを殺せます。", //5 28
 
-L"Ashton：誰！あなた達はこの橋を\n渡ってはだめだよ！", //1 29
+L"アシトン：誰！あなた達はこの橋を\n渡ってはだめだよ！", //1 29
 
-L"Rowan：その人は\nゾンビのリーダーでしたか？",
-L"Ashton：いいや、\n俺はゾンビが大嫌いだよ！\n俺はゾンビのリーダーが\n出るのがほしくないからだ。\nだから、私はこの橋を壊（こわ）した。",
-L"Aeryk：はしを渡った後であなたと一緒に\nゾンビのリーダーが殺せませんか。",
-L"Ashton：いいよ！", //4 33
+L"ローワン：その人は\nゾンビのリーダーでしたか？",
+L"アシトン：いいや、\n俺はゾンビが大嫌いだよ！\n俺はゾンビのリーダーが\n出るのがほしくないからだ。\nだから、私はこの橋を壊（こわ）した。",
+L"エリック：はしを渡った後で\nあなたと一緒に\nゾンビのリーダーが殺せませんか。",
+L"アシトン：いいよ！", //4 33
 
-L"Cal：あれはゾンビのリーダーですか。\n先生っぽいですね。",
-L"Ashton：うん、そうだ、\nあれは怖くて危（あぶ）ないゾンビのリーダー",
-L"Rowan：ゾンビのリーダーを殺すと、\n全部のゾンビが死にます。", //3 36
+L"スティーブ：あれは\nゾンビのリーダーですか。\n先生っぽいですね。",
+L"アシトン：うん、そうだ、\nあれは怖くて危（あぶ）ないゾンビのリーダー",
+L"ローワン：ゾンビのリーダーを殺すと、\n全部のゾンビが死にます。", //3 36
 
 L"先生：...",
 
-L"Aubrey：やった！私たちは勝った。",
-L"Rowan：死にそうだった！",
-L"Cal：食べられそうだった！",
-L"ゾンビのリーダーを殺した時から、\n全部のゾンビは死にました。そして、\nこのせかいは円満（えんまん）になりました。" //4 40
+L"オーブリー：やった！私たちは勝った。",
+L"ローワン：死にそうだった！",
+L"スティーブ：食べられそうだった！",
+L"ゾンビのリーダーを殺した時から、\n全部のゾンビは死にました。そして、\nこのせかいは円満（えんまん）\nになりました。", //4 40
+L""
 };
-int Npc::voiceLinesLength[14] = {0, 5, 7, 8, 17, 20, 21, 23, 28, 29, 33, 36, 37, 41};
+int Npc::voiceLinesLength[15] = {0, 5, 7, 8, 17, 20, 21, 23, 28, 29, 33, 36, 37, 41, 42};
 
-
+sf::String Npc::individualVoiceLines[3] = { L"Leah：いらっしゃいませ、\nおいしいたこやきを食べませんか！\n５０００円だけですよ。",
+L"Leah：私はゾンビが大嫌いです。\nゾンビたちはたこやきを食べないからです。\nブレインだけ食べたいです。",
+L"Leah：ゾンビが来る前に\nおいしいたこやきを売りました。\n今、せかいで一番おいしいたこやきを\n売っています。"
+};
 
 
 Npc::Npc()
@@ -124,6 +128,13 @@ Npc::Npc(CHARACTERS player)
 	case KIMORA:
 	case ALEX:
 	case LEAH:
+		setPosition(2800, 2050);
+		img.loadFromFile("./Sprites/characters/L_F.png");
+		sprite.setTexture(img);
+		sprite.setScale(3.125, 3.125);
+		sprite.setPosition(getPosition().x, getPosition().y);
+		leahLine = 0;
+		break;
 	case NATHAN:
 	case BLANK:
 		setSize(sf::Vector2f(600, 600));
@@ -161,28 +172,52 @@ Npc::~Npc()
 
 
 //manage interactions and incrementing current line
-void Npc::continueTalking(sf::RenderWindow& window)
+void Npc::continueTalking(sf::RenderWindow& window, int temp)
 {
 	sf::Vector2i position = sf::Mouse::getPosition(window);
 
+
 	inputDelay++;
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && interaction == true 
-		&& inputDelay > 5 && position.y > 300)
+
+	if (temp != 8)
 	{
-		if (voiceLinesLength[CurrentInteraction] == currentLine)
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && interaction == true
+			&& inputDelay > 5 && position.y > 300)
 		{
-			std::cout << currentLine;
-			currentLine++;
-			CurrentInteraction++;
-			interaction = false;
-			std::cout << "interacted" << CurrentInteraction;
+			if (voiceLinesLength[CurrentInteraction] == currentLine)
+			{
+				std::cout << currentLine;
+				currentLine++;
+				CurrentInteraction++;
+				interaction = false;
+				std::cout << "interacted" << CurrentInteraction;
 
 
+			}
+			else
+			{
+				std::cout << currentLine;
+				currentLine++;
+				inputDelay = 0;
+			}
 		}
-		else
+	}
+	else
+	{
+		setPosition(2800, 2050);
+		img.loadFromFile("./Sprites/characters/L_F.png");
+		sprite.setTexture(img);
+		sprite.setScale(3.125, 3.125);
+		sprite.setPosition(getPosition().x, getPosition().y);
+		inputDelay++;
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && interaction == true
+			&& inputDelay > 5 && position.y > 300)
 		{
-			std::cout << currentLine;
-			currentLine++;
+			interaction = false;
+			if (leahLine >= 2)
+				leahLine = 0;
+			else
+				leahLine++;
 			inputDelay = 0;
 		}
 	}
@@ -190,7 +225,7 @@ void Npc::continueTalking(sf::RenderWindow& window)
 
 
 //display text
-void Npc::talk(sf::RenderWindow &window, int x, int y)
+void Npc::talk(sf::RenderWindow &window, int x, int y, int temp)
 {
 	//do magic
 	sf::RectangleShape outline, background;
@@ -207,7 +242,10 @@ void Npc::talk(sf::RenderWindow &window, int x, int y)
 	window.draw(outline);
 	window.draw(background);
 
-	text.setString(voiceLines[currentLine]);
+	if (temp != 8)
+		text.setString(voiceLines[currentLine]);
+	else
+		text.setString(individualVoiceLines[leahLine]);
 
 	window.draw(text);
 }
@@ -215,6 +253,7 @@ void Npc::talk(sf::RenderWindow &window, int x, int y)
 
 void Npc::print(sf::RenderWindow& window)
 {
+	sprite.setScale(3.125, 3.125);
 	sprite.setPosition(getPosition().x, getPosition().y);
 	window.draw(sprite);
 }
