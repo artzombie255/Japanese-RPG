@@ -34,11 +34,15 @@ bool Encounter::endEncounter()
 {
 	if (enemiesAlive == false && currentScreen != MENUTYPE::LEVEL_UP)
 	{
-		enemiesAlive == true;
 		inEncounter = false;
 		return true;
 	}
 	return false;
+}
+
+void Encounter::upgradeEnemies()
+{
+	upgradedEnemies++;
 }
 
 
@@ -46,6 +50,8 @@ void Encounter::addToTeam(CHARACTERS newCharacter)
 {
 	int i = 0;
 	bool added = false;
+
+	totalTeam++;
 
 	team.push_back(newCharacter);
 	if (team.size() > 4)
@@ -100,6 +106,14 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 {
 	//do magic
 	sf::RectangleShape MenuOutline, MenuBackground, background, selection;
+	sf::Text playerHealth, enemyHealth;
+	sf::String playerNames[4] = { L"オーブリー：",  L"エリック：",  L"ローワン：",  L"アシトン：" }, 
+		enemyNames[4] = { L"一：",  L"二：",  L"三：",  L"四：" };
+	sf::Font font;
+
+	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
+	playerHealth.setFont(font);
+	enemyHealth.setFont(font);
 
 	//set size, color, and position
 	background.setSize(sf::Vector2f(600, 600));
@@ -114,6 +128,8 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 
 	selection.setSize(sf::Vector2f(164, 60));
 	selection.setFillColor(sf::Color(111, 124, 128));
+
+
 
 	//draw the backgrounds and outlines
 	window.draw(background);
@@ -131,6 +147,27 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 		selection.setPosition(32 + (i * 186), 510);
 		window.draw(selection);
 	}
+
+	//hp
+	for (int i = 0; i < totalTeam; i++)
+	{
+		playerHealth.setFillColor(sf::Color::White);
+		if (currentTeamSpot == i)
+			playerHealth.setFillColor(sf::Color::Green);
+
+		playerHealth.setString(playerNames[i] + std::to_string(PlayableCharacters[enumToIntCharacters(currentTeam[i])].hp));
+		//playerHealth.setOrigin(playerHealth.getLocalBounds().width / 2, playerHealth.getGlobalBounds().height / 2);
+		playerHealth.setPosition(50, 50 + (i * 50));
+		window.draw(playerHealth);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		enemyHealth.setString(enemyNames[i] + std::to_string(DefaultEnemies[enumToIntEnemies(currentEnemies[i])].hp));
+		//enemyHealth.setOrigin(enemyHealth.getLocalBounds().width / 2, enemyHealth.getGlobalBounds().height / 2);
+		enemyHealth.setPosition(450, 50 + (i * 50));
+		window.draw(enemyHealth);
+	}
+
 
 	//display the button being hovered over
 	if (currentScreen != MENUTYPE::INVENTORY && currentScreen != MENUTYPE::CHARACTER_TARGET 
@@ -191,7 +228,9 @@ void Encounter::displayEncounter(sf::RenderWindow &window)
 
 void Encounter::playEncounter(sf::RenderWindow &window)
 {
-	printTeamSpot(currentTeamSpot);
+	//std::cout << enemyHp[0] << std::endl;
+
+	//printTeamSpot(currentTeamSpot);
 
 	sf::Vector2i position = sf::Mouse::getPosition(window);
 
@@ -249,14 +288,99 @@ void Encounter::playEncounter(sf::RenderWindow &window)
 }
 
 
-void Encounter::setEncounter()
+void Encounter::setEncounter(int temp)
 {
 	inEncounter = true;
+	targetingTeam[0] = 0;
+	targetingTeam[1] = 1;
+	targetingTeam[2] = 2;
+	targetingTeam[3] = 3;
+	currentScreen = MENUTYPE::ACTIONS;
+	DefaultEnemies[0].hp = DefaultEnemies[0].maxHp;
+	DefaultEnemies[1].hp = DefaultEnemies[1].maxHp;
+	DefaultEnemies[2].hp = DefaultEnemies[2].maxHp;
+	DefaultEnemies[3].hp = DefaultEnemies[3].maxHp;
+	DefaultEnemies[4].hp = DefaultEnemies[4].maxHp;
+	DefaultEnemies[5].hp = DefaultEnemies[5].maxHp;
+	DefaultEnemies[6].hp = DefaultEnemies[6].maxHp;
+	enemiesAlive = true;
+	enemyAlive[0] = true;
+	currentTeamSpot = 0; 
+	enemyTurn = 0; 
+	currentEnemySpot = 0;
+
+	switch (temp)
+	{
+	case 0:
+		if (upgradedEnemies == 0)
+		{
+			switch (rand() % 3)
+			{
+			case 0:
+				currentEnemies[0] = ENEMIES::BSPEAR;
+				currentEnemies[1] = ENEMIES::BLANK_E;
+				currentEnemies[2] = ENEMIES::BLANK_E;
+				currentEnemies[3] = ENEMIES::BLANK_E;
+				break;
+			case 1:
+				currentEnemies[0] = ENEMIES::DAGGER;
+				currentEnemies[1] = ENEMIES::BLANK_E;
+				currentEnemies[2] = ENEMIES::BLANK_E;
+				currentEnemies[3] = ENEMIES::BLANK_E;
+				break;
+			case 2:
+				currentEnemies[0] = ENEMIES::STAFF;
+				currentEnemies[1] = ENEMIES::BLANK_E;
+				currentEnemies[2] = ENEMIES::BLANK_E;
+				currentEnemies[3] = ENEMIES::BLANK_E;
+				break;
+			}
+		}
+		else
+		{
+			switch (rand() % 3)
+			{
+			case 0:
+				currentEnemies[0] = ENEMIES::SPEAR;
+				currentEnemies[1] = ENEMIES::BLANK_E;
+				currentEnemies[2] = ENEMIES::BLANK_E;
+				currentEnemies[3] = ENEMIES::BLANK_E;
+				break;
+			case 1:
+				currentEnemies[0] = ENEMIES::SWORD;
+				currentEnemies[1] = ENEMIES::BLANK_E;
+				currentEnemies[2] = ENEMIES::BLANK_E;
+				currentEnemies[3] = ENEMIES::BLANK_E;
+				break;
+			case 2:
+				currentEnemies[0] = ENEMIES::CLUB;
+				currentEnemies[1] = ENEMIES::BLANK_E;
+				currentEnemies[2] = ENEMIES::BLANK_E;
+				currentEnemies[3] = ENEMIES::BLANK_E;
+				break;
+			}
+		}
+		break;
+	case 1:
+		currentEnemies[0] = ENEMIES::ASHTONE;
+		currentEnemies[1] = ENEMIES::BLANK_E;
+		currentEnemies[2] = ENEMIES::BLANK_E;
+		currentEnemies[3] = ENEMIES::BLANK_E;
+		break;
+	case 2:
+		currentEnemies[0] = ENEMIES::CLUB;
+		currentEnemies[1] = ENEMIES::BLANK_E;
+		currentEnemies[2] = ENEMIES::BLANK_E;
+		currentEnemies[3] = ENEMIES::BLANK_E;
+		break;
+	}
+	std::cout << currentEnemySpot << ":" << DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp << std::endl;
 }
 
 
 void Encounter::switchTurn()
 {
+	//std::cout << 0 << ":" << DefaultEnemies[enumToIntEnemies(currentEnemies[0])].hp << std::endl;
 	if (currentTeamSpot != -1)
 	{
 		std::cout << currentTeamSpot << std::endl;
@@ -280,8 +404,16 @@ void Encounter::switchTurn()
 
 void Encounter::enemiesTurn()
 {
-	std::cout << currentEnemySpot << ":" << enemyHp[currentEnemySpot] << std::endl;
-	if (currentEnemySpot < 3 && currentEnemySpot != -1)
+	int attack;
+	std::cout << currentEnemySpot << ":" << DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp << std::endl;
+	if (currentEnemySpot < 3 && currentEnemySpot != -1 && DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp > 0)
+	{
+		attack = enemiesAttack();
+		std::cout << "ATK: " << attack << "\n";
+		PlayableCharacters[enumToIntCharacters(currentTeam[targetingTeam[rand() % totalTeam]])].hp -= attack;
+		currentEnemySpot++;
+	}
+	else if (currentEnemySpot < 3 && currentEnemySpot != -1)
 	{
 		currentEnemySpot++;
 	}
@@ -292,7 +424,7 @@ void Encounter::enemiesTurn()
 	}
 
 	if (currentEnemySpot != -1)
-		if (enemyHp[currentEnemySpot] <= 0)
+		if (DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].hp <= 0)
 			enemiesTurn();
 
 }
@@ -372,7 +504,7 @@ void Encounter::WeaponsMenu(sf::RenderWindow &window)
 
 		for (int i = 0; i < 4; i++)
 		{
-			if (enemyHp[i] <= 0)
+			if (DefaultEnemies[enumToIntEnemies(currentEnemies[i])].hp <= 0)
 				enemyAlive[i] = false;
 
 			if (enemyAlive[i] == true)
@@ -454,7 +586,7 @@ void Encounter::targetMenu(sf::RenderWindow&)
 		case 1:
 		case 2:
 		case 3:
-			enemyHp[currentMenuSelection] -= attack();
+			DefaultEnemies[enumToIntEnemies(currentEnemies[currentMenuSelection])].hp -= attack();
 			//addExp(10);
 			switchTurn();
 			//currentScreen = MENUTYPE::LEVEL_UP;
@@ -467,13 +599,13 @@ void Encounter::targetMenu(sf::RenderWindow&)
 
 		for (int i = 0; i < 4; i++)
 		{
-			if (enemyHp[i] <= 0)
+			if (DefaultEnemies[enumToIntEnemies(currentEnemies[i])].hp <= 0)
 				enemyAlive[i] = false;
 
 			if (enemyAlive[i] == true)
 				enemiesAlive = true;
 		}
-		int rando = rand() % 10;
+		int rando = rand() % 5;
 		if (enemiesAlive == false)
 		{
 			addExp(rando);
@@ -525,19 +657,18 @@ void Encounter::levelUpMenu(sf::RenderWindow& window)
 	//bool dexUp = true, strUp = true, wisUp = true, hpUp = true;
 
 	sf::Vector2i position = sf::Mouse::getPosition(window);
-	int temp = 0;
+	//int temp = 0;
 
 	currentMenuSelection = -1;
 
 	
-	if ((!(levels[PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl] <=
-		PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].exp) ||
-		currentTeam[currentLeveling] == CHARACTERS::BLANK) && currentLeveling <= 2)
+	if ((!(PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].exp >= levels[PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl]) ||
+		currentTeam[currentLeveling] == CHARACTERS::BLANK) && currentLeveling < 3)
 	{
 		currentLeveling++;
 	}
-	else if (currentLeveling == 3 && (!(levels[PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl] <=
-		PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].exp) ||
+	else if (currentLeveling == 3 && (!(PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].exp >= 
+		levels[PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].lvl]) ||
 		currentTeam[currentLeveling] == CHARACTERS::BLANK))
 	{
 		currentScreen = MENUTYPE::ACTIONS;
@@ -605,6 +736,14 @@ void Encounter::levelUpMenu(sf::RenderWindow& window)
 			currentScreen = MENUTYPE::ACTIONS;
 			break;
 		}
+
+		if (currentLeveling == 3)
+		{
+			currentLeveling = 0;
+			currentScreen = MENUTYPE::ACTIONS;
+		}
+		else
+			currentLeveling++;
 	}
 
 
@@ -794,6 +933,12 @@ void Encounter::printTargetCharacterMenu(sf::RenderWindow& window)
 {
 	//sets up backgrounds and outlines and selection
 	sf::RectangleShape MenuOutline, MenuBackground, selection;
+	sf::Text text;
+	sf::String names[4] = { L"オーブリー",  L"エリック",  L"ローワン",  L"アシトン" };
+	sf::Font font;
+
+	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
+	text.setFont(font);
 
 	MenuOutline.setSize(sf::Vector2f(200, 400));
 	MenuOutline.setPosition(200, 100);
@@ -820,6 +965,15 @@ void Encounter::printTargetCharacterMenu(sf::RenderWindow& window)
 	}
 	else
 		selection.setPosition(-100, -100);
+
+	for (int i = 0; i < totalTeam; i++)
+	{
+		text.setString(names[i]);
+		//playerHealth.setOrigin(playerHealth.getLocalBounds().width / 2, playerHealth.getGlobalBounds().height / 2);
+		text.setPosition(210, 110 + (i * 100));
+		window.draw(text);
+	}
+
 }
 
 
@@ -829,8 +983,14 @@ void Encounter::printLevelUpMenu(sf::RenderWindow& window)
 	sf::RectangleShape MenuOutline, MenuBackground, selection;
 	//sets up text
 	sf::Text text;
-	sf::String message[4] = { L"HP",  L"DEX",  L"STR",  L"MAG" };
+	sf::String message[4] = { L"HP     ",  L"DEX     ",  L"STR     ",  L"MAG     " };
+	sf::String names[4] = { L"オーブリー",  L"エリック",  L"ローワン",  L"アシトン" };
 	sf::Font font;
+
+	message[0] += std::to_string(PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxHp);
+	message[1] += std::to_string(PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].dex);
+	message[2] += std::to_string(PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].str);
+	message[3] += std::to_string(PlayableCharacters[enumToIntCharacters(currentTeam[currentLeveling])].maxMag);
 
 	font.loadFromFile("NotoSansJP-VariableFont_wght.ttf");
 	text.setFont(font);
@@ -870,11 +1030,15 @@ void Encounter::printLevelUpMenu(sf::RenderWindow& window)
 	for (int i = 0; i < 4; i++)
 	{
 		text.setString(message[i]);
-		text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
-		text.setPosition(135, 130 + (i * 108));
+		//text.setOrigin(text.getLocalBounds().width / 2, text.getGlobalBounds().height / 2);
+		text.setPosition(110, 120 + (i * 108));
 		window.draw(text);
 	}
 
+	text.setString(names[currentLeveling]);
+	//playerHealth.setOrigin(playerHealth.getLocalBounds().width / 2, playerHealth.getGlobalBounds().height / 2);
+	text.setPosition(300, 275);
+	window.draw(text);
 
 
 }
@@ -918,6 +1082,38 @@ int Encounter::enumToIntCharacters(CHARACTERS temp)
 }
 
 
+int Encounter::enumToIntEnemies(ENEMIES temp)
+{
+	switch (temp)
+	{
+	case ENEMIES::BLANK_E:
+
+		return 0;
+	case ENEMIES::BSPEAR:
+
+		return 1;
+	case ENEMIES::DAGGER:
+
+		return 2;
+	case ENEMIES::STAFF:
+
+		return 3;
+	case ENEMIES::SPEAR:
+
+		return 4;
+	case ENEMIES::SWORD:
+
+		return 5;
+	case ENEMIES::CLUB:
+
+		return 6;
+	case ENEMIES::ASHTONE:
+
+		return 7;
+	}
+}
+
+
 void Encounter::addToParty(CHARACTERS tempCharacter)
 {
 	int i = 0;
@@ -931,6 +1127,17 @@ void Encounter::addToParty(CHARACTERS tempCharacter)
 			added = true;
 		}
 	}
+}
+
+
+bool Encounter::playerAlive()
+{
+	for (int i = 0; i < totalTeam; i++)
+	{
+		if (PlayableCharacters[enumToIntCharacters(currentTeam[i])].hp <= 0)
+			return false;
+	}
+	return true;
 }
 
 
@@ -983,33 +1190,86 @@ int Encounter::attack()
 }
 
 
-void Encounter::unique()
+int Encounter::enemiesAttack()
 {
-	switch (currentTeam[currentTeamSpot])
+	int attack = 0, slash;
+
+	if (currentEnemySpot >= 0)
+		equippedWeapon = DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].equippedWeapon;
+	else
+		std::cout << "players turn";
+	//equippedWeapon = currentTeam[currentTeamSpot].equippedWeapon;
+
+	switch (WEAPONS[equippedWeapon].type)
 	{
-	case CHARACTERS::AERYK:
-		//targetingTeam[] = currentTeamSpot
-		currentScreen = MENUTYPE::CHARACTER_TARGET;
+	case WEAPONTYPE::PIERCE:
+		if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1) > 11)
+		{
+			attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 3;
+		}
 		break;
-	case CHARACTERS::ASHTON:
-		//second wind
-		PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].hp += rand() % 10 + PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].lvl;
-		switchTurn();
+	case WEAPONTYPE::SLASH:
+		slash = rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1;
+		if (slash > 11)
+		{
+			slash -= 11;
+			attack = rand() % weapons[equippedWeapon] + (DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str / 2) + slash + 1;
+		}
 		break;
-	case CHARACTERS::AUBREY:
-		currentScreen = MENUTYPE::WEAPONS;
-		increasedDamage = PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].maxMag;
+	case WEAPONTYPE::BLUDGEON:
+		if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str + 1) > 9)
+		{
+			attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].str + 1;
+		}
 		break;
-	case CHARACTERS::PHOENIX:
-
-		break;
-	case CHARACTERS::ROWAN:
-		currentScreen = MENUTYPE::CHARACTER_TARGET;
-		break;
-	case CHARACTERS::BLANK:
-
+	case WEAPONTYPE::RANGED:
+		if ((rand() % 20 + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 1) > 14)
+		{
+			attack = rand() % weapons[equippedWeapon] + DefaultEnemies[enumToIntEnemies(currentEnemies[currentEnemySpot])].dex + 3;
+		}
 		break;
 	}
+
+	attack += increasedDamage;
+
+	increasedDamage = 0;
+
+	return attack;
+}
+
+
+void Encounter::unique()
+{
+	if (PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].mag > 0)
+	{
+		switch (currentTeam[currentTeamSpot])
+		{
+		case CHARACTERS::AERYK:
+			//targetingTeam[] = currentTeamSpot
+			currentScreen = MENUTYPE::CHARACTER_TARGET;
+			break;
+		case CHARACTERS::ASHTON:
+			//second wind
+			PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].hp += rand() % 10 + PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].lvl;
+			switchTurn();
+			break;
+		case CHARACTERS::AUBREY:
+			currentScreen = MENUTYPE::TARGET;
+			increasedDamage = PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].maxMag;
+			break;
+		case CHARACTERS::PHOENIX:
+
+			break;
+		case CHARACTERS::ROWAN:
+			currentScreen = MENUTYPE::CHARACTER_TARGET;
+			break;
+		case CHARACTERS::BLANK:
+
+			break;
+		}
+	}
+	else
+		currentScreen = MENUTYPE::WEAPONS;
 }
 
 
@@ -1036,12 +1296,14 @@ void Encounter::addExp(int tempExp)
 		{
 			levelUp(i);
 		}*/
-		if (levels[PlayableCharacters[enumToIntCharacters(currentTeam[i])].lvl] <=
-			PlayableCharacters[enumToIntCharacters(currentTeam[i])].exp)
+		if (PlayableCharacters[enumToIntCharacters(currentTeam[i])].exp >= levels[PlayableCharacters[enumToIntCharacters(currentTeam[i])].lvl])
 			currentScreen = MENUTYPE::LEVEL_UP;
 
 		std::cout << "xp: " << PlayableCharacters[enumToIntCharacters(currentTeam[i])].exp
 			<< "\nxp gained: " << tempExp << "\n";
+		std::cout << "lvl: " << PlayableCharacters[enumToIntCharacters(currentTeam[i])].lvl
+			<< "\n" << "xp needed: " <<levels[PlayableCharacters[enumToIntCharacters(currentTeam[i])].lvl]
+			<< "\n";
 	}
 	return;
 }

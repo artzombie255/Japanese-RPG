@@ -4,12 +4,12 @@
 int Npc::CurrentInteraction = 0;
 int Npc::currentLine = 0;
 int Npc::inputDelay = 0;
-sf::String Npc::voiceLines[41] = { L"Aubrey：助けてください！", //1 0
+sf::String Npc::voiceLines[42] = { L"Aubrey：助けてください！", //1 0
 
-L"Aubrey：ゾンビたちは私たちを\n驚かしました。",
-L"Aeryk：ゾンビが多過ぎます。",
+L"Aubrey：ゾンビたちは私たちを\n驚（おどろ）かしました。",
+L"Aeryk：ゾンビが多過（おおす）ぎます。",
 L"Aubrey：こちらはだめです。",
-L"Aeryk：私たちを助けてくれるなら、\n私は転石が押せます。",
+L"Aeryk：私たちを助けてくれるなら、\n私は転石（てんせき）が押（お）せます。",
 L"Aeryk：行きましょう！", //5 5
 
 L"Aubrey：私たちははしを渡りたいなら、\nはしを直さなければなりません。",
@@ -17,14 +17,14 @@ L"Aeryk：うん、そうね、\n誰が橋を直せるでしょう。", //2 7
 
 L"Rowan：誰ですか？！\nゾンビは帰ってくれませんか。\n私はおいしくない。", //1 8
 
-L"Rowan：あ、人間か。\nどうやって、生き残りましたか。",
+L"Rowan：あ、人間か。どうやって、\n生（い）き残（のこ）りましたか。",
 L"Aubrey：フェニックスは\n助けてくれました。",
 L"Aeryk：うん、どうやって、\nあなたは生き残りましたか。",
 L"Rowan：うちに入って、待ちました。",
 L"Aubrey：そうですか。",
-L"Rowan：ところで、\n私のマジックブックを無くしました。\nこの町の南にあるでしょう。",
+L"Rowan：ところで、\n私のマジックブックを無（な）くしました。\nこの町の南にあるでしょう。",
 L"Rowan：ゾンビがいるから、あの町から\n逃（に）げなければなりませんでした。",
-L"Rowan：私のマジックブックを\n持っていると、ゾンビと戦えます。",
+L"Rowan：私のマジックブックを\n持っていると、ゾンビと\n戦（たたか）えます。",
 L"Aeryk：そうですか、私たちはあの町を調べます。", //9 17
 
 L"Aubrey：あ、マジックブックを\n見つけました。",
@@ -44,21 +44,23 @@ L"Cal：そうですか。それから、\n私は助けてゾンビのリーダ�
 
 L"Ashton：誰！あなた達はこの橋を\n渡ってはだめだよ！", //1 29
 
-L"Rowan：その人はゾンビのリーダーでしたか？",
-L"Ashton：いいや、俺はゾンビが大嫌いだよ！\n俺はゾンビのリーダーが出るのがほしくないからだ。\nだから、私はこの橋を壊した。",
+L"Rowan：その人は\nゾンビのリーダーでしたか？",
+L"Ashton：いいや、\n俺はゾンビが大嫌いだよ！\n俺はゾンビのリーダーが\n出るのがほしくないからだ。\nだから、私はこの橋を壊（こわ）した。",
 L"Aeryk：はしを渡った後であなたと一緒に\nゾンビのリーダーが殺せませんか。",
 L"Ashton：いいよ！", //4 33
 
 L"Cal：あれはゾンビのリーダーですか。\n先生っぽいですね。",
-L"Ashton：うん、そうだ、\nあれは怖くて危ないゾンビのリーダー",
+L"Ashton：うん、そうだ、\nあれは怖くて危（あぶ）ないゾンビのリーダー",
 L"Rowan：ゾンビのリーダーを殺すと、\n全部のゾンビが死にます。", //3 36
+
+L"先生：...",
 
 L"Aubrey：やった！私たちは勝った。",
 L"Rowan：死にそうだった！",
 L"Cal：食べられそうだった！",
-L"ゾンビのリーダーを殺した時から、\n全部のゾンビは死にました。\nそして、このせかいは円満になりました。" //4 40
+L"ゾンビのリーダーを殺した時から、\n全部のゾンビは死にました。そして、\nこのせかいは円満（えんまん）になりました。" //4 40
 };
-int Npc::voiceLinesLength[13] = {0, 5, 7, 8, 17, 20, 21, 23, 28, 29, 33, 36, 40};
+int Npc::voiceLinesLength[14] = {0, 5, 7, 8, 17, 20, 21, 23, 28, 29, 33, 36, 37, 41};
 
 
 
@@ -90,6 +92,12 @@ Npc::Npc(CHARACTERS player)
 		setPosition(225, 3200);
 		break;
 	case ASHTON:
+		img.loadFromFile("./Sprites/characters/AS_R.png");
+		sprite.setTexture(img);
+		sprite.setScale(3.125, 3.125);
+		sprite.setPosition(getPosition().x, getPosition().y);
+		setPosition(-1000, -1000);
+		break;
 	case AUBREY:
 		img.loadFromFile("./Sprites/characters/AU_R.png");
 		sprite.setTexture(img);
@@ -99,13 +107,19 @@ Npc::Npc(CHARACTERS player)
 		break;
 	case PHOENIX:
 	case ROWAN:
-		img.loadFromFile("./Sprites/characters/AE_L.png");
+		img.loadFromFile("./Sprites/characters/R_L.png");
 		sprite.setTexture(img);
 		sprite.setScale(3.125, 3.125);
 		sprite.setPosition(getPosition().x, getPosition().y);
 		setPosition(-10000, -10000);
 		break;
 	case STEVE:
+		img.loadFromFile("./Sprites/characters/S_F.png");
+		sprite.setTexture(img);
+		sprite.setScale(3.125, 3.125);
+		sprite.setPosition(getPosition().x, getPosition().y);
+		setPosition(-10000, -10000);
+		break;
 	case BRIT:
 	case KIMORA:
 	case ALEX:
@@ -120,10 +134,18 @@ Npc::Npc(CHARACTERS player)
 		sprite.setTexture(img);
 		sprite.setScale(3.125, 3.125);
 		sprite.setPosition(getPosition().x, getPosition().y);
-		setSize(sf::Vector2f(0, 0));
+		//setSize(sf::Vector2f(0, 0));
 		setPosition(-1000, -1000);
 		break;
-
+	case SENSEI:
+		setSize(sf::Vector2f(100, 100));
+		img.loadFromFile("./Sprites/zombies/sensei.png");
+		sprite.setTexture(img);
+		sprite.setScale(3.125, 3.125);
+		sprite.setPosition(getPosition().x, getPosition().y);
+		//setSize(sf::Vector2f(0, 0));
+		setPosition(-1000, 3200);
+		break;
 	}
 
 

@@ -13,6 +13,8 @@ enum CHARACTERS
 	BLANK,
 	BOOK,
 
+	SENSEI,
+
 	BRIT,
 	KIMORA,
 	ALEX,

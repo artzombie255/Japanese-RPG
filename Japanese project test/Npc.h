@@ -20,8 +20,8 @@ public:
 
 private:
 	//AUBREY, ASHTON, AERYK, LILLY, KIMORA, SHIN
-	static sf::String voiceLines[41];
-	static int voiceLinesLength[13];
+	static sf::String voiceLines[42];
+	static int voiceLinesLength[14];
 	sf::Font font;
 	sf::Text text;
 	static int inputDelay;

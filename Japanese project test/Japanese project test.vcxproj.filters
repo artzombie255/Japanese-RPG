@@ -109,5 +109,11 @@
     <Text Include="Levels\p1level3.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Levels\0level5.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Levels\0level6.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -33,7 +33,15 @@ enum class WEAPONTYPE : unsigned char
 
 enum ENEMIES
 {
-	BLANK_E
+	BLANK_E = 0,
+	BSPEAR,
+	DAGGER,
+	STAFF,
+	SPEAR,
+	SWORD,
+	CLUB,
+	ASHTONE,
+	SENSEIE
 };
 
 
@@ -47,13 +55,15 @@ public:
 	
 	bool endEncounter();
 
+	void upgradeEnemies();
+
 	void addToTeam(CHARACTERS);
 	void printTeamSpot(int);
 	void changeTeam();
 
 	void displayEncounter(sf::RenderWindow&);
 	void playEncounter(sf::RenderWindow&);
-	void setEncounter();
+	void setEncounter(int);
 
 	void switchTurn();
 
@@ -79,10 +89,14 @@ public:
 	int getEncounterType();
 
 	int enumToIntCharacters(CHARACTERS);
+	int enumToIntEnemies(ENEMIES);
 
 	void addToParty(CHARACTERS);
 
+	bool playerAlive();
+
 	int attack();
+	int enemiesAttack();
 	void unique();
 	void loseHealth(int);
 	void addExp(int);
@@ -111,8 +125,10 @@ private:
 		targetedCharacter,
 		//possession
 		meleeOwned[NUMOFWEAPONS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 }, increasedDamage = 0;
+		itemsOwned[NUMOFITEMS] = { 0, 5, 0, 0 }, increasedDamage = 0, upgradedEnemies = 0, totalTeam = 0;
 	CHARACTERS currentTeam[4] = { CHARACTERS::BLANK,  CHARACTERS::BLANK, CHARACTERS::BLANK, CHARACTERS::BLANK };
+	ENEMIES currentEnemies[4] = { ENEMIES::BLANK_E,  ENEMIES::BLANK_E, ENEMIES::BLANK_E, ENEMIES::BLANK_E };
+
 	std::vector<CHARACTERS> team;
 	//levels
 	const int levels[10] = { 0, 5, 15, 30, 50, 75, 105, 140, 180, 225 },
@@ -232,16 +248,18 @@ private:
 	};
 
 	// Weapons
-	Enemies DefaultEnemies[7] =
+	Enemies DefaultEnemies[9] =
 	{
-		//name, type, max hp, current hp, armor, strength, dexterity, magic slots, level, xp, current weapon
-		{ENEMIES::BLANK_E,	25, 25, 1, 1, 0, 1, 1, 0, 10},
-		{ENEMIES::BLANK_E,	25, 0, 0, 0, 0, 0, 0, 0, 6},
-		{ENEMIES::BLANK_E,	20, 20, 0, 2, 1, 1, 1, 0, 5},
-		{ENEMIES::BLANK_E,	15, 15, 0, 0, 2, 3, 1, 0, 14},
-		{ENEMIES::BLANK_E,	15, 15, 0, 0, 2, 5, 3, 0, 14},
-		{ENEMIES::BLANK_E,	15, 15, 0, 0, 2, 3, 1, 0, 14},
-		{ENEMIES::BLANK_E,	15, 15, 0, 0, 2, 5, 3, 0, 14}
+		//name, max hp, current hp, armor, strength, dexterity, magic slots, level, xp, current weapon
+		{ENEMIES::BLANK_E,	0,  0,  1, 1, 0, 1, 1, 0, 10},
+		{ENEMIES::BSPEAR,	10, 10, 0, 0, 1, 0, 1, 0, 0},
+		{ENEMIES::DAGGER,	10, 10, 0, 0, 1, 0, 1, 0, 4},
+		{ENEMIES::STAFF,	15, 15, 0, 1, 0, 0, 1, 0, 9},
+		{ENEMIES::SPEAR,	15, 15, 0, 0, 2, 0, 1, 0, 1},
+		{ENEMIES::SWORD,	20, 20, 1, 1, 1, 0, 1, 0, 5},
+		{ENEMIES::CLUB,		25, 25, 1, 2, 0, 0, 1, 0, 10},
+		{ENEMIES::ASHTONE,  100, 100, 2, 4, 0, 0, 5, 0, 7},
+		{ENEMIES::SENSEIE,   150, 150, 0, 4, 0, 0, 5, 0, 11}
 	}; 
 
 };

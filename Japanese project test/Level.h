@@ -23,7 +23,7 @@ public:
 	void addWalls(int temp) { totalWalls += temp; }
 
 private:
-	bool oneLevelThreeUpdated = false, loaded[9][9], inCave = false;
+	bool oneLevelThreeUpdated = false, zeroLevelSixUpdated = false, loaded[9][9], inCave = false;
 	int totalWalls = 0;
 	sf::RectangleShape rect;
 	sf::Texture img, imgF;

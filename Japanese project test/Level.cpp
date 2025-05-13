@@ -26,6 +26,9 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName, std::ve
 	//oneLevelThreeUpdated = true;
 	if (fileName == "1level3" && oneLevelThreeUpdated == false)
 		fileName = "p" + fileName;
+
+	if (fileName == "0level6" && zeroLevelSixUpdated == false)
+		fileName = "p" + fileName;
 	
 	//for (int i = wallVec.size() - 1; i >= 0; i--)
 	//{
@@ -72,6 +75,11 @@ void Level::loadLevel(DoubleSubscriptedArray& arr, std::string fileName, std::ve
 				wallVec.at(i)->setPosition(LX + ((x - 1) * 600), LY + ((y - 1) * 600));
 			}
 		}
+		if (zeroLevelSixUpdated == true)
+		{
+			wallVec.at(12)->setSize(sf::Vector2f(0, 0));
+			wallVec.at(12)->setPosition(-1000, -1000);
+		}
 
 		file.close();
 	}
@@ -112,5 +120,8 @@ void Level::printF(sf::RenderWindow& window, DoubleSubscriptedArray&)
 
 void Level::updateRoom(int x, int y)
 {
-	oneLevelThreeUpdated = true;
+	if (x == 1)
+		oneLevelThreeUpdated = true;
+	else
+		zeroLevelSixUpdated = true;
 }

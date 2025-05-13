@@ -57,17 +57,29 @@ Enemy::Enemy(int type, int x, int y)
 	setPosition(((x - 1) * 600) + randX, ((y - 1) * 600) + randY);
 	//setPosition(200, 200);
 	setFillColor(sf::Color::Red);
-	if (type == 1)
-	{
+
 		img.loadFromFile("./Sprites/zombies/basic.png");
 		sprite.setTexture(img);
 		sprite.setScale(3.125, 3.125);
 		sprite.setPosition(getPosition().x, getPosition().y);
-	}
-	else
-	{
 
+	if (type == 0)
+	{
+		disabled = true;
+		setPosition(x, y);
+		sprite.setPosition(getPosition().x, getPosition().y);
 	}
+	/*if (type == 2)
+	{
+		setPosition(x, y);
+		setSize(sf::Vector2f(100, 100));
+		img.loadFromFile("./Sprites/zombies/sensei.png");
+		sprite.setTexture(img);
+		sprite.setScale(0, 0);
+		sprite.setPosition(getPosition().x, getPosition().y);
+		disabled = true;
+
+	}*/
 }
 
 
@@ -119,7 +131,7 @@ void Enemy::move(int x, int y, std::vector<Intaractable*>& rect)
 		}
 	}
 
-	if (boolX == false)
+	if (boolX == false && disabled == false)
 	{
 		if (x < getPosition().x)
 			RectangleShape::move(-1, 0);
@@ -127,7 +139,7 @@ void Enemy::move(int x, int y, std::vector<Intaractable*>& rect)
 			RectangleShape::move(1, 0);
 	}
 
-	if (boolY == false)
+	if (boolY == false && disabled == false)
 	{
 		if (y < getPosition().y)
 			RectangleShape::move(0, -1);

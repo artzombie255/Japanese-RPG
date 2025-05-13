@@ -33,7 +33,7 @@ int main()
     std::vector<Intaractable*> Npcs;
     std::vector<Intaractable*> Enemies;
     std::vector<Intaractable*> wallVec;
-    bool inMenu = false, printWalls = false, addedCharacter[4] = {};
+    bool inMenu = false, printWalls = false, addedCharacter[4] = {}, startedAshton = false, startedSensei = false, upgradedEnemies = false;
 
     viewport.setSize(600, 600);
     viewport.setCenter(300, 1500);
@@ -45,8 +45,32 @@ int main()
     Npcs.push_back(new Npc(AUBREY));
     Npcs.push_back(new Npc(ROWAN));
     Npcs.push_back(new Npc(BOOK));
+    Npcs.push_back(new Npc(STEVE));
+    Npcs.push_back(new Npc(CHARACTERS::ASHTON));
+    Npcs.push_back(new Npc(CHARACTERS::SENSEI));
 
     //for (int i = 0; i < 1; i++)
+
+    Enemies.push_back(new Enemy(0, 0, 3430));
+    Enemies.push_back(new Enemy(0, 60, 3430));
+    Enemies.push_back(new Enemy(0, 120, 3430));
+    Enemies.push_back(new Enemy(0, 180, 3430));
+    Enemies.push_back(new Enemy(0, 240, 3430));
+    Enemies.push_back(new Enemy(0, 300, 3430));
+    Enemies.push_back(new Enemy(0, 360, 3430));
+    Enemies.push_back(new Enemy(0, 420, 3430));
+    Enemies.push_back(new Enemy(0, 480, 3430));
+    Enemies.push_back(new Enemy(0, 0, 3370));
+    Enemies.push_back(new Enemy(0, 0, 3310));
+    Enemies.push_back(new Enemy(0, 0, 3250));
+    Enemies.push_back(new Enemy(0, 0, 3200));
+    Enemies.push_back(new Enemy(0, 480, 3370));
+    Enemies.push_back(new Enemy(0, 480, 3310));
+    Enemies.push_back(new Enemy(0, 480, 3250));
+    Enemies.push_back(new Enemy(0, 480, 3200));
+
+    Enemies.push_back(new Enemy(2, -1000, 3200));
+    //Enemies.push_back(new Enemy(2, 500, 1800));
 
 
     //set up doing tect and window name
@@ -62,14 +86,14 @@ int main()
     //load the first level
     level.loadLevel(arr, "1level3", wallVec, 1, 3, viewport);
 
-    level.addWalls(4);
+    level.addWalls(5);
     wallVec.push_back(new Intaractable);
     wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(5400, 7));
     wallVec.at(wallVec.size() - 1)->setPosition(-2400, -600);
 
     wallVec.push_back(new Intaractable);
     wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(5400, 7));
-    wallVec.at(wallVec.size() - 1)->setPosition(-2400, 4793);
+    wallVec.at(wallVec.size() - 1)->setPosition(-2400, 3593);
 
     wallVec.push_back(new Intaractable);
     wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(7, 5400));
@@ -79,6 +103,10 @@ int main()
     wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(7, 5400));
     wallVec.at(wallVec.size() - 1)->setPosition(-2400, -600);
 
+    wallVec.push_back(new Intaractable);
+    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(100, 600));
+    wallVec.at(wallVec.size() - 1)->setPosition(-175, 3000);
+
     /*for (int i = 0; i <= wallVec.size() - 1; i++)
     {
         wallVec.push_back(new Intaractable);
@@ -86,7 +114,7 @@ int main()
     }*/
 
     //main loop
-    while (window.isOpen())
+    while (window.isOpen() && encounter.playerAlive() == true)
     {
 
         //sets if in encounter
@@ -95,7 +123,7 @@ int main()
             if (Enemies.at(i)->getInteraction() == true)
             {
                 enemyEncounterNum = i;
-                encounter.setEncounter();
+                encounter.setEncounter(0);
                 Enemies.at(i)->setInteraction(false);
             }
         }
@@ -126,12 +154,12 @@ int main()
                 encounter.playEncounter(window);
                 if (encounter.endEncounter() == true)
                 {
-                    std::cout << "end encounter";
-                    if (Enemies.size() - 1 >= enemyEncounterNum && enemyEncounterNum)
+                    std::cout << "end encounter: " << enemyEncounterNum;
+                    if (enemyEncounterNum < Enemies.size() && Enemies.size() != 1)
                     {
-                        for (int i = enemyEncounterNum; i < Enemies.size(); i++)
+                        for (int i = enemyEncounterNum; i < Enemies.size() - 1; i++)
                         {
-                            Enemies.at(i - 1) = Enemies.at(i);
+                            Enemies.at(i) = Enemies.at(i + 1);
                         }
                     }
                     Enemies.pop_back();
@@ -302,12 +330,14 @@ int main()
         {   
             Npcs.at(4)->setSize(sf::Vector2f(25, 25));
             Npcs.at(4)->setPosition(2210, 2100);
+            Npcs.at(3)->setPosition(-1000, -1000);
         }
 
         if (Npcs.at(0)->getCurrentInteraction() >= 6)
         {
             Npcs.at(4)->setSize(sf::Vector2f(0, 0));
             Npcs.at(4)->setPosition(-1000, -1000);
+            Npcs.at(3)->setPosition(2210, -157);
         }
 
         if (Npcs.at(0)->getCurrentInteraction() >= 7)
@@ -318,9 +348,11 @@ int main()
             {
                 encounter.addToTeam(CHARACTERS::ROWAN);
                 addedCharacter[2] = true;
+                encounter.upgradeEnemies();
             }
             Npcs.at(0)->setSize(sf::Vector2f(600, 600));
             Npcs.at(0)->setPosition(0, 3100);
+            Npcs.at(5)->setPosition(275, 3500);
         }
 
         if (Npcs.at(0)->getCurrentInteraction() >= 8)
@@ -329,8 +361,63 @@ int main()
             Npcs.at(0)->setPosition(-1000, -1000);
         }
 
+        if (Npcs.at(0)->getCurrentInteraction() >= 9)
+        {
+            Npcs.at(5)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(5)->setPosition(-1000, -1000);
+            level.updateRoom(0, 6);
+            Npcs.at(6)->setSize(sf::Vector2f(50, 50));
+            Npcs.at(6)->setPosition(-300, 3200);
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 10)
+        {
+            if (startedAshton == false)
+            {
+                encounter.setEncounter(1);
+                startedAshton = true;
+            }
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 11)
+        {
+            Npcs.at(6)->setPosition(-3000, -1000);
+            if (addedCharacter[3] == false)
+            {
+                encounter.addToTeam(CHARACTERS::ASHTON);
+                addedCharacter[3] = true;
+            }
+            Npcs.at(0)->setSize(sf::Vector2f(540, 600));
+            Npcs.at(0)->setPosition(-1200, 3000);
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 12)
+        {
+            Npcs.at(0)->setSize(sf::Vector2f(0, 0));
+            Npcs.at(0)->setPosition(-1200, -1000);
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 13)
+        {
+            if (startedSensei == false)
+            { 
+                encounter.setEncounter(2);
+                startedSensei = true;
+            }
+            if (encounter.getInEncounter() == false)
+            {
+                Npcs.at(0)->setSize(sf::Vector2f(540, 600));
+                Npcs.at(0)->setPosition(-1200, 3000);
+            }
+        }
+
+        if (Npcs.at(0)->getCurrentInteraction() >= 14)
+        {
+            Npcs.at(7)->setPosition(-1200, -1000);
+        }
+
         //std::cout << "x: " << xScreen << "\ny: " << yScreen << "\n";
-        std::cout << level.getInCave();
+        //std::cout << level.getInCave();
 
         for (int i = 0; i < 4; i++)
         {

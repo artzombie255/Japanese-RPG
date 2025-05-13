@@ -12,9 +12,10 @@ public:
 	~Enemy();
 
 	void print(sf::RenderWindow&);
-	void move(int, int, std::vector<Intaractable*>&);
+	void move(int x, int y, std::vector<Intaractable*>& rect);
 
 private:
 	double xMove = 0, yMove = 0;
+	bool disabled = false;
 };
 

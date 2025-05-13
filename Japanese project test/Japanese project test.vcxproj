@@ -167,6 +167,8 @@
     <Text Include="Levels\0level2.txt" />
     <Text Include="Levels\0level3.txt" />
     <Text Include="Levels\0level4.txt" />
+    <Text Include="Levels\0level5.txt" />
+    <Text Include="Levels\0level6.txt" />
     <Text Include="Levels\1level2.txt" />
     <Text Include="Levels\1level3.txt" />
     <Text Include="Levels\1level4.txt" />
