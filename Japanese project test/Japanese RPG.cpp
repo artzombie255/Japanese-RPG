@@ -105,7 +105,7 @@ int main()
     wallVec.at(wallVec.size() - 1)->setPosition(-2400, -600);
 
     wallVec.push_back(new Intaractable);
-    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(100, 100));
+    wallVec.at(wallVec.size() - 1)->setSize(sf::Vector2f(100, 600));
     wallVec.at(wallVec.size() - 1)->setPosition(-175, 3000);
 
     /*for (int i = 0; i <= wallVec.size() - 1; i++)
@@ -117,7 +117,7 @@ int main()
     //main loop
     while (window.isOpen() && encounter.playerAlive() == true)
     {
-
+        system("cls");
         //sets if in encounter
         for (int i = 0; i < Enemies.size(); i++)
         {
@@ -173,7 +173,7 @@ int main()
             }
 
             window.setView(viewport);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+            /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
             {
                 printWalls = true;
                 window.setFramerateLimit(240);
@@ -182,7 +182,7 @@ int main()
             {
                 printWalls = false;
                 window.setFramerateLimit(60);
-            }
+            }*/
 
         }
 
@@ -375,7 +375,7 @@ int main()
         {
             if (startedAshton == false)
             {
-                //encounter.setEncounter(1);
+                encounter.setEncounter(1);
                 startedAshton = true;
             }
         }
