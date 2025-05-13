@@ -1257,6 +1257,7 @@ void Encounter::unique()
 {
 	if (PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].mag > 0)
 	{
+		PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].mag--;
 		switch (currentTeam[currentTeamSpot])
 		{
 		case CHARACTERS::AERYK:
@@ -1282,7 +1283,6 @@ void Encounter::unique()
 
 			break;
 		}
-		PlayableCharacters[enumToIntCharacters(currentTeam[currentTeamSpot])].mag--;
 	}
 	else
 		currentScreen = MENUTYPE::WEAPONS;
